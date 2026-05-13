@@ -84,3 +84,5 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/unitree_sdk2Config.cmake"
 add_subdirectory(source/move)
 add_subdirectory(source/arm)
 add_subdirectory(source/talk)
+add_subdirectory(source/g1_node)
+
