@@ -1,0 +1,66 @@
+{
+    // ============================================================
+    //  .zed/settings.json  —  Zed 工程级配置（仅影响当前工程）
+    //  Zed 的 C/C++ 默认 LSP 就是 clangd，这里给它传几个有用的启动参数
+    // ============================================================
+
+    "lsp": {
+        "clangd": {
+            "binary": {
+                // 如果你装了 LLVM 19+ 的 clangd，可以指定路径；否则用系统默认
+                // "path": "/usr/bin/clangd",
+                "arguments": [
+                    // 后台索引整个项目，跳转/补全飞快
+                    "--background-index",
+                    // 让 clangd 自己跑 clang-tidy
+                    "--clang-tidy",
+                    // 自动找到 build/ 下面的 compile_commands.json
+                    "--compile-commands-dir=build",
+                    // 不要主动给我加 #include（容易乱加）
+                    "--header-insertion=never",
+                    // 多核加速
+                    "-j=8",
+                    // 函数补全后自动加括号
+                    "--function-arg-placeholders",
+                    // 诊断显示的更详细
+                    "--pretty",
+                    // 跨文件代码完成
+                    "--all-scopes-completion",
+                    // 头文件按 IWYU 风格补全
+                    "--completion-style=detailed"
+                ]
+            },
+            "initialization_options": {
+                "fallbackFlags": ["-std=c++17"]
+            }
+        }
+    },
+
+    // 让 Zed 显示 inlay hints（参数名、类型推导）
+    "inlay_hints": {
+        "enabled": true,
+        "show_type_hints": true,
+        "show_parameter_hints": true,
+        "show_other_hints": true
+    },
+
+    // C/C++ 文件保存时按 .clang-format 自动格式化（如果你工程里有 .clang-format）
+    "languages": {
+        "C++": {
+            "format_on_save": "on",
+            "tab_size": 4,
+            "hard_tabs": false
+        },
+        "C": {
+            "format_on_save": "on",
+            "tab_size": 4,
+            "hard_tabs": false
+        },
+        "JSON": {
+            "language_servers": ["!package-version-server", "..."]
+        },
+        "JSONC": {
+            "language_servers": ["!package-version-server", "..."]
+        }
+    }
+}

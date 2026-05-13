@@ -80,3 +80,7 @@ configure_file(cmake/unitree_sdk2Config.cmake.in unitree_sdk2Config.cmake @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/unitree_sdk2Config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/unitree_sdk2ConfigVersion.cmake"
     DESTINATION lib/cmake/unitree_sdk2)
+
+add_subdirectory(source/move)
+add_subdirectory(source/arm)
+add_subdirectory(source/talk)

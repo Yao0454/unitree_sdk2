@@ -1,0 +1,124 @@
+# ============================================================
+#  .clangd  --  Unitree SDK2 (G1) clangd 配置
+#  适用于 Zed / nvim / Vim / Emacs / Helix（任何用 clangd 的编辑器）
+#
+#  放在工程根目录即可。所有相对路径都从本文件所在目录解析。
+#
+#  优先级：compile_commands.json > 本文件的 CompileFlags.Add
+# ============================================================
+
+CompileFlags:
+    Add:
+        # ---- C++ 标准 ----
+        - -std=c++17
+        - -xc++
+
+        # ---- 场景 1：在 unitree_sdk2 源码树里开发 ----
+        - -Iinclude
+        - -Ithirdparty/include
+        - -Ithirdparty/include/ddscxx
+
+        # # ---- 场景 2：自己的工程，SDK 已 sudo make install 到 /opt/unitree_robotics ----
+        # - -I/opt/unitree_robotics/include
+        # - -I/opt/unitree_robotics/include/ddscxx
+
+        # # ---- 场景 3：SDK 装到 /usr/local ----
+        # - -I/usr/local/include
+        # - -I/usr/local/include/ddscxx
+
+        # ---- Eigen ----
+        # terminations.hpp 用的是 #include <eigen3/Eigen/Dense>
+        - -I/usr/include/eigen3
+        - -I/usr/include
+
+        # ---- 你自己工程的相对路径（按需打开）----
+        # - -Isrc
+        # - -Iinclude
+
+        # ---- 让 IDE 标注更安静一点 ----
+        - -Wall
+        - -Wextra
+        - -Wno-unused-parameter
+        - -Wno-unused-variable
+        - -Wno-unused-but-set-variable
+        - -Wno-pessimizing-move
+
+    Remove:
+        - -mno-direct-extern-access
+        - -fno-allocation-dce
+        - -W*=*
+
+# ---------------- 索引 ----------------
+Index:
+    Background: Build
+    StandardLibrary: Yes
+
+# ---------------- 诊断 ----------------
+Diagnostics:
+    # SDK / DDS 生成代码大量未使用的 include，关掉警告
+    UnusedIncludes: None
+    MissingIncludes: None
+
+    ClangTidy:
+        Add:
+            - bugprone-*
+            - performance-*
+            - modernize-*
+            - readability-*
+        Remove:
+            - modernize-use-trailing-return-type
+            - readability-identifier-length
+            - readability-magic-numbers
+            - readability-named-parameter
+
+    Suppress:
+        - "-Wunused-private-field"
+        - "pp_including_mainfile_in_preamble"
+
+# ---------------- 补全 ----------------
+Completion:
+    AllScopes: Yes
+
+# ---------------- Inlay Hints（Zed 会显示）----------------
+InlayHints:
+    Enabled: Yes
+    ParameterNames: Yes
+    DeducedTypes: Yes
+    Designators: Yes
+    BlockEnd: Yes
+
+# ---------------- Hover ----------------
+Hover:
+    ShowAKA: Yes
+
+
+# ============================================================
+#   针对特定文件 / 目录的覆盖配置
+#   --- 是 YAML 多文档分隔，每段配置可用 If 限定生效范围
+# ============================================================
+
+---
+# DDS / IDL 自动生成的头文件 —— 全部静音
+If:
+    PathMatch:
+        - .*/include/unitree/idl/.*
+        - .*/thirdparty/include/.*
+        - .*/idl/.*\.hpp
+Diagnostics:
+    Suppress: "*"
+    ClangTidy:
+        Remove:
+            - "*"
+
+---
+# example/ 下的示例代码 —— 允许更宽松的诊断
+If:
+    PathMatch:
+        - .*/example/.*\.cpp
+Diagnostics:
+    ClangTidy:
+        Remove:
+            - bugprone-easily-swappable-parameters
+            - readability-function-cognitive-complexity
+            - cppcoreguidelines-init-variables
+            - misc-include-cleaner
