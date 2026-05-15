@@ -6,3 +6,20 @@ build
 
 #cland
 .cache
+
+# Build artifacts
+build/
+compile_commands.json
+
+# Editor / OS
+.cache/
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# 如果用 git submodule 把 SDK 拉进来，下面这行删掉
+# 如果不想把 SDK 提交到自己的 repo，加上
+unitree_sdk2/
+third_party/unitree_sdk2/
