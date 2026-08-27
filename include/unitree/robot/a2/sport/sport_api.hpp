@@ -38,8 +38,13 @@ namespace unitree
             
             const int32_t ROBOT_SPORT_API_ID_SETAUTORECOVERY = 1040;
 
+            const int32_t ROBOT_SPORT_API_ID_RESET_ESTIMATOR = 1111;
+
             // Get state
             const int32_t ROBOT_SPORT_API_ID_GETSTATE = 1034;
+
+            // Trajectory
+            const int32_t ROBOT_SPORT_API_ID_TRAJECTORY = 1035;
 
         }
 

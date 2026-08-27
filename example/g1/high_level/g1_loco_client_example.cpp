@@ -260,6 +260,12 @@ int main(int argc, char const *argv[]) {
       std::cout << "set speed mode" << std::endl;
     }
 
+    if (arg_pair.first == "get_mimic_motion") {
+      std::string data;
+      client.GetMimicMotion(data);
+      std::cout << "Mimic motion: " << data << std::endl;
+    }
+
     std::cout << "Done!" << std::endl;
   }
 

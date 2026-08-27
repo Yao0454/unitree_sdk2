@@ -26,7 +26,7 @@ inline void shutdown()
     std::string form, name;
     while (msc->CheckMode(form, name), !name.empty()) {
       if (msc->ReleaseMode()) {
-        spdlog::warn("Failed to switch to Release Mode.");
+        std::cout << "Failed to switch to Release Mode." << std::endl;
       }
       sleep(3);
     }

@@ -24,6 +24,7 @@ class LocoClient : public Client {
     UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_GET_STAND_HEIGHT);
     UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_GET_PHASE);  // deprecated
 
+    UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_FSM_API);
     UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_SET_FSM_ID);
     UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_SET_BALANCE_MODE);
     UT_ROBOT_CLIENT_REG_API_NO_PROI(ROBOT_API_ID_LOCO_SET_SWING_HEIGHT);
@@ -269,6 +270,38 @@ class LocoClient : public Client {
     parameter = common::ToJsonString(json);
 
     return Call(ROBOT_API_ID_LOCO_SET_SPEED_MODE, parameter, data);
+  }
+
+  /**
+   * @brief Get available mimic motions from the robot.
+   *
+   * @param[out] data Response data containing available motions.
+   *
+   * @return Response data format:
+   * {
+   *   "fsm_id": 550,
+   *   "api_id": 1,
+   *   "motion": {
+   *     "507": { # motion_api_id
+   *       "duration": float,
+   *       "name": string
+   *     },
+   *     ...
+   *   }
+   * }
+   *
+   * @note Use set_fsm_id to invoke specific motion_api_id with prefix 550.
+   *       Example: --set_fsm_id 550507
+   * 
+   * @attention The Robot must be in a stable state (e.g., standing);
+   */
+  int32_t GetMimicMotion(std::string& data) {
+    std::string parameter = "{\"fsm_id\": 550, \"api_id\": 1}";
+    return _fsm_api(parameter, data);
+  }
+
+  int32_t _fsm_api(std::string parameter, std::string& data) {
+    return Call(ROBOT_API_ID_LOCO_FSM_API, parameter, data);
   }
 
 private:

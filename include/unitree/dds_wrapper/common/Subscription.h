@@ -6,7 +6,6 @@
 #include <unitree/robot/channel/channel_subscriber.hpp>
 #include <mutex>
 #include <thread>
-#include <spdlog/spdlog.h>
 
 namespace unitree
 {
@@ -58,12 +57,12 @@ public:
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
       if (!warn_info && std::chrono::steady_clock::now() - t0 > std::chrono::seconds(2)) {
         warn_info = true;
-        spdlog::warn("Waiting for connection {}", sub_->GetChannelName());
+        std::cout << "Waiting for connection " << sub_->GetChannelName() << std::endl;
       }
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // wait for stable communicaiton
     if (warn_info) {
-      spdlog::info("Connected {}", sub_->GetChannelName());
+      std::cout << "Connected " << sub_->GetChannelName() << std::endl;
     }
   }
 
