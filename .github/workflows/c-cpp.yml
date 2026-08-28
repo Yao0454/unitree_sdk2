@@ -27,3 +27,43 @@ jobs:
       run: |
         cmake -Bbuild
         cmake --build build -j$(nproc)
+
+  python-bindings:
+    name: Python bindings (x86_64, no hardware)
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Build wheel
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libeigen3-dev
+        python -m pip install --upgrade pip
+        python -m pip install "scikit-build-core>=0.10" "pybind11>=2.12" pytest
+        python -m pip wheel ./unitree_sdk2_bindings \
+          --no-deps --no-build-isolation --wheel-dir /tmp/unitree-wheels
+
+    - name: Install and run the safe suite
+      run: |
+        python -m pip install /tmp/unitree-wheels/unitree_sdk2_cpp-*.whl
+        python -m pytest -q unitree_sdk2_bindings/tests
+
+    - name: Audit extension dependencies
+      run: |
+        extension="$(python -c 'import unitree_sdk2_cpp as module; print(module.__file__)')"
+        readelf -d "$extension" | tee /tmp/unitree-readelf.txt
+        grep -F '[$ORIGIN/.libs]' /tmp/unitree-readelf.txt
+        ldd "$extension" | tee /tmp/unitree-ldd.txt
+        if grep -q 'not found' /tmp/unitree-ldd.txt; then
+          exit 1
+        fi
+        if nm -D --undefined-only "$extension" | c++filt | grep -q 'unitree::'; then
+          echo 'unresolved Unitree SDK symbols:'
+          nm -D --undefined-only "$extension" | c++filt | grep 'unitree::'
+          exit 1
+        fi

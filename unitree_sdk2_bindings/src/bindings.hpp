@@ -13,9 +13,10 @@ inline pybind11::module_ EnsureSubmodule(pybind11::module_ parent,
 void BindCommon(pybind11::module_ &module);
 void BindGo2Idl(pybind11::module_ &module);
 void BindHgIdl(pybind11::module_ &module);
+void BindG1Support(pybind11::module_ &module);
 void BindHgDoubleImuIdl(pybind11::module_ &module);
 void BindRos2Idl(pybind11::module_ &module);
-void BindRobotReadOnly(pybind11::module_ &module);
+void BindRobotClients(pybind11::module_ &module);
 namespace unitree_sdk2_binding {
 void BindChannels(pybind11::module_ &module);
 }

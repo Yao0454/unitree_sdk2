@@ -7,27 +7,27 @@ from typing import Any, overload
 
 class ApplyLeaseData(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::ApplyLeaseData::ApplyLeaseData()."""
+        """AVAILABLE; C++: unitree::robot::ApplyLeaseData::ApplyLeaseData()."""
         ...
     id: int
     term: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ApplyLeaseParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::ApplyLeaseParameter::ApplyLeaseParameter()."""
+        """AVAILABLE; C++: unitree::robot::ApplyLeaseParameter::ApplyLeaseParameter()."""
         ...
     name: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ChannelFactory(object):
@@ -59,14 +59,14 @@ class ChannelNamer(object):
         ...
 
 class Client(ClientBase):
-    def __init__(self, name: str, enable_lease: bool = ...) -> None:
+    def __init__(self, name: str, enable_lease: bool = False) -> None:
         """SIGNATURE_ONLY; C++: unitree::robot::Client::Client(const std::string &, bool)."""
         ...
     def wait_lease_applied(self) -> None:
-        """SIGNATURE_ONLY | INITIALIZATION | DIRECT. C++: WaitLeaseApplied()."""
+        """AVAILABLE | INITIALIZATION | DIRECT. C++: WaitLeaseApplied()."""
         ...
     def get_lease_id(self) -> int:
-        """AVAILABLE | READ_ONLY | DIRECT. C++: GetLeaseId()."""
+        """SIGNATURE_ONLY | READ_ONLY | DIRECT. C++: GetLeaseId()."""
         ...
     def get_api_version(self) -> str:
         """AVAILABLE | READ_ONLY | REFERENCE_POLICY. C++: GetApiVersion() const."""
@@ -110,62 +110,62 @@ class ClientStub(object):
 
 class LeaseCache(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::LeaseCache::LeaseCache()."""
+        """AVAILABLE; C++: unitree::robot::LeaseCache::LeaseCache()."""
         ...
-    def set(self, id: int, m_name: str, last_modified: int = ...) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Set(int64_t, const std::string &, int64_t)."""
+    def set(self, id: int, m_name: str, last_modified: int = 0) -> None:
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Set(int64_t, const std::string &, int64_t)."""
         ...
-    def renewal(self, last_modified: int = ...) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Renewal(int64_t)."""
+    def renewal(self, last_modified: int = 0) -> None:
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Renewal(int64_t)."""
         ...
     def clear(self) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Clear()."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Clear()."""
         ...
     def get_last_modified(self) -> int:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: GetLastModified() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: GetLastModified() const."""
         ...
     def get_id(self) -> int:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: GetId() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: GetId() const."""
         ...
     def get_name(self) -> str:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: GetName() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: GetName() const."""
         ...
 
 class LeaseClient(ClientBase):
     def __init__(self, name: str) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::LeaseClient::LeaseClient(const std::string &)."""
+        """AVAILABLE; C++: unitree::robot::LeaseClient::LeaseClient(const std::string &)."""
         ...
     def init(self) -> None:
-        """SIGNATURE_ONLY | INITIALIZATION | DIRECT. C++: Init()."""
+        """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def wait_applied(self) -> None:
-        """SIGNATURE_ONLY | INITIALIZATION | DIRECT. C++: WaitApplied()."""
+        """AVAILABLE | INITIALIZATION | DIRECT. C++: WaitApplied()."""
         ...
     def get_id(self) -> int:
-        """SIGNATURE_ONLY | READ_ONLY | DIRECT. C++: GetId()."""
+        """AVAILABLE | READ_ONLY | DIRECT. C++: GetId()."""
         ...
     def applied(self) -> bool:
-        """SIGNATURE_ONLY | READ_ONLY | DIRECT. C++: Applied()."""
+        """AVAILABLE | READ_ONLY | DIRECT. C++: Applied()."""
         ...
 
 class LeaseContext(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::LeaseContext::LeaseContext()."""
+        """AVAILABLE; C++: unitree::robot::LeaseContext::LeaseContext()."""
         ...
     def update(self, id: int, term: int) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Update(int64_t, int64_t)."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Update(int64_t, int64_t)."""
         ...
     def reset(self) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Reset()."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Reset()."""
         ...
     def valid(self) -> bool:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: Valid() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: Valid() const."""
         ...
     def get_id(self) -> int:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: GetId() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: GetId() const."""
         ...
     def get_term(self) -> int:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: GetTerm() const."""
+        """AVAILABLE | UNCLASSIFIED | DIRECT. C++: GetTerm() const."""
         ...
 
 class LeaseServer(ServerBase):

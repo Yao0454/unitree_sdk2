@@ -51,10 +51,10 @@ def test_checked_in_stubs_are_current(tmp_path: Path) -> None:
     assert manifest["summary"] == {
         "idl_classes": 64,
         "idl_properties": 341,
-        "manifest_entries": 1190,
+        "manifest_entries": 1213,
         "robot_classes": 121,
         "robot_public_signatures": 634,
-        "status": {"AVAILABLE": 650, "SIGNATURE_ONLY": 540},
+        "status": {"AVAILABLE": 1167, "SIGNATURE_ONLY": 46},
     }
 
 
@@ -63,7 +63,7 @@ def test_every_stub_is_valid_python_syntax() -> None:
         ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
 
 
-def test_manifest_keeps_motion_signatures_unavailable() -> None:
+def test_manifest_exposes_motion_signatures_without_executing_them() -> None:
     manifest = json.loads(
         (PACKAGE_ROOT / "api_manifest.json").read_text(encoding="utf-8")
     )
@@ -73,14 +73,13 @@ def test_manifest_keeps_motion_signatures_unavailable() -> None:
         if item["python_path"] == "unitree_sdk2_cpp.robot.g1.LocoClient.move"
     ]
     assert len(g1_move) == 2
-    assert {item["status"] for item in g1_move} == {"SIGNATURE_ONLY"}
+    assert {item["status"] for item in g1_move} == {"AVAILABLE"}
     assert {item["safety"] for item in g1_move} == {"MOTION_COMMAND"}
 
     get_fsm_id = next(
         item
         for item in manifest["entries"]
-        if item["python_path"]
-        == "unitree_sdk2_cpp.robot.g1.LocoClient.get_fsm_id"
+        if item["python_path"] == "unitree_sdk2_cpp.robot.g1.LocoClient.get_fsm_id"
     )
     assert get_fsm_id["status"] == "AVAILABLE"
     assert get_fsm_id["python_return"] == "tuple[int, int]"
@@ -93,3 +92,45 @@ def test_manifest_keeps_motion_signatures_unavailable() -> None:
             item for item in manifest["entries"] if item["python_path"] == path
         )
         assert constructor["status"] == "AVAILABLE"
+
+    set_velocity = next(
+        item
+        for item in manifest["entries"]
+        if item["python_path"] == "unitree_sdk2_cpp.robot.g1.LocoClient.set_velocity"
+    )
+    assert set_velocity["status"] == "AVAILABLE"
+
+    trajectory = next(
+        item
+        for item in manifest["entries"]
+        if item["python_path"]
+        == "unitree_sdk2_cpp.robot.b2.SportClient.trajectory_follow"
+    )
+    assert trajectory["binding_strategy"] == "MUTABLE_INPUT_COPY"
+
+    json_value = next(
+        item
+        for item in manifest["entries"]
+        if item["python_path"]
+        == "unitree_sdk2_cpp.robot.g1.MoveParameter.to_json"
+    )
+    assert json_value["status"] == "AVAILABLE"
+    assert json_value["binding_strategy"] == "JSON_DICT_OUTPUT"
+    assert json_value["python_return"] == "dict[str, Any]"
+
+    lease_cache = next(
+        item
+        for item in manifest["entries"]
+        if item["python_path"] == "unitree_sdk2_cpp.robot.LeaseCache.renewal"
+    )
+    assert lease_cache["status"] == "AVAILABLE"
+    assert lease_cache["binding_strategy"] == "DIRECT"
+
+    crc_entries = [
+        item
+        for item in manifest["entries"]
+        if item["python_path"] == "unitree_sdk2_cpp.idl.g1.compute_crc"
+    ]
+    assert len(crc_entries) == 2
+    assert {item["status"] for item in crc_entries} == {"AVAILABLE"}
+    assert {item["binding_strategy"] for item in crc_entries} == {"CRC_WRAPPER"}

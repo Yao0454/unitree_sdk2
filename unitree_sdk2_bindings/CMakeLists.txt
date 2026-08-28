@@ -217,6 +217,7 @@ pybind11_add_module(unitree_sdk2_cpp MODULE
   src/generated/channel_registry.cpp
   src/generated/idl/go2.cpp
   src/generated/idl/hg.cpp
+  src/robot/g1.cpp
   src/generated/idl/hg_doubleimu.cpp
   src/generated/idl/ros2.cpp
   src/generated/robot_read_only.cpp)

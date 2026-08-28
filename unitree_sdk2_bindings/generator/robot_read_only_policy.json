@@ -1,5 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "utility_classes": {
+    "unitree::robot::LeaseCache": [
+      "Set(int64_t, const std::string &, int64_t)",
+      "Renewal(int64_t)",
+      "Clear()",
+      "GetLastModified() const",
+      "GetId() const",
+      "GetName() const"
+    ],
+    "unitree::robot::LeaseContext": [
+      "Update(int64_t, int64_t)",
+      "Reset()",
+      "Valid() const",
+      "GetId() const",
+      "GetTerm() const"
+    ]
+  },
+  "mutable_inputs": {
+    "unitree::robot::b2::SportClient": [
+      "TrajectoryFollow(std::vector<unitree::robot::b2::PathPoint> &)"
+    ],
+    "unitree::robot::h2::LocoClient": [
+      "SetPunchApi(std::vector<float> &)"
+    ]
+  },
   "classes": {
     "unitree::robot::a2::AudioClient": [
       "GetVolume(uint8_t &)"

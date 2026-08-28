@@ -13,5 +13,6 @@ PYBIND11_MODULE(unitree_sdk2_cpp, module) {
     BindHgDoubleImuIdl(module);
     BindRos2Idl(module);
     unitree_sdk2_binding::BindChannels(module);
-    BindRobotReadOnly(module);
+    BindG1Support(module);
+    BindRobotClients(module);
 }

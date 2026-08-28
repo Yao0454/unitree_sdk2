@@ -1,0 +1,92 @@
+\usepackage{bookmark}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{geometry}
+
+\geometry{a4paper, top=18mm, bottom=14mm, left=18mm, right=18mm, headheight=14pt, headsep=6mm, footskip=8mm}
+
+\definecolor{UnitreeBlue}{HTML}{145DA0}
+\definecolor{UnitreeInk}{HTML}{17212B}
+\definecolor{UnitreeCode}{HTML}{F3F5F7}
+\definecolor{UnitreeRule}{HTML}{D7DEE5}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=UnitreeBlue,
+  urlcolor=UnitreeBlue,
+  citecolor=UnitreeBlue,
+  pdfborder={0 0 0},
+  bookmarksopen=true,
+  bookmarksnumbered=false
+}
+\bookmarksetup{open,depth=3}
+
+\titleformat{\section}[block]
+  {\normalfont\Large\bfseries\color{UnitreeBlue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.55em}
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries\color{UnitreeInk}}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{1.15em}{0.4em}
+\titleformat{\subsubsection}[block]
+  {\normalfont\normalsize\bfseries\color{UnitreeInk}}{}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{0.9em}{0.3em}
+
+\titleformat{\paragraph}[block]
+  {\normalfont\normalsize\bfseries\color{UnitreeInk}}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{0.8em}{0.3em}
+\titleformat{\subparagraph}[block]
+  {\normalfont\small\bfseries\color{UnitreeInk}}{}{0pt}{}
+\titlespacing*{\subparagraph}{0pt}{0.7em}{0.25em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{UnitreeInk}Unitree SDK2 Python Bindings}
+\fancyhead[R]{\small\color{UnitreeInk}Unitree SDK2}
+\fancyfoot[C]{\small\color{UnitreeInk}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{UnitreeCode},
+  frame=single,
+  rulecolor=\color{UnitreeRule},
+  framesep=6pt,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  upquote=true,
+  aboveskip=0.35em,
+  belowskip=0.35em
+}
+
+\AtBeginEnvironment{longtable}{%
+  \footnotesize
+  \setlength{\tabcolsep}{2pt}%
+  \renewcommand{\arraystretch}{1.08}%
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.28em}
+\setlength{\emergencystretch}{3em}
+\setcounter{secnumdepth}{0}
+\sloppy
+\setlist{nosep,leftmargin=*}
+\setlist[itemize]{topsep=0.15em,itemsep=0.08em,parsep=0pt}
+\setlist[enumerate]{topsep=0.15em,itemsep=0.08em,parsep=0pt}
+\setlength{\columnsep}{1em}
+
+\renewcommand{\contentsname}{目录}
+\renewcommand{\listfigurename}{图目录}
+\renewcommand{\listtablename}{表目录}
+
+\AtBeginDocument{%
+  \color{UnitreeInk}%
+}

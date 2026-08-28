@@ -9,17 +9,17 @@ from . import Client, ClientBase
 
 class PoseVec4(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::as2::PoseVec4::PoseVec4()."""
+        """AVAILABLE; C++: unitree::robot::as2::PoseVec4::PoseVec4()."""
         ...
     x: float
     y: float
     z: float
     yaw: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class SportClient(Client):
@@ -30,97 +30,97 @@ class SportClient(Client):
         """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def damp(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Damp()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Damp()."""
         ...
     def balance_stand(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BalanceStand()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BalanceStand()."""
         ...
     def stop_move(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StopMove()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StopMove()."""
         ...
     def stand_up(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StandUp()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StandUp()."""
         ...
     def stand_down(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StandDown()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StandDown()."""
         ...
     def recovery_stand(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: RecoveryStand()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: RecoveryStand()."""
         ...
     def euler(self, roll: float, pitch: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Euler(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Euler(float, float, float)."""
         ...
     def move(self, vx: float, vy: float, vyaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
         ...
     def switch_gait(self, gait_type: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SwitchGait(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SwitchGait(int)."""
         ...
     def body_height(self, height: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BodyHeight(float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BodyHeight(float)."""
         ...
     def speed_level(self, level: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SpeedLevel(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SpeedLevel(int)."""
         ...
     def body_position(self, x: float, y: float, z: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BodyPosition(float, float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BodyPosition(float, float, float, float)."""
         ...
     def left_side_gait(self, enter: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: LeftSideGait(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: LeftSideGait(int)."""
         ...
     def right_side_gait(self, enter: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: RightSideGait(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: RightSideGait(int)."""
         ...
     def hand_stand(self, enter: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: HandStand(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: HandStand(int)."""
         ...
     def biped_stand(self, enter: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BipedStand(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BipedStand(int)."""
         ...
     def front_flip(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FrontFlip()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FrontFlip()."""
         ...
     def back_flip(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BackFlip()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BackFlip()."""
         ...
     def greeting(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Greeting()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Greeting()."""
         ...
     def heart(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Heart()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Heart()."""
         ...
     def content(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Content()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Content()."""
         ...
     def dance1(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Dance1()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Dance1()."""
         ...
     def dance2(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Dance2()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Dance2()."""
         ...
     def handshake(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Handshake()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Handshake()."""
         ...
     def stretch(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Stretch()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Stretch()."""
         ...
     def sit(self, enter: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Sit(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Sit(int)."""
         ...
     def front_jump(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FrontJump()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FrontJump()."""
         ...
     def push_up(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: PushUp()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: PushUp()."""
         ...
     def up_jump(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: UpJump()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: UpJump()."""
         ...
     def set_auto_recovery(self, switch_on: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SetAutoRecovery(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SetAutoRecovery(int)."""
         ...
     def switch_joystick(self, switch_on: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SwitchJoystick(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SwitchJoystick(int)."""
         ...
     def get_state(self) -> tuple[int, dict[str, str]]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: GetState(std::map<std::string, std::string> &)."""

@@ -262,8 +262,8 @@ EXACT_USAGE = {
     "unitree_sdk2_cpp.OsHelper.get_page_size": "page_size = helper.get_page_size()",
     "unitree_sdk2_cpp.OsHelper.get_hostname": "hostname = helper.get_hostname()",
     "unitree_sdk2_cpp.channel.registered_message_types": "message_type_names = registered_message_types()",
-    "unitree_sdk2_cpp.channel.initialize": "initialize(domain_id=0, network_interface=\"eth0\")",
-    "unitree_sdk2_cpp.channel.initialize_from_config": "initialize_from_config(config_file=\"cyclonedds.xml\")",
+    "unitree_sdk2_cpp.channel.initialize": 'initialize(domain_id=0, network_interface="eth0")',
+    "unitree_sdk2_cpp.channel.initialize_from_config": 'initialize_from_config(config_file="cyclonedds.xml")',
     "unitree_sdk2_cpp.channel.release": "release()",
 }
 
@@ -296,13 +296,19 @@ def function_parameters(node: ast.FunctionDef) -> list[Parameter]:
     result = [
         Parameter(
             name=item.arg,
-            annotation=(annotation(item.annotation) if item.annotation is not None else ""),
+            annotation=(
+                annotation(item.annotation) if item.annotation is not None else ""
+            ),
             default=(
                 REQUIRED_PARAMETER
                 if default is REQUIRED_PARAMETER
                 else ast.unparse(default)
             ),
-            kind=("positional_only" if index < len(node.args.posonlyargs) else "positional_or_keyword"),
+            kind=(
+                "positional_only"
+                if index < len(node.args.posonlyargs)
+                else "positional_or_keyword"
+            ),
         )
         for index, (item, default) in enumerate(zip(positional, defaults, strict=True))
     ]
@@ -351,7 +357,9 @@ def module_name(stub_root: Path, path: Path) -> str:
 
 
 def cpp_signature(item: dict[str, Any]) -> str:
-    parameters = ", ".join(parameter["type"] for parameter in item.get("parameters", []))
+    parameters = ", ".join(
+        parameter["type"] for parameter in item.get("parameters", [])
+    )
     suffix = " const" if item.get("is_const") else ""
     return f"{item['name']}({parameters}){suffix}"
 
@@ -405,6 +413,18 @@ def select_manifest_entry(
         ]
         if len(matches) == 1:
             return matches[0]
+    parameter_types = [
+        item.annotation
+        for item in function_parameters(node)
+        if item.name not in {"self", "cls"}
+    ]
+    typed_matches = [
+        item
+        for item in candidates
+        if item.get("python_parameters") == parameter_types
+    ]
+    if len(typed_matches) == 1:
+        return typed_matches[0]
     signature = FunctionDoc(
         module="",
         owner=None,
@@ -448,7 +468,9 @@ def parse_stubs(
                         module=module.name,
                         owner=None,
                         name=node.name,
-                        decorators=[decorator_name(item) for item in node.decorator_list],
+                        decorators=[
+                            decorator_name(item) for item in node.decorator_list
+                        ],
                         parameters=function_parameters(node),
                         returns=annotation(node.returns),
                         docstring=ast.get_docstring(node) or "",
@@ -472,7 +494,9 @@ def parse_stubs(
             setters: dict[str, ast.FunctionDef] = {}
             for member_node in node.body:
                 if isinstance(member_node, ast.FunctionDef):
-                    decorators = [decorator_name(item) for item in member_node.decorator_list]
+                    decorators = [
+                        decorator_name(item) for item in member_node.decorator_list
+                    ]
                     if "property" in decorators:
                         getters[member_node.name] = member_node
                         continue
@@ -545,8 +569,7 @@ def parse_stubs(
             modules.append(module)
 
     expected_manifest_keys = Counter(
-        (entry["python_path"], entry["cpp_signature"])
-        for entry in manifest["entries"]
+        (entry["python_path"], entry["cpp_signature"]) for entry in manifest["entries"]
     )
     if documented_manifest_keys != expected_manifest_keys:
         missing = expected_manifest_keys - documented_manifest_keys
@@ -741,6 +764,17 @@ def status_note(entry: dict[str, Any]) -> str:
             "**`AVAILABLE` / `DDS_LIFECYCLE`**：当前绑定源码已实现。"
             "该操作可能创建、使用或释放 DDS 资源。"
         )
+    if safety == "MOTION_COMMAND":
+        return (
+            "**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人"
+            "发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；"
+            "不得从默认测试或未经确认的 Agent 流程调用。"
+        )
+    if safety == "HARDWARE_SIDE_EFFECT":
+        return (
+            "**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改"
+            "机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。"
+        )
     return (
         f"**`AVAILABLE` / `{safety}`**：当前绑定源码已实现；"
         "实际执行条件仍取决于平台和对应 SDK 环境。"
@@ -755,7 +789,9 @@ def cpp_input_parameters(function: FunctionDoc) -> list[dict[str, Any]]:
         parameters = [
             item
             for item in parameters
-            if not ("&" in item["type"] and not item["type"].lstrip().startswith("const "))
+            if not (
+                "&" in item["type"] and not item["type"].lstrip().startswith("const ")
+            )
         ]
     return parameters
 
@@ -808,7 +844,9 @@ def return_rows(function: FunctionDoc) -> list[tuple[str, str, str]]:
             )
         ]
     if function.returns == "None":
-        return [("无", "None", "该方法不返回 Python 值；失败可能表现为异常或底层状态变化。")]
+        return [
+            ("无", "None", "该方法不返回 Python 值；失败可能表现为异常或底层状态变化。")
+        ]
     output_names = output_parameter_names(function)
     output_items = output_parameters(function)
     tuple_parts = split_tuple_annotation(function.returns)
@@ -859,9 +897,7 @@ def return_rows(function: FunctionDoc) -> list[tuple[str, str, str]]:
     ]
 
 
-def source_location(
-    function: FunctionDoc, binding_root: Path
-) -> str:
+def source_location(function: FunctionDoc, binding_root: Path) -> str:
     if not function.cpp_member:
         return "由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。"
     location = function.cpp_member.get("location", {})
@@ -891,9 +927,9 @@ def call_arguments(parameters: Iterable[Parameter]) -> str:
         (
             f"*{item.name}"
             if item.kind == "vararg"
-            else f"**{item.name}"
-            if item.kind == "varkw"
-            else f"{item.name}={item.name}"
+            else (
+                f"**{item.name}" if item.kind == "varkw" else f"{item.name}={item.name}"
+            )
         )
         for item in parameters
     )
@@ -988,7 +1024,9 @@ def function_notes(function: FunctionDoc) -> list[str]:
     return notes
 
 
-def property_source(item: PropertyDoc, class_index: dict[str, dict[str, Any]], binding_root: Path) -> str:
+def property_source(
+    item: PropertyDoc, class_index: dict[str, dict[str, Any]], binding_root: Path
+) -> str:
     cpp_class = class_index.get(item.manifest["cpp_class"])
     if not cpp_class:
         return "由 pybind11 手工绑定提供；manifest 未记录独立头文件行号。"
@@ -1059,7 +1097,17 @@ def render_function(
         lines.append("@overload")
     if function.is_static:
         lines.append("@staticmethod")
-    lines.extend([function.signature, "```", "", "**可用性与安全性**", "", status_note(entry), ""])
+    lines.extend(
+        [
+            function.signature,
+            "```",
+            "",
+            "**可用性与安全性**",
+            "",
+            status_note(entry),
+            "",
+        ]
+    )
     cpp_inputs = cpp_input_parameters(function)
     lines.extend(["**参数**", ""])
     parameters = function.public_parameters
@@ -1087,7 +1135,9 @@ def render_function(
             if function.owner is None
             else "无显式参数。实例方法中的 `self` 由 Python 自动传入。"
         )
-    lines.extend(["", "**返回值**", "", "| 位置 | 类型 | 含义 |", "| --- | --- | --- |"])
+    lines.extend(
+        ["", "**返回值**", "", "| 位置 | 类型 | 含义 |", "| --- | --- | --- |"]
+    )
     for name, type_name, description in return_rows(function):
         lines.append(
             f"| {name} | `{md_escape(type_name)}` | {md_escape(description)} |"
@@ -1134,6 +1184,15 @@ def render_function(
             [
                 "> [!NOTE]",
                 "> 只读查询仍会访问 DDS/机器人服务。必须检查返回状态码，并处理超时和网络中断。",
+                "",
+            ]
+        )
+    elif entry.get("safety") in {"MOTION_COMMAND", "HARDWARE_SIDE_EFFECT"}:
+        lines.extend(
+            [
+                "> [!CAUTION]",
+                "> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、"
+                "目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。",
                 "",
             ]
         )
@@ -1206,7 +1265,10 @@ def render_property(
     if parameter:
         lines.append(f"obj.{item.name} = new_value")
     lines.extend(["```", ""])
-    if parameter and (item.read_type.startswith("list[") or item.read_type not in {parameter.annotation}):
+    if parameter and (
+        item.read_type.startswith("list[")
+        or item.read_type not in {parameter.annotation}
+    ):
         lines.extend(
             [
                 "> [!TIP]",
@@ -1240,7 +1302,9 @@ def render_class(
         lines.extend([f"**基类**：{', '.join(f'`{base}`' for base in item.bases)}", ""])
     if item.enum_values:
         lines.extend(["**枚举成员**", "", "| 名称 | Stub 值 |", "| --- | --- |"])
-        lines.extend(f"| `{value.name}` | `{value.value}` |" for value in item.enum_values)
+        lines.extend(
+            f"| `{value.name}` | `{value.value}` |" for value in item.enum_values
+        )
         lines.append("")
     if item.attributes:
         lines.extend(
@@ -1276,7 +1340,9 @@ def render_class(
             positions[function.name] += 1
             display_name = function.name
             if totals[function.name] > 1:
-                display_name += f"（重载 {positions[function.name]}/{totals[function.name]}）"
+                display_name += (
+                    f"（重载 {positions[function.name]}/{totals[function.name]}）"
+                )
             lines.append(
                 f"| [`{display_name}`](#{anchor(function.python_path)}-{positions[function.name]}) | "
                 f"`{md_escape(function.signature)}` | "
@@ -1316,7 +1382,12 @@ def render_class(
         )
     for property_item in item.properties:
         lines.extend(render_property(property_item, class_index, binding_root))
-    if not item.functions and not item.properties and not item.attributes and not item.enum_values:
+    if (
+        not item.functions
+        and not item.properties
+        and not item.attributes
+        and not item.enum_values
+    ):
         lines.extend(["该类型当前没有公开成员签名。", ""])
     return lines
 
@@ -1360,7 +1431,9 @@ def render_module(
             )
         lines.append("")
     if module.classes:
-        lines.extend(["### 类索引", "", "| 类 | 公开函数签名 | 属性 |", "| --- | ---: | ---: |"])
+        lines.extend(
+            ["### 类索引", "", "| 类 | 公开函数签名 | 属性 |", "| --- | ---: | ---: |"]
+        )
         for class_item in module.classes:
             lines.append(
                 f"| [`{class_item.name}`](#{anchor(class_item.python_path)}) | "
@@ -1400,7 +1473,8 @@ def render_document(
         "",
         "> [!WARNING]",
         "> 本文同时包含 `AVAILABLE` 和 `SIGNATURE_ONLY`。后者只是设计期类型签名。"
-        "所有运动方法目前均为 `SIGNATURE_ONLY`，不得按当前可执行接口使用。",
+        "运动及硬件副作用方法已进入运行时绑定，但只表示接口可调用，不表示当前环境可安全执行；"
+        "默认测试绝不会构造客户端、初始化 DDS 或发送机器人指令。",
         "",
         "> [!NOTE]",
         "> 本文件由 `generator/generate_api_docs.py` 从 `.pyi`、`api_manifest.json` "
@@ -1479,9 +1553,7 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(__file__).resolve().parents[1]
-        / "docs"
-        / "API_REFERENCE_ZH.md",
+        default=Path(__file__).resolve().parents[1] / "docs" / "API_REFERENCE_ZH.md",
     )
     arguments = parser.parse_args()
     stats = generate(arguments.binding_root.resolve(), arguments.output.resolve())

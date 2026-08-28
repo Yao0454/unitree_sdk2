@@ -3,7 +3,7 @@
 本参考采用常见科学计算库的 API Reference 组织方式：先按模块分类索引，再为每个类、函数和属性提供签名、参数、返回值、可用性、C++ 对应项和用法。学习路径和完整教程请先阅读 [从零开始指南](BEGINNER_GUIDE_ZH.md)。
 
 > [!WARNING]
-> 本文同时包含 `AVAILABLE` 和 `SIGNATURE_ONLY`。后者只是设计期类型签名。所有运动方法目前均为 `SIGNATURE_ONLY`，不得按当前可执行接口使用。
+> 本文同时包含 `AVAILABLE` 和 `SIGNATURE_ONLY`。后者只是设计期类型签名。运动及硬件副作用方法已进入运行时绑定，但只表示接口可调用，不表示当前环境可安全执行；默认测试绝不会构造客户端、初始化 DDS 或发送机器人指令。
 
 > [!NOTE]
 > 本文件由 `generator/generate_api_docs.py` 从 `.pyi`、`api_manifest.json` 和 Clang AST 清单生成。不要手工维护 API 条目；修改签名后应重新生成并运行测试。
@@ -27,14 +27,14 @@
 
 | 项目 | 数量 |
 | --- | ---: |
-| 有内容的 Python 模块 | 15 |
+| 有内容的 Python 模块 | 16 |
 | 类和枚举 | 189 |
-| 普通/重载函数签名 | 844 |
+| 普通/重载函数签名 | 867 |
 | Python 属性 | 346 |
 | 公开数据属性 | 173 |
-| Manifest 条目 | 1190 |
-| `AVAILABLE` | 650 |
-| `SIGNATURE_ONLY` | 540 |
+| Manifest 条目 | 1213 |
+| `AVAILABLE` | 1168 |
+| `SIGNATURE_ONLY` | 45 |
 
 一个 Python 属性在 manifest 中占一个条目，但下文会同时写出 getter 和 setter 签名。重载方法按不同 C++ 签名分别展开。
 
@@ -44,6 +44,7 @@
 | --- | --- | ---: | ---: |
 | 系统辅助 API | [`unitree_sdk2_cpp`](#unitree-sdk2-cpp) | 0 | 1 |
 | Typed DDS Channel API | [`unitree_sdk2_cpp.channel`](#unitree-sdk2-cpp-channel) | 4 | 2 |
+| unitree_sdk2_cpp.idl.g1 | [`unitree_sdk2_cpp.idl.g1`](#unitree-sdk2-cpp-idl-g1) | 5 | 0 |
 | Go2 IDL 消息 | [`unitree_sdk2_cpp.idl.go2`](#unitree-sdk2-cpp-idl-go2) | 0 | 26 |
 | HG IDL 消息 | [`unitree_sdk2_cpp.idl.hg`](#unitree-sdk2-cpp-idl-hg) | 0 | 13 |
 | HG Double-IMU IDL 消息 | [`unitree_sdk2_cpp.idl.hg_doubleimu`](#unitree-sdk2-cpp-idl-hg-doubleimu) | 0 | 1 |
@@ -52,7 +53,7 @@
 | A2 Robot API | [`unitree_sdk2_cpp.robot.a2`](#unitree-sdk2-cpp-robot-a2) | 0 | 8 |
 | AS2 Robot API | [`unitree_sdk2_cpp.robot.as2`](#unitree-sdk2-cpp-robot-as2) | 0 | 2 |
 | B2 Robot API | [`unitree_sdk2_cpp.robot.b2`](#unitree-sdk2-cpp-robot-b2) | 0 | 25 |
-| G1 Robot API | [`unitree_sdk2_cpp.robot.g1`](#unitree-sdk2-cpp-robot-g1) | 0 | 12 |
+| G1 Robot API | [`unitree_sdk2_cpp.robot.g1`](#unitree-sdk2-cpp-robot-g1) | 7 | 12 |
 | Go2 Robot API | [`unitree_sdk2_cpp.robot.go2`](#unitree-sdk2-cpp-robot-go2) | 0 | 37 |
 | H1 Robot API | [`unitree_sdk2_cpp.robot.h1`](#unitree-sdk2-cpp-robot-h1) | 0 | 4 |
 | H2 Robot API | [`unitree_sdk2_cpp.robot.h2`](#unitree-sdk2-cpp-robot-h2) | 0 | 8 |
@@ -1145,6 +1146,255 @@ def last_data_available_time(self) -> int
 
 ```python
 current_value = obj.last_data_available_time
+```
+
+---
+
+<a id="unitree-sdk2-cpp-idl-g1"></a>
+## unitree_sdk2_cpp.idl.g1
+
+模块：`unitree_sdk2_cpp.idl.g1`
+
+### 模块函数导入
+
+```python
+from unitree_sdk2_cpp.idl.g1 import compute_crc, compute_crc, update_crc, validate_crc, validate_crc
+```
+
+下面的函数用法片段假设已经完成上述导入。
+
+### 模块函数索引
+
+| 函数 | Python 签名 | 状态 | 安全分类 |
+| --- | --- | --- | --- |
+| [`compute_crc()`](#unitree-sdk2-cpp-idl-g1-compute-crc-1) | `def compute_crc(message: LowCmd) -> int` | `AVAILABLE` | `VALUE_TYPE` |
+| [`compute_crc()`](#unitree-sdk2-cpp-idl-g1-compute-crc-1) | `def compute_crc(message: LowState) -> int` | `AVAILABLE` | `VALUE_TYPE` |
+| [`update_crc()`](#unitree-sdk2-cpp-idl-g1-update-crc-1) | `def update_crc(message: LowCmd) -> int` | `AVAILABLE` | `VALUE_TYPE` |
+| [`validate_crc()`](#unitree-sdk2-cpp-idl-g1-validate-crc-1) | `def validate_crc(message: LowCmd) -> bool` | `AVAILABLE` | `VALUE_TYPE` |
+| [`validate_crc()`](#unitree-sdk2-cpp-idl-g1-validate-crc-1) | `def validate_crc(message: LowState) -> bool` | `AVAILABLE` | `VALUE_TYPE` |
+
+<a id="unitree-sdk2-cpp-idl-g1-compute-crc-1"></a>
+#### `unitree_sdk2_cpp.idl.g1.compute_crc`（重载 1/2）
+
+对应 C++ SDK 操作 `crc32_core(LowCmd_)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+@overload
+def compute_crc(message: LowCmd) -> int
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `VALUE_TYPE`**：当前绑定源码已实现该消息值操作。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `message` | `LowCmd` | 必填 | 要写入 DDS 的消息实例；类型必须与 Publisher 构造时声明的消息类完全一致。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `int` | 返回 `int`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree_hg::msg::dds_::LowCmd_`
+- 签名：`crc32_core(LowCmd_)`
+- 绑定策略：`CRC_WRAPPER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = compute_crc(message=message)
+```
+
+<a id="unitree-sdk2-cpp-idl-g1-compute-crc-2"></a>
+#### `unitree_sdk2_cpp.idl.g1.compute_crc`（重载 2/2）
+
+对应 C++ SDK 操作 `crc32_core(LowState_)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+@overload
+def compute_crc(message: LowState) -> int
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `VALUE_TYPE`**：当前绑定源码已实现该消息值操作。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `message` | `LowState` | 必填 | 要写入 DDS 的消息实例；类型必须与 Publisher 构造时声明的消息类完全一致。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `int` | 返回 `int`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree_hg::msg::dds_::LowState_`
+- 签名：`crc32_core(LowState_)`
+- 绑定策略：`CRC_WRAPPER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = compute_crc(message=message)
+```
+
+<a id="unitree-sdk2-cpp-idl-g1-update-crc-1"></a>
+#### `unitree_sdk2_cpp.idl.g1.update_crc`
+
+对应 C++ SDK 操作 `crc32_core(LowCmd_); LowCmd_::crc(uint32_t)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def update_crc(message: LowCmd) -> int
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `VALUE_TYPE`**：当前绑定源码已实现该消息值操作。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `message` | `LowCmd` | 必填 | 要写入 DDS 的消息实例；类型必须与 Publisher 构造时声明的消息类完全一致。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `int` | 返回 `int`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree_hg::msg::dds_::LowCmd_`
+- 签名：`crc32_core(LowCmd_); LowCmd_::crc(uint32_t)`
+- 绑定策略：`CRC_WRAPPER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = update_crc(message=message)
+```
+
+<a id="unitree-sdk2-cpp-idl-g1-validate-crc-1"></a>
+#### `unitree_sdk2_cpp.idl.g1.validate_crc`（重载 1/2）
+
+对应 C++ SDK 操作 `LowCmd_::crc() == crc32_core(LowCmd_)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+@overload
+def validate_crc(message: LowCmd) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `VALUE_TYPE`**：当前绑定源码已实现该消息值操作。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `message` | `LowCmd` | 必填 | 要写入 DDS 的消息实例；类型必须与 Publisher 构造时声明的消息类完全一致。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree_hg::msg::dds_::LowCmd_`
+- 签名：`LowCmd_::crc() == crc32_core(LowCmd_)`
+- 绑定策略：`CRC_WRAPPER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = validate_crc(message=message)
+```
+
+<a id="unitree-sdk2-cpp-idl-g1-validate-crc-2"></a>
+#### `unitree_sdk2_cpp.idl.g1.validate_crc`（重载 2/2）
+
+对应 C++ SDK 操作 `LowState_::crc() == crc32_core(LowState_)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+@overload
+def validate_crc(message: LowState) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `VALUE_TYPE`**：当前绑定源码已实现该消息值操作。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `message` | `LowState` | 必填 | 要写入 DDS 的消息实例；类型必须与 Publisher 构造时声明的消息类完全一致。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree_hg::msg::dds_::LowState_`
+- 签名：`LowState_::crc() == crc32_core(LowState_)`
+- 绑定策略：`CRC_WRAPPER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = validate_crc(message=message)
 ```
 
 ---
@@ -26802,9 +27052,9 @@ from unitree_sdk2_cpp.robot import ApplyLeaseData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-applyleasedata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-applyleasedata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-applyleasedata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-applyleasedata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-applyleasedata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-applyleasedata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-applyleasedata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseData.__init__`
@@ -26819,7 +27069,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -26841,20 +27091,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ApplyLeaseData:
-        return ApplyLeaseData()
+value = ApplyLeaseData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-applyleasedata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseData.from_json`
@@ -26864,18 +27106,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -26887,26 +27129,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::ApplyLeaseData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/internal/internal_api.hpp:102`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ApplyLeaseData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-applyleasedata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseData.to_json`
@@ -26916,49 +27150,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::ApplyLeaseData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/internal/internal_api.hpp:108`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ApplyLeaseData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-applyleaseparameter"></a>
 ### `unitree_sdk2_cpp.robot.ApplyLeaseParameter`
@@ -26983,9 +27207,9 @@ from unitree_sdk2_cpp.robot import ApplyLeaseParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-applyleaseparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-applyleaseparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-applyleaseparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-applyleaseparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-applyleaseparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-applyleaseparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-applyleaseparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseParameter.__init__`
@@ -27000,7 +27224,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -27022,20 +27246,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ApplyLeaseParameter:
-        return ApplyLeaseParameter()
+value = ApplyLeaseParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-applyleaseparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseParameter.from_json`
@@ -27045,18 +27261,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -27068,26 +27284,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::ApplyLeaseParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/internal/internal_api.hpp:75`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ApplyLeaseParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-applyleaseparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.ApplyLeaseParameter.to_json`
@@ -27097,49 +27305,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::ApplyLeaseParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/internal/internal_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ApplyLeaseParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-channelfactory"></a>
 ### `unitree_sdk2_cpp.robot.ChannelFactory`
@@ -27567,8 +27765,8 @@ from unitree_sdk2_cpp.robot import Client
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-client-dunder-init-1) | `def __init__(self, name: str, enable_lease: bool = ...) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`wait_lease_applied`](#unitree-sdk2-cpp-robot-client-wait-lease-applied-1) | `def wait_lease_applied(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
+| [`__init__`](#unitree-sdk2-cpp-robot-client-dunder-init-1) | `def __init__(self, name: str, enable_lease: bool = False) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
+| [`wait_lease_applied`](#unitree-sdk2-cpp-robot-client-wait-lease-applied-1) | `def wait_lease_applied(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
 | [`get_lease_id`](#unitree-sdk2-cpp-robot-client-get-lease-id-1) | `def get_lease_id(self) -> int` | `AVAILABLE` | `READ_ONLY` |
 | [`get_api_version`](#unitree-sdk2-cpp-robot-client-get-api-version-1) | `def get_api_version(self) -> str` | `AVAILABLE` | `READ_ONLY` |
 | [`get_server_api_version`](#unitree-sdk2-cpp-robot-client-get-server-api-version-1) | `def get_server_api_version(self) -> str` | `AVAILABLE` | `READ_ONLY` |
@@ -27581,7 +27779,7 @@ from unitree_sdk2_cpp.robot import Client
 **签名**
 
 ```python
-def __init__(self, name: str, enable_lease: bool = ...) -> None
+def __init__(self, name: str, enable_lease: bool = False) -> None
 ```
 
 **可用性与安全性**
@@ -27593,7 +27791,7 @@ def __init__(self, name: str, enable_lease: bool = ...) -> None
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
 | `name` | `str` | 必填 | SDK 对象、配置项、服务或动作的名称。允许值由调用它的具体接口定义。 对应 C++ 参数 `name: const std::string &`。 底层为字符串；长度、编码和允许值由具体协议决定。 |
-| `enable_lease` | `bool` | `...` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
+| `enable_lease` | `bool` | `False` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -27611,7 +27809,6 @@ def __init__(self, name: str, enable_lease: bool = ...) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
 - 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
@@ -27640,7 +27837,7 @@ def wait_lease_applied(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -27662,20 +27859,12 @@ def wait_lease_applied(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_wait_lease_applied(obj: Client) -> None:
-        obj.wait_lease_applied()
+obj.wait_lease_applied()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-client-get-lease-id-1"></a>
 #### `unitree_sdk2_cpp.robot.Client.get_lease_id`
@@ -28340,13 +28529,13 @@ from unitree_sdk2_cpp.robot import LeaseCache
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-leasecache-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`set`](#unitree-sdk2-cpp-robot-leasecache-set-1) | `def set(self, id: int, m_name: str, last_modified: int = ...) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`renewal`](#unitree-sdk2-cpp-robot-leasecache-renewal-1) | `def renewal(self, last_modified: int = ...) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`clear`](#unitree-sdk2-cpp-robot-leasecache-clear-1) | `def clear(self) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`get_last_modified`](#unitree-sdk2-cpp-robot-leasecache-get-last-modified-1) | `def get_last_modified(self) -> int` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`get_id`](#unitree-sdk2-cpp-robot-leasecache-get-id-1) | `def get_id(self) -> int` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`get_name`](#unitree-sdk2-cpp-robot-leasecache-get-name-1) | `def get_name(self) -> str` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-leasecache-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`set`](#unitree-sdk2-cpp-robot-leasecache-set-1) | `def set(self, id: int, m_name: str, last_modified: int = 0) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`renewal`](#unitree-sdk2-cpp-robot-leasecache-renewal-1) | `def renewal(self, last_modified: int = 0) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`clear`](#unitree-sdk2-cpp-robot-leasecache-clear-1) | `def clear(self) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`get_last_modified`](#unitree-sdk2-cpp-robot-leasecache-get-last-modified-1) | `def get_last_modified(self) -> int` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`get_id`](#unitree-sdk2-cpp-robot-leasecache-get-id-1) | `def get_id(self) -> int` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`get_name`](#unitree-sdk2-cpp-robot-leasecache-get-name-1) | `def get_name(self) -> str` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-leasecache-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.__init__`
@@ -28361,7 +28550,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28383,20 +28572,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LeaseCache:
-        return LeaseCache()
+value = LeaseCache()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-set-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.set`
@@ -28406,12 +28587,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set(self, id: int, m_name: str, last_modified: int = ...) -> None
+def set(self, id: int, m_name: str, last_modified: int = 0) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28419,7 +28600,7 @@ def set(self, id: int, m_name: str, last_modified: int = ...) -> None
 | --- | --- | --- | --- |
 | `id` | `int` | 必填 | 传给该接口的 ID 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `id: int64_t`。 取值范围为 -9223372036854775808 到 9223372036854775807。 |
 | `m_name` | `str` | 必填 | 传给该接口的 `m` 名称 参数，Python 类型为 `str`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `mName: const std::string &`。 底层为字符串；长度、编码和允许值由具体协议决定。 |
-| `last_modified` | `int` | `...` | 传给该接口的 `last` `modified` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `lastModified: int64_t`。 取值范围为 -9223372036854775808 到 9223372036854775807。 |
+| `last_modified` | `int` | `0` | 传给该接口的 `last` `modified` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `lastModified: int64_t`。 取值范围为 -9223372036854775808 到 9223372036854775807。 |
 
 **返回值**
 
@@ -28431,27 +28612,18 @@ def set(self, id: int, m_name: str, last_modified: int = ...) -> None
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`Set(int64_t, const std::string &, int64_t)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:16`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set(obj: LeaseCache, id: int, m_name: str, last_modified: int) -> None:
-        obj.set(id=id, m_name=m_name, last_modified=last_modified)
+obj.set(id=id, m_name=m_name, last_modified=last_modified)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-renewal-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.renewal`
@@ -28461,18 +28633,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def renewal(self, last_modified: int = ...) -> None
+def renewal(self, last_modified: int = 0) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `last_modified` | `int` | `...` | 传给该接口的 `last` `modified` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `lastModified: int64_t`。 取值范围为 -9223372036854775808 到 9223372036854775807。 |
+| `last_modified` | `int` | `0` | 传给该接口的 `last` `modified` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `lastModified: int64_t`。 取值范围为 -9223372036854775808 到 9223372036854775807。 |
 
 **返回值**
 
@@ -28484,27 +28656,18 @@ def renewal(self, last_modified: int = ...) -> None
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`Renewal(int64_t)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:17`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_renewal(obj: LeaseCache, last_modified: int) -> None:
-        obj.renewal(last_modified=last_modified)
+obj.renewal(last_modified=last_modified)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-clear-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.clear`
@@ -28519,7 +28682,7 @@ def clear(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28535,26 +28698,18 @@ def clear(self) -> None
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`Clear()`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:18`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_clear(obj: LeaseCache) -> None:
-        obj.clear()
+obj.clear()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-get-last-modified-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.get_last_modified`
@@ -28569,7 +28724,7 @@ def get_last_modified(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28585,26 +28740,18 @@ def get_last_modified(self) -> int
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`GetLastModified() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:20`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_last_modified(obj: LeaseCache) -> int:
-        return obj.get_last_modified()
+result = obj.get_last_modified()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-get-id-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.get_id`
@@ -28619,7 +28766,7 @@ def get_id(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28635,26 +28782,18 @@ def get_id(self) -> int
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`GetId() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:21`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_id(obj: LeaseCache) -> int:
-        return obj.get_id()
+result = obj.get_id()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecache-get-name-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseCache.get_name`
@@ -28669,7 +28808,7 @@ def get_name(self) -> str
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28685,26 +28824,18 @@ def get_name(self) -> str
 
 - 类：`unitree::robot::LeaseCache`
 - 签名：`GetName() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/server/lease_server.hpp:22`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_name(obj: LeaseCache) -> str:
-        return obj.get_name()
+result = obj.get_name()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leaseclient"></a>
 ### `unitree_sdk2_cpp.robot.LeaseClient`
@@ -28723,11 +28854,11 @@ from unitree_sdk2_cpp.robot import LeaseClient
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-leaseclient-dunder-init-1) | `def __init__(self, name: str) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`init`](#unitree-sdk2-cpp-robot-leaseclient-init-1) | `def init(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`wait_applied`](#unitree-sdk2-cpp-robot-leaseclient-wait-applied-1) | `def wait_applied(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`get_id`](#unitree-sdk2-cpp-robot-leaseclient-get-id-1) | `def get_id(self) -> int` | `SIGNATURE_ONLY` | `READ_ONLY` |
-| [`applied`](#unitree-sdk2-cpp-robot-leaseclient-applied-1) | `def applied(self) -> bool` | `SIGNATURE_ONLY` | `READ_ONLY` |
+| [`__init__`](#unitree-sdk2-cpp-robot-leaseclient-dunder-init-1) | `def __init__(self, name: str) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`init`](#unitree-sdk2-cpp-robot-leaseclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`wait_applied`](#unitree-sdk2-cpp-robot-leaseclient-wait-applied-1) | `def wait_applied(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`get_id`](#unitree-sdk2-cpp-robot-leaseclient-get-id-1) | `def get_id(self) -> int` | `AVAILABLE` | `READ_ONLY` |
+| [`applied`](#unitree-sdk2-cpp-robot-leaseclient-applied-1) | `def applied(self) -> bool` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-leaseclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseClient.__init__`
@@ -28742,7 +28873,7 @@ def __init__(self, name: str) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28766,20 +28897,12 @@ def __init__(self, name: str) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct(name: str) -> LeaseClient:
-        return LeaseClient(name=name)
+value = LeaseClient(name=name)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leaseclient-init-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseClient.init`
@@ -28794,7 +28917,7 @@ def init(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28816,20 +28939,12 @@ def init(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_init(obj: LeaseClient) -> None:
-        obj.init()
+obj.init()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leaseclient-wait-applied-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseClient.wait_applied`
@@ -28844,7 +28959,7 @@ def wait_applied(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -28866,20 +28981,12 @@ def wait_applied(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_wait_applied(obj: LeaseClient) -> None:
-        obj.wait_applied()
+obj.wait_applied()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leaseclient-get-id-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseClient.get_id`
@@ -28894,7 +29001,7 @@ def get_id(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `READ_ONLY`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `READ_ONLY`**：当前绑定源码已实现只读查询。Robot Client 的服务端查询通常仍需匹配的 Linux 扩展、DDS、网络、机器人和服务；纯本地 getter 则不一定需要全部条件。
 
 **参数**
 
@@ -28916,20 +29023,15 @@ def get_id(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_id(obj: LeaseClient) -> int:
-        return obj.get_id()
+result = obj.get_id()
 ```
 
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> [!NOTE]
+> 只读查询仍会访问 DDS/机器人服务。必须检查返回状态码，并处理超时和网络中断。
 
 <a id="unitree-sdk2-cpp-robot-leaseclient-applied-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseClient.applied`
@@ -28944,7 +29046,7 @@ def applied(self) -> bool
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `READ_ONLY`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `READ_ONLY`**：当前绑定源码已实现只读查询。Robot Client 的服务端查询通常仍需匹配的 Linux 扩展、DDS、网络、机器人和服务；纯本地 getter 则不一定需要全部条件。
 
 **参数**
 
@@ -28966,20 +29068,15 @@ def applied(self) -> bool
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_applied(obj: LeaseClient) -> bool:
-        return obj.applied()
+result = obj.applied()
 ```
 
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> [!NOTE]
+> 只读查询仍会访问 DDS/机器人服务。必须检查返回状态码，并处理超时和网络中断。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext"></a>
 ### `unitree_sdk2_cpp.robot.LeaseContext`
@@ -28998,12 +29095,12 @@ from unitree_sdk2_cpp.robot import LeaseContext
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-leasecontext-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`update`](#unitree-sdk2-cpp-robot-leasecontext-update-1) | `def update(self, id: int, term: int) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`reset`](#unitree-sdk2-cpp-robot-leasecontext-reset-1) | `def reset(self) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`valid`](#unitree-sdk2-cpp-robot-leasecontext-valid-1) | `def valid(self) -> bool` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`get_id`](#unitree-sdk2-cpp-robot-leasecontext-get-id-1) | `def get_id(self) -> int` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`get_term`](#unitree-sdk2-cpp-robot-leasecontext-get-term-1) | `def get_term(self) -> int` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-leasecontext-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`update`](#unitree-sdk2-cpp-robot-leasecontext-update-1) | `def update(self, id: int, term: int) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`reset`](#unitree-sdk2-cpp-robot-leasecontext-reset-1) | `def reset(self) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`valid`](#unitree-sdk2-cpp-robot-leasecontext-valid-1) | `def valid(self) -> bool` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`get_id`](#unitree-sdk2-cpp-robot-leasecontext-get-id-1) | `def get_id(self) -> int` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`get_term`](#unitree-sdk2-cpp-robot-leasecontext-get-term-1) | `def get_term(self) -> int` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.__init__`
@@ -29018,7 +29115,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29040,20 +29137,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LeaseContext:
-        return LeaseContext()
+value = LeaseContext()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-update-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.update`
@@ -29068,7 +29157,7 @@ def update(self, id: int, term: int) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29087,26 +29176,18 @@ def update(self, id: int, term: int) -> None
 
 - 类：`unitree::robot::LeaseContext`
 - 签名：`Update(int64_t, int64_t)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/client/lease_client.hpp:17`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_update(obj: LeaseContext, id: int, term: int) -> None:
-        obj.update(id=id, term=term)
+obj.update(id=id, term=term)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-reset-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.reset`
@@ -29121,7 +29202,7 @@ def reset(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29137,26 +29218,18 @@ def reset(self) -> None
 
 - 类：`unitree::robot::LeaseContext`
 - 签名：`Reset()`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/client/lease_client.hpp:18`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_reset(obj: LeaseContext) -> None:
-        obj.reset()
+obj.reset()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-valid-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.valid`
@@ -29171,7 +29244,7 @@ def valid(self) -> bool
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29187,26 +29260,18 @@ def valid(self) -> bool
 
 - 类：`unitree::robot::LeaseContext`
 - 签名：`Valid() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/client/lease_client.hpp:20`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_valid(obj: LeaseContext) -> bool:
-        return obj.valid()
+result = obj.valid()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-get-id-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.get_id`
@@ -29221,7 +29286,7 @@ def get_id(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29237,26 +29302,18 @@ def get_id(self) -> int
 
 - 类：`unitree::robot::LeaseContext`
 - 签名：`GetId() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/client/lease_client.hpp:22`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_id(obj: LeaseContext) -> int:
-        return obj.get_id()
+result = obj.get_id()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leasecontext-get-term-1"></a>
 #### `unitree_sdk2_cpp.robot.LeaseContext.get_term`
@@ -29271,7 +29328,7 @@ def get_term(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -29287,26 +29344,18 @@ def get_term(self) -> int
 
 - 类：`unitree::robot::LeaseContext`
 - 签名：`GetTerm() const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`DIRECT`
 - 声明位置：`include/unitree/robot/client/lease_client.hpp:23`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_get_term(obj: LeaseContext) -> int:
-        return obj.get_term()
+result = obj.get_term()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-leaseserver"></a>
 ### `unitree_sdk2_cpp.robot.LeaseServer`
@@ -31023,7 +31072,7 @@ if TYPE_CHECKING:
 | --- | ---: | ---: |
 | [`AudioClient`](#unitree-sdk2-cpp-robot-a2-audioclient) | 8 | 0 |
 | [`LedControlParameter`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter) | 3 | 0 |
-| [`PathPoint`](#unitree-sdk2-cpp-robot-a2-pathpoint) | 0 | 0 |
+| [`PathPoint`](#unitree-sdk2-cpp-robot-a2-pathpoint) | 1 | 0 |
 | [`PlayStopParameter`](#unitree-sdk2-cpp-robot-a2-playstopparameter) | 3 | 0 |
 | [`PlayStreamParameter`](#unitree-sdk2-cpp-robot-a2-playstreamparameter) | 3 | 0 |
 | [`PoseVec4`](#unitree-sdk2-cpp-robot-a2-posevec4) | 3 | 0 |
@@ -31049,12 +31098,12 @@ from unitree_sdk2_cpp.robot.a2 import AudioClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-a2-audioclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-a2-audioclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`tts_maker`](#unitree-sdk2-cpp-robot-a2-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`tts_maker`](#unitree-sdk2-cpp-robot-a2-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_volume`](#unitree-sdk2-cpp-robot-a2-audioclient-get-volume-1) | `def get_volume(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_volume`](#unitree-sdk2-cpp-robot-a2-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stream`](#unitree-sdk2-cpp-robot-a2-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stop`](#unitree-sdk2-cpp-robot-a2-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`led_control`](#unitree-sdk2-cpp-robot-a2-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_volume`](#unitree-sdk2-cpp-robot-a2-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stream`](#unitree-sdk2-cpp-robot-a2-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stop`](#unitree-sdk2-cpp-robot-a2-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`led_control`](#unitree-sdk2-cpp-robot-a2-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-a2-audioclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.AudioClient.__init__`
@@ -31153,7 +31202,7 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -31178,20 +31227,15 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_tts_maker(obj: AudioClient, text: str, speaker_id: int) -> int:
-        return obj.tts_maker(text=text, speaker_id=speaker_id)
+result = obj.tts_maker(text=text, speaker_id=speaker_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-audioclient-get-volume-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.AudioClient.get_volume`
@@ -31253,7 +31297,7 @@ def set_volume(self, volume: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -31277,20 +31321,15 @@ def set_volume(self, volume: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_volume(obj: AudioClient, volume: int) -> int:
-        return obj.set_volume(volume=volume)
+result = obj.set_volume(volume=volume)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-audioclient-play-stream-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.AudioClient.play_stream`
@@ -31305,7 +31344,7 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -31331,20 +31370,15 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stream(obj: AudioClient, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int:
-        return obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
+result = obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-audioclient-play-stop-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.AudioClient.play_stop`
@@ -31359,7 +31393,7 @@ def play_stop(self, app_name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -31383,20 +31417,15 @@ def play_stop(self, app_name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stop(obj: AudioClient, app_name: str) -> int:
-        return obj.play_stop(app_name=app_name)
+result = obj.play_stop(app_name=app_name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-audioclient-led-control-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.AudioClient.led_control`
@@ -31411,7 +31440,7 @@ def led_control(self, r: int, g: int, b: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -31437,20 +31466,15 @@ def led_control(self, r: int, g: int, b: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_led_control(obj: AudioClient, r: int, g: int, b: int) -> int:
-        return obj.led_control(r=r, g=g, b=b)
+result = obj.led_control(r=r, g=g, b=b)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-ledcontrolparameter"></a>
 ### `unitree_sdk2_cpp.robot.a2.LedControlParameter`
@@ -31477,9 +31501,9 @@ from unitree_sdk2_cpp.robot.a2 import LedControlParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-a2-ledcontrolparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-a2-ledcontrolparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.LedControlParameter.__init__`
@@ -31494,7 +31518,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -31516,20 +31540,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LedControlParameter:
-        return LedControlParameter()
+value = LedControlParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-ledcontrolparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.LedControlParameter.from_json`
@@ -31539,18 +31555,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -31562,26 +31578,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::a2::LedControlParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:78`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-ledcontrolparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.LedControlParameter.to_json`
@@ -31591,49 +31599,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::a2::LedControlParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-pathpoint"></a>
 ### `unitree_sdk2_cpp.robot.a2.PathPoint`
@@ -31656,6 +31654,54 @@ from unitree_sdk2_cpp.robot.a2 import PathPoint
 | `x` | `float` | X 方向位置或分量参数。参考系、单位和范围必须查当前方法及目标型号协议。 | `value = obj.x` / `obj.x = value` |
 | `y` | `float` | Y 方向位置或分量参数。参考系、单位和范围必须查当前方法及目标型号协议。 | `value = obj.y` / `obj.y = value` |
 | `yaw` | `float` | 偏航角或偏航目标参数。参考系、单位和范围必须查目标型号协议。 | `value = obj.yaw` / `obj.yaw = value` |
+
+**方法索引**
+
+| 方法 | Python 签名 | 状态 | 安全分类 |
+| --- | --- | --- | --- |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-pathpoint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+
+<a id="unitree-sdk2-cpp-robot-a2-pathpoint-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.a2.PathPoint.__init__`
+
+初始化 `PathPoint` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::a2::PathPoint`
+- 签名：`PathPoint()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = PathPoint()
+```
 
 <a id="unitree-sdk2-cpp-robot-a2-playstopparameter"></a>
 ### `unitree_sdk2_cpp.robot.a2.PlayStopParameter`
@@ -31680,9 +31726,9 @@ from unitree_sdk2_cpp.robot.a2 import PlayStopParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-a2-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-a2-playstopparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-a2-playstopparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-a2-playstopparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-a2-playstopparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-a2-playstopparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStopParameter.__init__`
@@ -31697,7 +31743,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -31719,20 +31765,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStopParameter:
-        return PlayStopParameter()
+value = PlayStopParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-playstopparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStopParameter.from_json`
@@ -31742,18 +31780,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -31765,26 +31803,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::a2::PlayStopParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:64`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-playstopparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStopParameter.to_json`
@@ -31794,49 +31824,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::a2::PlayStopParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:66`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-playstreamparameter"></a>
 ### `unitree_sdk2_cpp.robot.a2.PlayStreamParameter`
@@ -31862,9 +31882,9 @@ from unitree_sdk2_cpp.robot.a2 import PlayStreamParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-a2-playstreamparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-a2-playstreamparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStreamParameter.__init__`
@@ -31879,7 +31899,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -31901,20 +31921,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStreamParameter:
-        return PlayStreamParameter()
+value = PlayStreamParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-playstreamparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStreamParameter.from_json`
@@ -31924,18 +31936,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -31947,26 +31959,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::a2::PlayStreamParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:48`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-playstreamparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PlayStreamParameter.to_json`
@@ -31976,49 +31980,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::a2::PlayStreamParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-posevec4"></a>
 ### `unitree_sdk2_cpp.robot.a2.PoseVec4`
@@ -32046,9 +32040,9 @@ from unitree_sdk2_cpp.robot.a2 import PoseVec4
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-a2-posevec4-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-a2-posevec4-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-a2-posevec4-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-posevec4-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-a2-posevec4-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-a2-posevec4-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-a2-posevec4-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PoseVec4.__init__`
@@ -32063,7 +32057,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -32085,20 +32079,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PoseVec4:
-        return PoseVec4()
+value = PoseVec4()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-posevec4-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PoseVec4.from_json`
@@ -32108,18 +32094,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -32131,26 +32117,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::a2::PoseVec4`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/a2/sport/sport_client.hpp:43`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PoseVec4, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-posevec4-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.PoseVec4.to_json`
@@ -32160,49 +32138,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::a2::PoseVec4`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/a2/sport/sport_client.hpp:51`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PoseVec4, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient"></a>
 ### `unitree_sdk2_cpp.robot.a2.SportClient`
@@ -32223,27 +32191,27 @@ from unitree_sdk2_cpp.robot.a2 import SportClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-a2-sportclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-a2-sportclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`damp`](#unitree-sdk2-cpp-robot-a2-sportclient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-a2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-a2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_down`](#unitree-sdk2-cpp-robot-a2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`recovery_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`euler`](#unitree-sdk2-cpp-robot-a2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move`](#unitree-sdk2-cpp-robot-a2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-switch-gait-1) | `def switch_gait(self, gait_type: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`body_height`](#unitree-sdk2-cpp-robot-a2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`speed_level`](#unitree-sdk2-cpp-robot-a2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`body_position`](#unitree-sdk2-cpp-robot-a2-sportclient-body-position-1) | `def body_position(self, x: float, y: float, z: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`left_side_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-left-side-gait-1) | `def left_side_gait(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`right_side_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-right-side-gait-1) | `def right_side_gait(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`hand_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-hand-stand-1) | `def hand_stand(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`biped_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-biped-stand-1) | `def biped_stand(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_flip`](#unitree-sdk2-cpp-robot-a2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`back_flip`](#unitree-sdk2-cpp-robot-a2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`reset_estimator`](#unitree-sdk2-cpp-robot-a2-sportclient-reset-estimator-1) | `def reset_estimator(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`trajectory`](#unitree-sdk2-cpp-robot-a2-sportclient-trajectory-1) | `def trajectory(self, path: Sequence[PathPoint], feedback_mode: int = ..., external_x: float = ..., external_y: float = ..., external_yaw: float = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_auto_recovery`](#unitree-sdk2-cpp-robot-a2-sportclient-set-auto-recovery-1) | `def set_auto_recovery(self, switch_on: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-a2-sportclient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-a2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-a2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_down`](#unitree-sdk2-cpp-robot-a2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`recovery_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`euler`](#unitree-sdk2-cpp-robot-a2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move`](#unitree-sdk2-cpp-robot-a2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-switch-gait-1) | `def switch_gait(self, gait_type: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`body_height`](#unitree-sdk2-cpp-robot-a2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`speed_level`](#unitree-sdk2-cpp-robot-a2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`body_position`](#unitree-sdk2-cpp-robot-a2-sportclient-body-position-1) | `def body_position(self, x: float, y: float, z: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`left_side_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-left-side-gait-1) | `def left_side_gait(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`right_side_gait`](#unitree-sdk2-cpp-robot-a2-sportclient-right-side-gait-1) | `def right_side_gait(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`hand_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-hand-stand-1) | `def hand_stand(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`biped_stand`](#unitree-sdk2-cpp-robot-a2-sportclient-biped-stand-1) | `def biped_stand(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_flip`](#unitree-sdk2-cpp-robot-a2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`back_flip`](#unitree-sdk2-cpp-robot-a2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`reset_estimator`](#unitree-sdk2-cpp-robot-a2-sportclient-reset-estimator-1) | `def reset_estimator(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`trajectory`](#unitree-sdk2-cpp-robot-a2-sportclient-trajectory-1) | `def trajectory(self, path: Sequence[PathPoint], feedback_mode: int = 0, external_x: float = 0.0, external_y: float = 0.0, external_yaw: float = 0.0) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_auto_recovery`](#unitree-sdk2-cpp-robot-a2-sportclient-set-auto-recovery-1) | `def set_auto_recovery(self, switch_on: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_state`](#unitree-sdk2-cpp-robot-a2-sportclient-get-state-1) | `def get_state(self) -> tuple[int, dict[str, str]]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-dunder-init-1"></a>
@@ -32343,7 +32311,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32365,21 +32333,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: SportClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.balance_stand`
@@ -32394,7 +32357,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32416,21 +32379,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: SportClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.stop_move`
@@ -32445,7 +32403,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32467,21 +32425,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: SportClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.stand_up`
@@ -32496,7 +32449,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32518,21 +32471,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: SportClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-stand-down-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.stand_down`
@@ -32547,7 +32495,7 @@ def stand_down(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32569,21 +32517,16 @@ def stand_down(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_down(obj: SportClient) -> int:
-        return obj.stand_down()
+result = obj.stand_down()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-recovery-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.recovery_stand`
@@ -32598,7 +32541,7 @@ def recovery_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32620,21 +32563,16 @@ def recovery_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_recovery_stand(obj: SportClient) -> int:
-        return obj.recovery_stand()
+result = obj.recovery_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-euler-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.euler`
@@ -32649,7 +32587,7 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32675,21 +32613,16 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_euler(obj: SportClient, roll: float, pitch: float, yaw: float) -> int:
-        return obj.euler(roll=roll, pitch=pitch, yaw=yaw)
+result = obj.euler(roll=roll, pitch=pitch, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.move`
@@ -32704,7 +32637,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32730,21 +32663,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: SportClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-switch-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.switch_gait`
@@ -32759,7 +32687,7 @@ def switch_gait(self, gait_type: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32783,21 +32711,16 @@ def switch_gait(self, gait_type: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_gait(obj: SportClient, gait_type: int) -> int:
-        return obj.switch_gait(gait_type=gait_type)
+result = obj.switch_gait(gait_type=gait_type)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-body-height-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.body_height`
@@ -32812,7 +32735,7 @@ def body_height(self, height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32836,21 +32759,16 @@ def body_height(self, height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_body_height(obj: SportClient, height: float) -> int:
-        return obj.body_height(height=height)
+result = obj.body_height(height=height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-speed-level-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.speed_level`
@@ -32865,7 +32783,7 @@ def speed_level(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32889,21 +32807,16 @@ def speed_level(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_speed_level(obj: SportClient, level: int) -> int:
-        return obj.speed_level(level=level)
+result = obj.speed_level(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-body-position-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.body_position`
@@ -32918,7 +32831,7 @@ def body_position(self, x: float, y: float, z: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32945,21 +32858,16 @@ def body_position(self, x: float, y: float, z: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_body_position(obj: SportClient, x: float, y: float, z: float, yaw: float) -> int:
-        return obj.body_position(x=x, y=y, z=z, yaw=yaw)
+result = obj.body_position(x=x, y=y, z=z, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-left-side-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.left_side_gait`
@@ -32974,7 +32882,7 @@ def left_side_gait(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -32998,21 +32906,16 @@ def left_side_gait(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_left_side_gait(obj: SportClient, enter: int) -> int:
-        return obj.left_side_gait(enter=enter)
+result = obj.left_side_gait(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-right-side-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.right_side_gait`
@@ -33027,7 +32930,7 @@ def right_side_gait(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33051,21 +32954,16 @@ def right_side_gait(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_right_side_gait(obj: SportClient, enter: int) -> int:
-        return obj.right_side_gait(enter=enter)
+result = obj.right_side_gait(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-hand-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.hand_stand`
@@ -33080,7 +32978,7 @@ def hand_stand(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33104,21 +33002,16 @@ def hand_stand(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_hand_stand(obj: SportClient, enter: int) -> int:
-        return obj.hand_stand(enter=enter)
+result = obj.hand_stand(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-biped-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.biped_stand`
@@ -33133,7 +33026,7 @@ def biped_stand(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33157,21 +33050,16 @@ def biped_stand(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_biped_stand(obj: SportClient, enter: int) -> int:
-        return obj.biped_stand(enter=enter)
+result = obj.biped_stand(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-front-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.front_flip`
@@ -33186,7 +33074,7 @@ def front_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33208,21 +33096,16 @@ def front_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_flip(obj: SportClient) -> int:
-        return obj.front_flip()
+result = obj.front_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-back-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.back_flip`
@@ -33237,7 +33120,7 @@ def back_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33259,21 +33142,16 @@ def back_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_back_flip(obj: SportClient) -> int:
-        return obj.back_flip()
+result = obj.back_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-reset-estimator-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.reset_estimator`
@@ -33288,7 +33166,7 @@ def reset_estimator(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33310,21 +33188,16 @@ def reset_estimator(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_reset_estimator(obj: SportClient) -> int:
-        return obj.reset_estimator()
+result = obj.reset_estimator()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-trajectory-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.trajectory`
@@ -33334,22 +33207,22 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def trajectory(self, path: Sequence[PathPoint], feedback_mode: int = ..., external_x: float = ..., external_y: float = ..., external_yaw: float = ...) -> int
+def trajectory(self, path: Sequence[PathPoint], feedback_mode: int = 0, external_x: float = 0.0, external_y: float = 0.0, external_yaw: float = 0.0) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
 | `path` | `Sequence[PathPoint]` | 必填 | 传给该接口的 `path` 参数，Python 类型为 `Sequence[PathPoint]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `path: const std::vector<PathPoint> &`。 底层是可变长度 vector |
-| `feedback_mode` | `int` | `...` | 传给该接口的 `feedback` 模式 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `feedback_mode: int`。 |
-| `external_x` | `float` | `...` | 传给该接口的 `external` `x` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_x: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `external_y` | `float` | `...` | 传给该接口的 `external` `y` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_y: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `external_yaw` | `float` | `...` | 传给该接口的 `external` `yaw` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_yaw: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `feedback_mode` | `int` | `0` | 传给该接口的 `feedback` 模式 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `feedback_mode: int`。 |
+| `external_x` | `float` | `0.0` | 传给该接口的 `external` `x` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_x: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `external_y` | `float` | `0.0` | 传给该接口的 `external` `y` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_y: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `external_yaw` | `float` | `0.0` | 传给该接口的 `external` `yaw` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `external_yaw: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
@@ -33367,22 +33240,16 @@ def trajectory(self, path: Sequence[PathPoint], feedback_mode: int = ..., extern
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_trajectory(obj: SportClient, path: Sequence[PathPoint], feedback_mode: int, external_x: float, external_y: float, external_yaw: float) -> int:
-        return obj.trajectory(path=path, feedback_mode=feedback_mode, external_x=external_x, external_y=external_y, external_yaw=external_yaw)
+result = obj.trajectory(path=path, feedback_mode=feedback_mode, external_x=external_x, external_y=external_y, external_yaw=external_yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-set-auto-recovery-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.set_auto_recovery`
@@ -33397,7 +33264,7 @@ def set_auto_recovery(self, switch_on: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -33421,21 +33288,16 @@ def set_auto_recovery(self, switch_on: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_auto_recovery(obj: SportClient, switch_on: int) -> int:
-        return obj.set_auto_recovery(switch_on=switch_on)
+result = obj.set_auto_recovery(switch_on=switch_on)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-a2-sportclient-get-state-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.SportClient.get_state`
@@ -33509,9 +33371,9 @@ from unitree_sdk2_cpp.robot.a2 import TtsMakerParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-a2-ttsmakerparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-a2-ttsmakerparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.TtsMakerParameter.__init__`
@@ -33526,7 +33388,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -33548,20 +33410,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> TtsMakerParameter:
-        return TtsMakerParameter()
+value = TtsMakerParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-ttsmakerparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.TtsMakerParameter.from_json`
@@ -33571,18 +33425,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -33594,26 +33448,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::a2::TtsMakerParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:30`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-a2-ttsmakerparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.a2.TtsMakerParameter.to_json`
@@ -33623,49 +33469,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::a2::TtsMakerParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/a2/audio/audio_api.hpp:32`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 ---
 
@@ -33707,9 +33543,9 @@ from unitree_sdk2_cpp.robot.as2 import PoseVec4
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-as2-posevec4-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-as2-posevec4-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-as2-posevec4-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-as2-posevec4-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-as2-posevec4-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-as2-posevec4-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-as2-posevec4-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.PoseVec4.__init__`
@@ -33724,7 +33560,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -33746,20 +33582,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PoseVec4:
-        return PoseVec4()
+value = PoseVec4()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-as2-posevec4-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.PoseVec4.from_json`
@@ -33769,18 +33597,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -33792,26 +33620,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::as2::PoseVec4`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/as2/sport/sport_client.hpp:26`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PoseVec4, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-as2-posevec4-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.PoseVec4.to_json`
@@ -33821,49 +33641,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::as2::PoseVec4`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/as2/sport/sport_client.hpp:34`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PoseVec4, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient"></a>
 ### `unitree_sdk2_cpp.robot.as2.SportClient`
@@ -33884,37 +33694,37 @@ from unitree_sdk2_cpp.robot.as2 import SportClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-as2-sportclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-as2-sportclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`damp`](#unitree-sdk2-cpp-robot-as2-sportclient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-as2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-as2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_down`](#unitree-sdk2-cpp-robot-as2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`recovery_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`euler`](#unitree-sdk2-cpp-robot-as2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move`](#unitree-sdk2-cpp-robot-as2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-switch-gait-1) | `def switch_gait(self, gait_type: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`body_height`](#unitree-sdk2-cpp-robot-as2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`speed_level`](#unitree-sdk2-cpp-robot-as2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`body_position`](#unitree-sdk2-cpp-robot-as2-sportclient-body-position-1) | `def body_position(self, x: float, y: float, z: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`left_side_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-left-side-gait-1) | `def left_side_gait(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`right_side_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-right-side-gait-1) | `def right_side_gait(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`hand_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-hand-stand-1) | `def hand_stand(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`biped_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-biped-stand-1) | `def biped_stand(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_flip`](#unitree-sdk2-cpp-robot-as2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`back_flip`](#unitree-sdk2-cpp-robot-as2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`greeting`](#unitree-sdk2-cpp-robot-as2-sportclient-greeting-1) | `def greeting(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`heart`](#unitree-sdk2-cpp-robot-as2-sportclient-heart-1) | `def heart(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`content`](#unitree-sdk2-cpp-robot-as2-sportclient-content-1) | `def content(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`dance1`](#unitree-sdk2-cpp-robot-as2-sportclient-dance1-1) | `def dance1(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`dance2`](#unitree-sdk2-cpp-robot-as2-sportclient-dance2-1) | `def dance2(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`handshake`](#unitree-sdk2-cpp-robot-as2-sportclient-handshake-1) | `def handshake(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stretch`](#unitree-sdk2-cpp-robot-as2-sportclient-stretch-1) | `def stretch(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`sit`](#unitree-sdk2-cpp-robot-as2-sportclient-sit-1) | `def sit(self, enter: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_jump`](#unitree-sdk2-cpp-robot-as2-sportclient-front-jump-1) | `def front_jump(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`push_up`](#unitree-sdk2-cpp-robot-as2-sportclient-push-up-1) | `def push_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`up_jump`](#unitree-sdk2-cpp-robot-as2-sportclient-up-jump-1) | `def up_jump(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_auto_recovery`](#unitree-sdk2-cpp-robot-as2-sportclient-set-auto-recovery-1) | `def set_auto_recovery(self, switch_on: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_joystick`](#unitree-sdk2-cpp-robot-as2-sportclient-switch-joystick-1) | `def switch_joystick(self, switch_on: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-as2-sportclient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-as2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-as2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_down`](#unitree-sdk2-cpp-robot-as2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`recovery_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`euler`](#unitree-sdk2-cpp-robot-as2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move`](#unitree-sdk2-cpp-robot-as2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-switch-gait-1) | `def switch_gait(self, gait_type: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`body_height`](#unitree-sdk2-cpp-robot-as2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`speed_level`](#unitree-sdk2-cpp-robot-as2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`body_position`](#unitree-sdk2-cpp-robot-as2-sportclient-body-position-1) | `def body_position(self, x: float, y: float, z: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`left_side_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-left-side-gait-1) | `def left_side_gait(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`right_side_gait`](#unitree-sdk2-cpp-robot-as2-sportclient-right-side-gait-1) | `def right_side_gait(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`hand_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-hand-stand-1) | `def hand_stand(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`biped_stand`](#unitree-sdk2-cpp-robot-as2-sportclient-biped-stand-1) | `def biped_stand(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_flip`](#unitree-sdk2-cpp-robot-as2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`back_flip`](#unitree-sdk2-cpp-robot-as2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`greeting`](#unitree-sdk2-cpp-robot-as2-sportclient-greeting-1) | `def greeting(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`heart`](#unitree-sdk2-cpp-robot-as2-sportclient-heart-1) | `def heart(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`content`](#unitree-sdk2-cpp-robot-as2-sportclient-content-1) | `def content(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`dance1`](#unitree-sdk2-cpp-robot-as2-sportclient-dance1-1) | `def dance1(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`dance2`](#unitree-sdk2-cpp-robot-as2-sportclient-dance2-1) | `def dance2(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`handshake`](#unitree-sdk2-cpp-robot-as2-sportclient-handshake-1) | `def handshake(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stretch`](#unitree-sdk2-cpp-robot-as2-sportclient-stretch-1) | `def stretch(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`sit`](#unitree-sdk2-cpp-robot-as2-sportclient-sit-1) | `def sit(self, enter: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_jump`](#unitree-sdk2-cpp-robot-as2-sportclient-front-jump-1) | `def front_jump(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`push_up`](#unitree-sdk2-cpp-robot-as2-sportclient-push-up-1) | `def push_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`up_jump`](#unitree-sdk2-cpp-robot-as2-sportclient-up-jump-1) | `def up_jump(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_auto_recovery`](#unitree-sdk2-cpp-robot-as2-sportclient-set-auto-recovery-1) | `def set_auto_recovery(self, switch_on: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_joystick`](#unitree-sdk2-cpp-robot-as2-sportclient-switch-joystick-1) | `def switch_joystick(self, switch_on: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_state`](#unitree-sdk2-cpp-robot-as2-sportclient-get-state-1) | `def get_state(self) -> tuple[int, dict[str, str]]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-dunder-init-1"></a>
@@ -34014,7 +33824,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34036,21 +33846,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: SportClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.balance_stand`
@@ -34065,7 +33870,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34087,21 +33892,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: SportClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.stop_move`
@@ -34116,7 +33916,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34138,21 +33938,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: SportClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.stand_up`
@@ -34167,7 +33962,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34189,21 +33984,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: SportClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-stand-down-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.stand_down`
@@ -34218,7 +34008,7 @@ def stand_down(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34240,21 +34030,16 @@ def stand_down(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_down(obj: SportClient) -> int:
-        return obj.stand_down()
+result = obj.stand_down()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-recovery-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.recovery_stand`
@@ -34269,7 +34054,7 @@ def recovery_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34291,21 +34076,16 @@ def recovery_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_recovery_stand(obj: SportClient) -> int:
-        return obj.recovery_stand()
+result = obj.recovery_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-euler-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.euler`
@@ -34320,7 +34100,7 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34346,21 +34126,16 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_euler(obj: SportClient, roll: float, pitch: float, yaw: float) -> int:
-        return obj.euler(roll=roll, pitch=pitch, yaw=yaw)
+result = obj.euler(roll=roll, pitch=pitch, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.move`
@@ -34375,7 +34150,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34401,21 +34176,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: SportClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-switch-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.switch_gait`
@@ -34430,7 +34200,7 @@ def switch_gait(self, gait_type: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34454,21 +34224,16 @@ def switch_gait(self, gait_type: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_gait(obj: SportClient, gait_type: int) -> int:
-        return obj.switch_gait(gait_type=gait_type)
+result = obj.switch_gait(gait_type=gait_type)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-body-height-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.body_height`
@@ -34483,7 +34248,7 @@ def body_height(self, height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34507,21 +34272,16 @@ def body_height(self, height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_body_height(obj: SportClient, height: float) -> int:
-        return obj.body_height(height=height)
+result = obj.body_height(height=height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-speed-level-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.speed_level`
@@ -34536,7 +34296,7 @@ def speed_level(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34560,21 +34320,16 @@ def speed_level(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_speed_level(obj: SportClient, level: int) -> int:
-        return obj.speed_level(level=level)
+result = obj.speed_level(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-body-position-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.body_position`
@@ -34589,7 +34344,7 @@ def body_position(self, x: float, y: float, z: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34616,21 +34371,16 @@ def body_position(self, x: float, y: float, z: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_body_position(obj: SportClient, x: float, y: float, z: float, yaw: float) -> int:
-        return obj.body_position(x=x, y=y, z=z, yaw=yaw)
+result = obj.body_position(x=x, y=y, z=z, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-left-side-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.left_side_gait`
@@ -34645,7 +34395,7 @@ def left_side_gait(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34669,21 +34419,16 @@ def left_side_gait(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_left_side_gait(obj: SportClient, enter: int) -> int:
-        return obj.left_side_gait(enter=enter)
+result = obj.left_side_gait(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-right-side-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.right_side_gait`
@@ -34698,7 +34443,7 @@ def right_side_gait(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34722,21 +34467,16 @@ def right_side_gait(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_right_side_gait(obj: SportClient, enter: int) -> int:
-        return obj.right_side_gait(enter=enter)
+result = obj.right_side_gait(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-hand-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.hand_stand`
@@ -34751,7 +34491,7 @@ def hand_stand(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34775,21 +34515,16 @@ def hand_stand(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_hand_stand(obj: SportClient, enter: int) -> int:
-        return obj.hand_stand(enter=enter)
+result = obj.hand_stand(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-biped-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.biped_stand`
@@ -34804,7 +34539,7 @@ def biped_stand(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34828,21 +34563,16 @@ def biped_stand(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_biped_stand(obj: SportClient, enter: int) -> int:
-        return obj.biped_stand(enter=enter)
+result = obj.biped_stand(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-front-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.front_flip`
@@ -34857,7 +34587,7 @@ def front_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34879,21 +34609,16 @@ def front_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_flip(obj: SportClient) -> int:
-        return obj.front_flip()
+result = obj.front_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-back-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.back_flip`
@@ -34908,7 +34633,7 @@ def back_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34930,21 +34655,16 @@ def back_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_back_flip(obj: SportClient) -> int:
-        return obj.back_flip()
+result = obj.back_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-greeting-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.greeting`
@@ -34959,7 +34679,7 @@ def greeting(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -34981,21 +34701,16 @@ def greeting(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_greeting(obj: SportClient) -> int:
-        return obj.greeting()
+result = obj.greeting()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-heart-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.heart`
@@ -35010,7 +34725,7 @@ def heart(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35032,21 +34747,16 @@ def heart(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_heart(obj: SportClient) -> int:
-        return obj.heart()
+result = obj.heart()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-content-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.content`
@@ -35061,7 +34771,7 @@ def content(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35083,21 +34793,16 @@ def content(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_content(obj: SportClient) -> int:
-        return obj.content()
+result = obj.content()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-dance1-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.dance1`
@@ -35112,7 +34817,7 @@ def dance1(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35134,21 +34839,16 @@ def dance1(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_dance1(obj: SportClient) -> int:
-        return obj.dance1()
+result = obj.dance1()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-dance2-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.dance2`
@@ -35163,7 +34863,7 @@ def dance2(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35185,21 +34885,16 @@ def dance2(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_dance2(obj: SportClient) -> int:
-        return obj.dance2()
+result = obj.dance2()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-handshake-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.handshake`
@@ -35214,7 +34909,7 @@ def handshake(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35236,21 +34931,16 @@ def handshake(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_handshake(obj: SportClient) -> int:
-        return obj.handshake()
+result = obj.handshake()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-stretch-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.stretch`
@@ -35265,7 +34955,7 @@ def stretch(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35287,21 +34977,16 @@ def stretch(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stretch(obj: SportClient) -> int:
-        return obj.stretch()
+result = obj.stretch()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-sit-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.sit`
@@ -35316,7 +35001,7 @@ def sit(self, enter: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35340,21 +35025,16 @@ def sit(self, enter: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_sit(obj: SportClient, enter: int) -> int:
-        return obj.sit(enter=enter)
+result = obj.sit(enter=enter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-front-jump-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.front_jump`
@@ -35369,7 +35049,7 @@ def front_jump(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35391,21 +35071,16 @@ def front_jump(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_jump(obj: SportClient) -> int:
-        return obj.front_jump()
+result = obj.front_jump()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-push-up-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.push_up`
@@ -35420,7 +35095,7 @@ def push_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35442,21 +35117,16 @@ def push_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_push_up(obj: SportClient) -> int:
-        return obj.push_up()
+result = obj.push_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-up-jump-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.up_jump`
@@ -35471,7 +35141,7 @@ def up_jump(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35493,21 +35163,16 @@ def up_jump(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_up_jump(obj: SportClient) -> int:
-        return obj.up_jump()
+result = obj.up_jump()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-set-auto-recovery-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.set_auto_recovery`
@@ -35522,7 +35187,7 @@ def set_auto_recovery(self, switch_on: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35546,21 +35211,16 @@ def set_auto_recovery(self, switch_on: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_auto_recovery(obj: SportClient, switch_on: int) -> int:
-        return obj.set_auto_recovery(switch_on=switch_on)
+result = obj.set_auto_recovery(switch_on=switch_on)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-switch-joystick-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.switch_joystick`
@@ -35575,7 +35235,7 @@ def switch_joystick(self, switch_on: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -35599,21 +35259,16 @@ def switch_joystick(self, switch_on: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_joystick(obj: SportClient, switch_on: int) -> int:
-        return obj.switch_joystick(switch_on=switch_on)
+result = obj.switch_joystick(switch_on=switch_on)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-as2-sportclient-get-state-1"></a>
 #### `unitree_sdk2_cpp.robot.as2.SportClient.get_state`
@@ -35697,7 +35352,7 @@ status, state_map = obj.get_state()
 | [`ServiceSwitchParameter`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter) | 3 | 0 |
 | [`SetReportFreqParameter`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter) | 3 | 0 |
 | [`SportClient`](#unitree-sdk2-cpp-robot-b2-sportclient) | 25 | 0 |
-| [`stPathPoint`](#unitree-sdk2-cpp-robot-b2-stpathpoint) | 0 | 0 |
+| [`stPathPoint`](#unitree-sdk2-cpp-robot-b2-stpathpoint) | 1 | 0 |
 
 <a id="unitree-sdk2-cpp-robot-b2-backvideoclient"></a>
 ### `unitree_sdk2_cpp.robot.b2.BackVideoClient`
@@ -35870,12 +35525,12 @@ from unitree_sdk2_cpp.robot.b2 import ConfigClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-b2-configclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-b2-configclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`set`](#unitree-sdk2-cpp-robot-b2-configclient-set-1) | `def set(self, name: str, content: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set`](#unitree-sdk2-cpp-robot-b2-configclient-set-1) | `def set(self, name: str, content: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get`](#unitree-sdk2-cpp-robot-b2-configclient-get-1) | `def get(self, name: str) -> tuple[int, str]` | `AVAILABLE` | `READ_ONLY` |
-| [`del_`](#unitree-sdk2-cpp-robot-b2-configclient-del-1) | `def del_(self, name: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`meta_config_meta`](#unitree-sdk2-cpp-robot-b2-configclient-meta-config-meta-1) | `def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`meta_string`](#unitree-sdk2-cpp-robot-b2-configclient-meta-string-1) | `def meta_string(self, name: str) -> tuple[int, str]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`subscribe_change_status`](#unitree-sdk2-cpp-robot-b2-configclient-subscribe-change-status-1) | `def subscribe_change_status(self, name: str, callback: Callable[[str, str], None]) -> None` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`del_`](#unitree-sdk2-cpp-robot-b2-configclient-del-1) | `def del_(self, name: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`meta_config_meta`](#unitree-sdk2-cpp-robot-b2-configclient-meta-config-meta-1) | `def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`meta_string`](#unitree-sdk2-cpp-robot-b2-configclient-meta-string-1) | `def meta_string(self, name: str) -> tuple[int, str]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`subscribe_change_status`](#unitree-sdk2-cpp-robot-b2-configclient-subscribe-change-status-1) | `def subscribe_change_status(self, name: str, callback: Callable[[str, str], None]) -> None` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigClient.__init__`
@@ -35974,7 +35629,7 @@ def set(self, name: str, content: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -35999,20 +35654,15 @@ def set(self, name: str, content: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set(obj: ConfigClient, name: str, content: str) -> int:
-        return obj.set(name=name, content=content)
+result = obj.set(name=name, content=content)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-configclient-get-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigClient.get`
@@ -36076,7 +35726,7 @@ def del_(self, name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -36100,20 +35750,15 @@ def del_(self, name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_del_(obj: ConfigClient, name: str) -> int:
-        return obj.del_(name=name)
+result = obj.del_(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-configclient-meta-config-meta-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigClient.meta_config_meta`
@@ -36128,7 +35773,7 @@ def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -36154,20 +35799,15 @@ def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_meta_config_meta(obj: ConfigClient, name: str) -> tuple[int, ConfigMeta]:
-        return obj.meta_config_meta(name=name)
+status, meta = obj.meta_config_meta(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-configclient-meta-string-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigClient.meta_string`
@@ -36182,7 +35822,7 @@ def meta_string(self, name: str) -> tuple[int, str]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -36208,20 +35848,15 @@ def meta_string(self, name: str) -> tuple[int, str]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_meta_string(obj: ConfigClient, name: str) -> tuple[int, str]:
-        return obj.meta_string(name=name)
+status, meta = obj.meta_string(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-configclient-subscribe-change-status-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigClient.subscribe_change_status`
@@ -36236,7 +35871,7 @@ def subscribe_change_status(self, name: str, callback: Callable[[str, str], None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -36261,21 +35896,16 @@ def subscribe_change_status(self, name: str, callback: Callable[[str, str], None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 回调可能由 SDK 工作线程触发；回调应快速返回、捕获异常，并通过线程安全队列移交耗时工作。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_subscribe_change_status(obj: ConfigClient, name: str, callback: Callable[[str, str], None]) -> None:
-        obj.subscribe_change_status(name=name, callback=callback)
+obj.subscribe_change_status(name=name, callback=callback)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-configdelparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigDelParameter`
@@ -36300,9 +35930,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigDelParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configdelparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configdelparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configdelparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configdelparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configdelparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configdelparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configdelparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigDelParameter.__init__`
@@ -36317,7 +35947,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -36339,20 +35969,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigDelParameter:
-        return ConfigDelParameter()
+value = ConfigDelParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configdelparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigDelParameter.from_json`
@@ -36362,18 +35984,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -36385,26 +36007,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigDelParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:146`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigDelParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configdelparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigDelParameter.to_json`
@@ -36414,49 +36028,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigDelParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:151`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigDelParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetdata"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigGetData`
@@ -36481,9 +36085,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigGetData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configgetdata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configgetdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configgetdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configgetdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configgetdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configgetdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetdata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetData.__init__`
@@ -36498,7 +36102,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -36520,20 +36124,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigGetData:
-        return ConfigGetData()
+value = ConfigGetData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetData.from_json`
@@ -36543,18 +36139,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -36566,26 +36162,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigGetData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:123`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigGetData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetData.to_json`
@@ -36595,49 +36183,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigGetData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:128`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigGetData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigGetParameter`
@@ -36662,9 +36240,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigGetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configgetparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configgetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configgetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configgetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configgetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configgetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetParameter.__init__`
@@ -36679,7 +36257,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -36701,20 +36279,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigGetParameter:
-        return ConfigGetParameter()
+value = ConfigGetParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetParameter.from_json`
@@ -36724,18 +36294,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -36747,26 +36317,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigGetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:100`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigGetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configgetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigGetParameter.to_json`
@@ -36776,49 +36338,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigGetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:105`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigGetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmeta"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigMeta`
@@ -36846,7 +36398,7 @@ from unitree_sdk2_cpp.robot.b2 import ConfigMeta
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmeta-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmeta-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configmeta-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMeta.__init__`
@@ -36861,7 +36413,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -36883,20 +36435,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMeta:
-        return ConfigMeta()
+value = ConfigMeta()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetadata"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigMetaData`
@@ -36921,9 +36465,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigMetaData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmetadata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configmetadata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configmetadata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmetadata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configmetadata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configmetadata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetadata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaData.__init__`
@@ -36938,7 +36482,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -36960,20 +36504,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMetaData:
-        return ConfigMetaData()
+value = ConfigMetaData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetadata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaData.from_json`
@@ -36983,18 +36519,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -37006,26 +36542,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigMetaData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:192`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigMetaData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetadata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaData.to_json`
@@ -37035,49 +36563,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigMetaData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:197`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigMetaData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetaparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigMetaParameter`
@@ -37102,9 +36620,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigMetaParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configmetaparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetaparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaParameter.__init__`
@@ -37119,7 +36637,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -37141,20 +36659,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMetaParameter:
-        return ConfigMetaParameter()
+value = ConfigMetaParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetaparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaParameter.from_json`
@@ -37164,18 +36674,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -37187,26 +36697,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigMetaParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:169`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigMetaParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configmetaparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigMetaParameter.to_json`
@@ -37216,49 +36718,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigMetaParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:174`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigMetaParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configsetparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.ConfigSetParameter`
@@ -37284,9 +36776,9 @@ from unitree_sdk2_cpp.robot.b2 import ConfigSetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-configsetparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-configsetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-configsetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-configsetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-configsetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-configsetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-configsetparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigSetParameter.__init__`
@@ -37301,7 +36793,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -37323,20 +36815,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigSetParameter:
-        return ConfigSetParameter()
+value = ConfigSetParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configsetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigSetParameter.from_json`
@@ -37346,18 +36830,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -37369,26 +36853,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ConfigSetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:74`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigSetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-configsetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ConfigSetParameter.to_json`
@@ -37398,49 +36874,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ConfigSetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigSetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-frontvideoclient"></a>
 ### `unitree_sdk2_cpp.robot.b2.FrontVideoClient`
@@ -37620,9 +37086,9 @@ from unitree_sdk2_cpp.robot.b2 import JsonizeConfigMeta
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeConfigMeta.__init__`
@@ -37637,7 +37103,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -37659,20 +37125,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeConfigMeta:
-        return JsonizeConfigMeta()
+value = JsonizeConfigMeta()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeConfigMeta.from_json`
@@ -37682,18 +37140,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -37705,26 +37163,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::JsonizeConfigMeta`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:42`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeConfigMeta, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizeconfigmeta-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeConfigMeta.to_json`
@@ -37734,49 +37184,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::JsonizeConfigMeta`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/config/config_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeConfigMeta, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizemodename"></a>
 ### `unitree_sdk2_cpp.robot.b2.JsonizeModeName`
@@ -37802,9 +37242,9 @@ from unitree_sdk2_cpp.robot.b2 import JsonizeModeName
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizemodename-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizemodename-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeModeName.__init__`
@@ -37819,7 +37259,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -37841,20 +37281,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeModeName:
-        return JsonizeModeName()
+value = JsonizeModeName()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizemodename-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeModeName.from_json`
@@ -37864,18 +37296,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -37887,26 +37319,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::JsonizeModeName`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/motion_switcher/motion_switcher_api.hpp:44`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeModeName, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizemodename-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeModeName.to_json`
@@ -37916,49 +37340,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::JsonizeModeName`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/motion_switcher/motion_switcher_api.hpp:55`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeModeName, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizesilent"></a>
 ### `unitree_sdk2_cpp.robot.b2.JsonizeSilent`
@@ -37983,9 +37397,9 @@ from unitree_sdk2_cpp.robot.b2 import JsonizeSilent
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-jsonizesilent-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizesilent-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeSilent.__init__`
@@ -38000,7 +37414,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -38022,20 +37436,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeSilent:
-        return JsonizeSilent()
+value = JsonizeSilent()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizesilent-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeSilent.from_json`
@@ -38045,18 +37451,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -38068,26 +37474,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::JsonizeSilent`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/motion_switcher/motion_switcher_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeSilent, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-jsonizesilent-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.JsonizeSilent.to_json`
@@ -38097,49 +37495,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::JsonizeSilent`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/motion_switcher/motion_switcher_api.hpp:86`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeSilent, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerstatusdata"></a>
 ### `unitree_sdk2_cpp.robot.b2.LowPowerStatusData`
@@ -38164,9 +37552,9 @@ from unitree_sdk2_cpp.robot.b2 import LowPowerStatusData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerStatusData.__init__`
@@ -38181,7 +37569,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -38203,20 +37591,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LowPowerStatusData:
-        return LowPowerStatusData()
+value = LowPowerStatusData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerStatusData.from_json`
@@ -38226,18 +37606,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -38249,26 +37629,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::LowPowerStatusData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:189`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: LowPowerStatusData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerstatusdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerStatusData.to_json`
@@ -38278,49 +37650,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::LowPowerStatusData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:194`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: LowPowerStatusData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.LowPowerSwitchParameter`
@@ -38345,9 +37707,9 @@ from unitree_sdk2_cpp.robot.b2 import LowPowerSwitchParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerSwitchParameter.__init__`
@@ -38362,7 +37724,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -38384,20 +37746,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LowPowerSwitchParameter:
-        return LowPowerSwitchParameter()
+value = LowPowerSwitchParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerSwitchParameter.from_json`
@@ -38407,18 +37761,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -38430,26 +37784,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::LowPowerSwitchParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:163`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: LowPowerSwitchParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-lowpowerswitchparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.LowPowerSwitchParameter.to_json`
@@ -38459,49 +37805,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::LowPowerSwitchParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:168`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: LowPowerSwitchParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-motionswitcherclient"></a>
 ### `unitree_sdk2_cpp.robot.b2.MotionSwitcherClient`
@@ -38523,9 +37859,9 @@ from unitree_sdk2_cpp.robot.b2 import MotionSwitcherClient
 | [`__init__`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
 | [`check_mode`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-check-mode-1) | `def check_mode(self) -> tuple[int, str, str]` | `AVAILABLE` | `READ_ONLY` |
-| [`select_mode`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-select-mode-1) | `def select_mode(self, name_or_alias: str) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`release_mode`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-release-mode-1) | `def release_mode(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_silent`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-set-silent-1) | `def set_silent(self, silent: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`select_mode`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-select-mode-1) | `def select_mode(self, name_or_alias: str) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`release_mode`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-release-mode-1) | `def release_mode(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_silent`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-set-silent-1) | `def set_silent(self, silent: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_silent`](#unitree-sdk2-cpp-robot-b2-motionswitcherclient-get-silent-1) | `def get_silent(self) -> tuple[int, bool]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-b2-motionswitcherclient-dunder-init-1"></a>
@@ -38673,7 +38009,7 @@ def select_mode(self, name_or_alias: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -38697,21 +38033,16 @@ def select_mode(self, name_or_alias: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_select_mode(obj: MotionSwitcherClient, name_or_alias: str) -> int:
-        return obj.select_mode(name_or_alias=name_or_alias)
+result = obj.select_mode(name_or_alias=name_or_alias)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-motionswitcherclient-release-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.MotionSwitcherClient.release_mode`
@@ -38726,7 +38057,7 @@ def release_mode(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -38748,21 +38079,16 @@ def release_mode(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_release_mode(obj: MotionSwitcherClient) -> int:
-        return obj.release_mode()
+result = obj.release_mode()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-motionswitcherclient-set-silent-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.MotionSwitcherClient.set_silent`
@@ -38777,7 +38103,7 @@ def set_silent(self, silent: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -38801,21 +38127,16 @@ def set_silent(self, silent: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_silent(obj: MotionSwitcherClient, silent: bool) -> int:
-        return obj.set_silent(silent=silent)
+result = obj.set_silent(silent=silent)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-motionswitcherclient-get-silent-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.MotionSwitcherClient.get_silent`
@@ -38888,9 +38209,9 @@ from unitree_sdk2_cpp.robot.b2 import PkgVersionData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-pkgversiondata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-pkgversiondata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.PkgVersionData.__init__`
@@ -38905,7 +38226,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -38927,20 +38248,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PkgVersionData:
-        return PkgVersionData()
+value = PkgVersionData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-pkgversiondata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.PkgVersionData.from_json`
@@ -38950,18 +38263,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -38973,26 +38286,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::PkgVersionData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:215`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PkgVersionData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-pkgversiondata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.PkgVersionData.to_json`
@@ -39002,49 +38307,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::PkgVersionData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:221`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PkgVersionData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient"></a>
 ### `unitree_sdk2_cpp.robot.b2.RobotStateClient`
@@ -39066,10 +38361,10 @@ from unitree_sdk2_cpp.robot.b2 import RobotStateClient
 | [`__init__`](#unitree-sdk2-cpp-robot-b2-robotstateclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-b2-robotstateclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
 | [`service_list`](#unitree-sdk2-cpp-robot-b2-robotstateclient-service-list-1) | `def service_list(self) -> tuple[int, list[ServiceState]]` | `AVAILABLE` | `READ_ONLY` |
-| [`service_switch`](#unitree-sdk2-cpp-robot-b2-robotstateclient-service-switch-1) | `def service_switch(self, name: str, swit: int) -> tuple[int, int]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`set_report_freq`](#unitree-sdk2-cpp-robot-b2-robotstateclient-set-report-freq-1) | `def set_report_freq(self, interval: int, duration: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`low_power_switch`](#unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-switch-1) | `def low_power_switch(self, swit: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`low_power_status`](#unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-status-1) | `def low_power_status(self) -> tuple[int, int]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`service_switch`](#unitree-sdk2-cpp-robot-b2-robotstateclient-service-switch-1) | `def service_switch(self, name: str, swit: int) -> tuple[int, int]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`set_report_freq`](#unitree-sdk2-cpp-robot-b2-robotstateclient-set-report-freq-1) | `def set_report_freq(self, interval: int, duration: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`low_power_switch`](#unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-switch-1) | `def low_power_switch(self, swit: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`low_power_status`](#unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-status-1) | `def low_power_status(self) -> tuple[int, int]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_pkg_version`](#unitree-sdk2-cpp-robot-b2-robotstateclient-get-pkg-version-1) | `def get_pkg_version(self) -> tuple[int, str, dict[str, str]]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient-dunder-init-1"></a>
@@ -39216,7 +38511,7 @@ def service_switch(self, name: str, swit: int) -> tuple[int, int]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -39243,20 +38538,15 @@ def service_switch(self, name: str, swit: int) -> tuple[int, int]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_service_switch(obj: RobotStateClient, name: str, swit: int) -> tuple[int, int]:
-        return obj.service_switch(name=name, swit=swit)
+status, status = obj.service_switch(name=name, swit=swit)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient-set-report-freq-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.RobotStateClient.set_report_freq`
@@ -39271,7 +38561,7 @@ def set_report_freq(self, interval: int, duration: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -39296,20 +38586,15 @@ def set_report_freq(self, interval: int, duration: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_report_freq(obj: RobotStateClient, interval: int, duration: int) -> int:
-        return obj.set_report_freq(interval=interval, duration=duration)
+result = obj.set_report_freq(interval=interval, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-switch-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.RobotStateClient.low_power_switch`
@@ -39324,7 +38609,7 @@ def low_power_switch(self, swit: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -39348,20 +38633,15 @@ def low_power_switch(self, swit: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_low_power_switch(obj: RobotStateClient, swit: int) -> int:
-        return obj.low_power_switch(swit=swit)
+result = obj.low_power_switch(swit=swit)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient-low-power-status-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.RobotStateClient.low_power_status`
@@ -39376,7 +38656,7 @@ def low_power_status(self) -> tuple[int, int]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -39400,20 +38680,15 @@ def low_power_status(self) -> tuple[int, int]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_low_power_status(obj: RobotStateClient) -> tuple[int, int]:
-        return obj.low_power_status()
+status, status = obj.low_power_status()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-robotstateclient-get-pkg-version-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.RobotStateClient.get_pkg_version`
@@ -39557,9 +38832,9 @@ from unitree_sdk2_cpp.robot.b2 import ServiceStateData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-servicestatedata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-servicestatedata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-servicestatedata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-servicestatedata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-servicestatedata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-servicestatedata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-servicestatedata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceStateData.__init__`
@@ -39574,7 +38849,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -39596,20 +38871,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceStateData:
-        return ServiceStateData()
+value = ServiceStateData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-servicestatedata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceStateData.from_json`
@@ -39619,18 +38886,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -39642,26 +38909,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ServiceStateData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:131`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceStateData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-servicestatedata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceStateData.to_json`
@@ -39671,49 +38930,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ServiceStateData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:138`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceStateData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchdata"></a>
 ### `unitree_sdk2_cpp.robot.b2.ServiceSwitchData`
@@ -39739,9 +38988,9 @@ from unitree_sdk2_cpp.robot.b2 import ServiceSwitchData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchdata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchData.__init__`
@@ -39756,7 +39005,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -39778,20 +39027,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceSwitchData:
-        return ServiceSwitchData()
+value = ServiceSwitchData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchData.from_json`
@@ -39801,18 +39042,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -39824,26 +39065,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ServiceSwitchData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:73`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceSwitchData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchData.to_json`
@@ -39853,49 +39086,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ServiceSwitchData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:79`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceSwitchData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.ServiceSwitchParameter`
@@ -39921,9 +39144,9 @@ from unitree_sdk2_cpp.robot.b2 import ServiceSwitchParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-serviceswitchparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchParameter.__init__`
@@ -39938,7 +39161,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -39960,20 +39183,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceSwitchParameter:
-        return ServiceSwitchParameter()
+value = ServiceSwitchParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchParameter.from_json`
@@ -39983,18 +39198,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -40006,26 +39221,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::ServiceSwitchParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:44`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceSwitchParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-serviceswitchparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.ServiceSwitchParameter.to_json`
@@ -40035,49 +39242,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::ServiceSwitchParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceSwitchParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-setreportfreqparameter"></a>
 ### `unitree_sdk2_cpp.robot.b2.SetReportFreqParameter`
@@ -40103,9 +39300,9 @@ from unitree_sdk2_cpp.robot.b2 import SetReportFreqParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-b2-setreportfreqparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-b2-setreportfreqparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SetReportFreqParameter.__init__`
@@ -40120,7 +39317,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -40142,20 +39339,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> SetReportFreqParameter:
-        return SetReportFreqParameter()
+value = SetReportFreqParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-setreportfreqparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SetReportFreqParameter.from_json`
@@ -40165,18 +39354,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -40188,26 +39377,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::b2::SetReportFreqParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:102`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: SetReportFreqParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-setreportfreqparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SetReportFreqParameter.to_json`
@@ -40217,49 +39398,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::SetReportFreqParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/b2/robot_state/robot_state_api.hpp:108`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: SetReportFreqParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient"></a>
 ### `unitree_sdk2_cpp.robot.b2.SportClient`
@@ -40278,31 +39449,31 @@ from unitree_sdk2_cpp.robot.b2 import SportClient
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-b2-sportclient-dunder-init-1) | `def __init__(self, enable_lease: bool = ...) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`init`](#unitree-sdk2-cpp-robot-b2-sportclient-init-1) | `def init(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`damp`](#unitree-sdk2-cpp-robot-b2-sportclient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-b2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-b2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_down`](#unitree-sdk2-cpp-robot-b2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`recovery_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move`](#unitree-sdk2-cpp-robot-b2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_gait`](#unitree-sdk2-cpp-robot-b2-sportclient-switch-gait-1) | `def switch_gait(self, d: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`body_height`](#unitree-sdk2-cpp-robot-b2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`speed_level`](#unitree-sdk2-cpp-robot-b2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`trajectory_follow`](#unitree-sdk2-cpp-robot-b2-sportclient-trajectory-follow-1) | `def trajectory_follow(self) -> tuple[int, list[Any]]` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`continuous_gait`](#unitree-sdk2-cpp-robot-b2-sportclient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move_to_pos`](#unitree-sdk2-cpp-robot-b2-sportclient-move-to-pos-1) | `def move_to_pos(self, x: float, y: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_move_mode`](#unitree-sdk2-cpp-robot-b2-sportclient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`vision_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-vision-walk-1) | `def vision_walk(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`hand_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-hand-stand-1) | `def hand_stand(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`auto_recovery_set`](#unitree-sdk2-cpp-robot-b2-sportclient-auto-recovery-set-1) | `def auto_recovery_set(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-free-walk-1) | `def free_walk(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`classic_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-classic-walk-1) | `def classic_walk(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`fast_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-fast-walk-1) | `def fast_walk(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`euler`](#unitree-sdk2-cpp-robot-b2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_height`](#unitree-sdk2-cpp-robot-b2-sportclient-free-height-1) | `def free_height(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`gait_height`](#unitree-sdk2-cpp-robot-b2-sportclient-gait-height-1) | `def gait_height(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-sportclient-dunder-init-1) | `def __init__(self, enable_lease: bool = False) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`init`](#unitree-sdk2-cpp-robot-b2-sportclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`damp`](#unitree-sdk2-cpp-robot-b2-sportclient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-b2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-b2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_down`](#unitree-sdk2-cpp-robot-b2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`recovery_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move`](#unitree-sdk2-cpp-robot-b2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_gait`](#unitree-sdk2-cpp-robot-b2-sportclient-switch-gait-1) | `def switch_gait(self, d: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`body_height`](#unitree-sdk2-cpp-robot-b2-sportclient-body-height-1) | `def body_height(self, height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`speed_level`](#unitree-sdk2-cpp-robot-b2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`trajectory_follow`](#unitree-sdk2-cpp-robot-b2-sportclient-trajectory-follow-1) | `def trajectory_follow(self, path: Sequence[PathPoint]) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`continuous_gait`](#unitree-sdk2-cpp-robot-b2-sportclient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move_to_pos`](#unitree-sdk2-cpp-robot-b2-sportclient-move-to-pos-1) | `def move_to_pos(self, x: float, y: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_move_mode`](#unitree-sdk2-cpp-robot-b2-sportclient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`vision_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-vision-walk-1) | `def vision_walk(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`hand_stand`](#unitree-sdk2-cpp-robot-b2-sportclient-hand-stand-1) | `def hand_stand(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`auto_recovery_set`](#unitree-sdk2-cpp-robot-b2-sportclient-auto-recovery-set-1) | `def auto_recovery_set(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-free-walk-1) | `def free_walk(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`classic_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-classic-walk-1) | `def classic_walk(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`fast_walk`](#unitree-sdk2-cpp-robot-b2-sportclient-fast-walk-1) | `def fast_walk(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`euler`](#unitree-sdk2-cpp-robot-b2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_height`](#unitree-sdk2-cpp-robot-b2-sportclient-free-height-1) | `def free_height(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`gait_height`](#unitree-sdk2-cpp-robot-b2-sportclient-gait-height-1) | `def gait_height(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.__init__`
@@ -40312,18 +39483,18 @@ from unitree_sdk2_cpp.robot.b2 import SportClient
 **签名**
 
 ```python
-def __init__(self, enable_lease: bool = ...) -> None
+def __init__(self, enable_lease: bool = False) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `enable_lease` | `bool` | `...` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
+| `enable_lease` | `bool` | `False` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -40341,21 +39512,12 @@ def __init__(self, enable_lease: bool = ...) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct(enable_lease: bool) -> SportClient:
-        return SportClient(enable_lease=enable_lease)
+value = SportClient(enable_lease=enable_lease)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-init-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.init`
@@ -40370,7 +39532,7 @@ def init(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -40392,20 +39554,12 @@ def init(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_init(obj: SportClient) -> None:
-        obj.init()
+obj.init()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.damp`
@@ -40420,7 +39574,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40442,21 +39596,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: SportClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.balance_stand`
@@ -40471,7 +39620,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40493,21 +39642,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: SportClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.stop_move`
@@ -40522,7 +39666,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40544,21 +39688,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: SportClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.stand_up`
@@ -40573,7 +39712,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40595,21 +39734,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: SportClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-stand-down-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.stand_down`
@@ -40624,7 +39758,7 @@ def stand_down(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40646,21 +39780,16 @@ def stand_down(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_down(obj: SportClient) -> int:
-        return obj.stand_down()
+result = obj.stand_down()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-recovery-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.recovery_stand`
@@ -40675,7 +39804,7 @@ def recovery_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40697,21 +39826,16 @@ def recovery_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_recovery_stand(obj: SportClient) -> int:
-        return obj.recovery_stand()
+result = obj.recovery_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.move`
@@ -40726,7 +39850,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40752,21 +39876,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: SportClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-switch-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.switch_gait`
@@ -40781,7 +39900,7 @@ def switch_gait(self, d: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40805,21 +39924,16 @@ def switch_gait(self, d: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_gait(obj: SportClient, d: int) -> int:
-        return obj.switch_gait(d=d)
+result = obj.switch_gait(d=d)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-body-height-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.body_height`
@@ -40834,7 +39948,7 @@ def body_height(self, height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40858,21 +39972,16 @@ def body_height(self, height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_body_height(obj: SportClient, height: float) -> int:
-        return obj.body_height(height=height)
+result = obj.body_height(height=height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-speed-level-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.speed_level`
@@ -40887,7 +39996,7 @@ def speed_level(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -40911,21 +40020,16 @@ def speed_level(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_speed_level(obj: SportClient, level: int) -> int:
-        return obj.speed_level(level=level)
+result = obj.speed_level(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-trajectory-follow-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.trajectory_follow`
@@ -40935,50 +40039,45 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def trajectory_follow(self) -> tuple[int, list[Any]]
+def trajectory_follow(self, path: Sequence[PathPoint]) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
-无显式参数。实例方法中的 `self` 由 Python 自动传入。
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `path` | `Sequence[PathPoint]` | 必填 | 传给该接口的 `path` 参数，Python 类型为 `Sequence[PathPoint]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `path: std::vector<unitree::robot::b2::PathPoint> &`。 底层是可变长度 vector |
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| [0] `status` | `int` | SDK 状态码；Unitree 示例通常以 `0` 表示成功，非零值需按具体服务错误码解释。 |
-| [1] `path` | `list[Any]` | 传给该接口的 `path` 参数，Python 类型为 `list[Any]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `path: std::vector<unitree::robot::b2::PathPoint> &`。 底层是可变长度 vector |
+| 返回值 | `int` | SDK 状态码；Unitree 示例通常以 `0` 表示成功，非零值需按具体服务定义解释。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::b2::SportClient`
 - 签名：`TrajectoryFollow(std::vector<unitree::robot::b2::PathPoint> &)`
-- 绑定策略：`OUTPUT_WRAPPER`
+- 绑定策略：`MUTABLE_INPUT_COPY`
 - 声明位置：`include/unitree/robot/b2/sport/sport_client.hpp:59`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_trajectory_follow(obj: SportClient) -> tuple[int, list[Any]]:
-        return obj.trajectory_follow()
+result = obj.trajectory_follow(path=path)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-continuous-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.continuous_gait`
@@ -40993,7 +40092,7 @@ def continuous_gait(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41017,21 +40116,16 @@ def continuous_gait(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_continuous_gait(obj: SportClient, flag: bool) -> int:
-        return obj.continuous_gait(flag=flag)
+result = obj.continuous_gait(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-move-to-pos-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.move_to_pos`
@@ -41046,7 +40140,7 @@ def move_to_pos(self, x: float, y: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41072,21 +40166,16 @@ def move_to_pos(self, x: float, y: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move_to_pos(obj: SportClient, x: float, y: float, yaw: float) -> int:
-        return obj.move_to_pos(x=x, y=y, yaw=yaw)
+result = obj.move_to_pos(x=x, y=y, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-switch-move-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.switch_move_mode`
@@ -41101,7 +40190,7 @@ def switch_move_mode(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41125,21 +40214,16 @@ def switch_move_mode(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_move_mode(obj: SportClient, flag: bool) -> int:
-        return obj.switch_move_mode(flag=flag)
+result = obj.switch_move_mode(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-vision-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.vision_walk`
@@ -41154,7 +40238,7 @@ def vision_walk(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41178,21 +40262,16 @@ def vision_walk(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_vision_walk(obj: SportClient, flag: bool) -> int:
-        return obj.vision_walk(flag=flag)
+result = obj.vision_walk(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-hand-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.hand_stand`
@@ -41207,7 +40286,7 @@ def hand_stand(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41231,21 +40310,16 @@ def hand_stand(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_hand_stand(obj: SportClient, flag: bool) -> int:
-        return obj.hand_stand(flag=flag)
+result = obj.hand_stand(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-auto-recovery-set-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.auto_recovery_set`
@@ -41260,7 +40334,7 @@ def auto_recovery_set(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41284,21 +40358,16 @@ def auto_recovery_set(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_auto_recovery_set(obj: SportClient, flag: bool) -> int:
-        return obj.auto_recovery_set(flag=flag)
+result = obj.auto_recovery_set(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-free-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.free_walk`
@@ -41313,7 +40382,7 @@ def free_walk(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41335,21 +40404,16 @@ def free_walk(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_walk(obj: SportClient) -> int:
-        return obj.free_walk()
+result = obj.free_walk()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-classic-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.classic_walk`
@@ -41364,7 +40428,7 @@ def classic_walk(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41388,21 +40452,16 @@ def classic_walk(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_classic_walk(obj: SportClient, flag: bool) -> int:
-        return obj.classic_walk(flag=flag)
+result = obj.classic_walk(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-fast-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.fast_walk`
@@ -41417,7 +40476,7 @@ def fast_walk(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41441,21 +40500,16 @@ def fast_walk(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_fast_walk(obj: SportClient, flag: bool) -> int:
-        return obj.fast_walk(flag=flag)
+result = obj.fast_walk(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-euler-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.euler`
@@ -41470,7 +40524,7 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41496,21 +40550,16 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_euler(obj: SportClient, roll: float, pitch: float, yaw: float) -> int:
-        return obj.euler(roll=roll, pitch=pitch, yaw=yaw)
+result = obj.euler(roll=roll, pitch=pitch, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-free-height-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.free_height`
@@ -41525,7 +40574,7 @@ def free_height(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41549,21 +40598,16 @@ def free_height(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_height(obj: SportClient, flag: bool) -> int:
-        return obj.free_height(flag=flag)
+result = obj.free_height(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-sportclient-gait-height-1"></a>
 #### `unitree_sdk2_cpp.robot.b2.SportClient.gait_height`
@@ -41578,7 +40622,7 @@ def gait_height(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41602,21 +40646,16 @@ def gait_height(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_gait_height(obj: SportClient, flag: bool) -> int:
-        return obj.gait_height(flag=flag)
+result = obj.gait_height(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-b2-stpathpoint"></a>
 ### `unitree_sdk2_cpp.robot.b2.stPathPoint`
@@ -41643,12 +40682,80 @@ from unitree_sdk2_cpp.robot.b2 import stPathPoint
 | `vy` | `float` | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 | `value = obj.vy` / `obj.vy = value` |
 | `vyaw` | `float` | 偏航角速度参数。单位、符号和安全范围必须查目标型号运动协议。 | `value = obj.vyaw` / `obj.vyaw = value` |
 
+**方法索引**
+
+| 方法 | Python 签名 | 状态 | 安全分类 |
+| --- | --- | --- | --- |
+| [`__init__`](#unitree-sdk2-cpp-robot-b2-stpathpoint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+
+<a id="unitree-sdk2-cpp-robot-b2-stpathpoint-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.b2.stPathPoint.__init__`
+
+初始化 `stPathPoint` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::b2::stPathPoint`
+- 签名：`stPathPoint()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = stPathPoint()
+```
+
 ---
 
 <a id="unitree-sdk2-cpp-robot-g1"></a>
 ## G1 Robot API
 
 模块：`unitree_sdk2_cpp.robot.g1`
+
+### 模块函数导入
+
+```python
+from unitree_sdk2_cpp.robot.g1 import bad_orientation, joint_vel_out_of_limit, ang_vel_out_of_limit, motor_winding_overheat, motor_casing_overheat, low_battery, lost_connection
+```
+
+下面的函数用法片段假设已经完成上述导入。
+
+### 模块函数索引
+
+| 函数 | Python 签名 | 状态 | 安全分类 |
+| --- | --- | --- | --- |
+| [`bad_orientation()`](#unitree-sdk2-cpp-robot-g1-bad-orientation-1) | `def bad_orientation(low_state: LowState, limit_angle: float = 1.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`joint_vel_out_of_limit()`](#unitree-sdk2-cpp-robot-g1-joint-vel-out-of-limit-1) | `def joint_vel_out_of_limit(low_state: LowState, limit_vel: float = 10.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`ang_vel_out_of_limit()`](#unitree-sdk2-cpp-robot-g1-ang-vel-out-of-limit-1) | `def ang_vel_out_of_limit(low_state: LowState, limit_vel: float = 6.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`motor_winding_overheat()`](#unitree-sdk2-cpp-robot-g1-motor-winding-overheat-1) | `def motor_winding_overheat(low_state: LowState, limit_temp: float = 120.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`motor_casing_overheat()`](#unitree-sdk2-cpp-robot-g1-motor-casing-overheat-1) | `def motor_casing_overheat(low_state: LowState, limit_temp: float = 85.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`low_battery()`](#unitree-sdk2-cpp-robot-g1-low-battery-1) | `def low_battery(bms_state: BmsState, limit_soc: float = 20.0) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
+| [`lost_connection()`](#unitree-sdk2-cpp-robot-g1-lost-connection-1) | `def lost_connection(subscriber: ChannelSubscriber[LowState], timeout_ms: int = 1000) -> bool` | `AVAILABLE` | `SAFETY_CHECK` |
 
 ### 类索引
 
@@ -41666,6 +40773,321 @@ from unitree_sdk2_cpp.robot.b2 import stPathPoint
 | [`PlayStopParameter`](#unitree-sdk2-cpp-robot-g1-playstopparameter) | 3 | 0 |
 | [`PlayStreamParameter`](#unitree-sdk2-cpp-robot-g1-playstreamparameter) | 3 | 0 |
 | [`TtsMakerParameter`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter) | 3 | 0 |
+
+<a id="unitree-sdk2-cpp-robot-g1-bad-orientation-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.bad_orientation`
+
+对应 C++ SDK 操作 `bad_orientation(const unitree_hg::msg::dds_::LowState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def bad_orientation(low_state: LowState, limit_angle: float = 1.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `low_state` | `LowState` | 必填 | 传给该接口的 `low` 状态 参数，Python 类型为 `LowState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_angle` | `float` | `1.0` | 传给该接口的 `limit` `angle` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`bad_orientation(const unitree_hg::msg::dds_::LowState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = bad_orientation(low_state=low_state, limit_angle=limit_angle)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-joint-vel-out-of-limit-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.joint_vel_out_of_limit`
+
+对应 C++ SDK 操作 `joint_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def joint_vel_out_of_limit(low_state: LowState, limit_vel: float = 10.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `low_state` | `LowState` | 必填 | 传给该接口的 `low` 状态 参数，Python 类型为 `LowState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_vel` | `float` | `10.0` | 传给该接口的 `limit` `vel` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`joint_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = joint_vel_out_of_limit(low_state=low_state, limit_vel=limit_vel)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-ang-vel-out-of-limit-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.ang_vel_out_of_limit`
+
+对应 C++ SDK 操作 `ang_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def ang_vel_out_of_limit(low_state: LowState, limit_vel: float = 6.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `low_state` | `LowState` | 必填 | 传给该接口的 `low` 状态 参数，Python 类型为 `LowState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_vel` | `float` | `6.0` | 传给该接口的 `limit` `vel` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`ang_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = ang_vel_out_of_limit(low_state=low_state, limit_vel=limit_vel)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-motor-winding-overheat-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.motor_winding_overheat`
+
+对应 C++ SDK 操作 `motor_winding_overheat(const unitree_hg::msg::dds_::LowState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def motor_winding_overheat(low_state: LowState, limit_temp: float = 120.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `low_state` | `LowState` | 必填 | 传给该接口的 `low` 状态 参数，Python 类型为 `LowState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_temp` | `float` | `120.0` | 传给该接口的 `limit` `temp` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`motor_winding_overheat(const unitree_hg::msg::dds_::LowState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = motor_winding_overheat(low_state=low_state, limit_temp=limit_temp)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-motor-casing-overheat-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.motor_casing_overheat`
+
+对应 C++ SDK 操作 `motor_casing_overheat(const unitree_hg::msg::dds_::LowState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def motor_casing_overheat(low_state: LowState, limit_temp: float = 85.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `low_state` | `LowState` | 必填 | 传给该接口的 `low` 状态 参数，Python 类型为 `LowState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_temp` | `float` | `85.0` | 传给该接口的 `limit` `temp` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`motor_casing_overheat(const unitree_hg::msg::dds_::LowState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = motor_casing_overheat(low_state=low_state, limit_temp=limit_temp)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-low-battery-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.low_battery`
+
+对应 C++ SDK 操作 `low_battery(const unitree_hg::msg::dds_::BmsState_ &, float)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def low_battery(bms_state: BmsState, limit_soc: float = 20.0) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `bms_state` | `BmsState` | 必填 | 传给该接口的 `bms` 状态 参数，Python 类型为 `BmsState`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `limit_soc` | `float` | `20.0` | 传给该接口的 `limit` `soc` 参数，Python 类型为 `float`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`low_battery(const unitree_hg::msg::dds_::BmsState_ &, float)`
+- 绑定策略：`DIRECT`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = low_battery(bms_state=bms_state, limit_soc=limit_soc)
+```
+
+<a id="unitree-sdk2-cpp-robot-g1-lost-connection-1"></a>
+#### `unitree_sdk2_cpp.robot.g1.lost_connection`
+
+对应 C++ SDK 操作 `lost_connection(unitree::robot::ChannelSubscriberPtr<unitree_hg::msg::dds_::LowState_> &, int64_t)`。上游头文件没有可直接生成的业务说明时，本参考只保证签名映射，精确语义需查目标型号协议。
+
+**签名**
+
+```python
+def lost_connection(subscriber: ChannelSubscriber[LowState], timeout_ms: int = 1000) -> bool
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `SAFETY_CHECK`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `subscriber` | `ChannelSubscriber[LowState]` | 必填 | 传给该接口的 `subscriber` 参数，Python 类型为 `ChannelSubscriber[LowState]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+| `timeout_ms` | `int` | `1000` | 传给该接口的 超时 `ms` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 |
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 返回值 | `bool` | 返回 `bool`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::g1`
+- 签名：`lost_connection(unitree::robot::ChannelSubscriberPtr<unitree_hg::msg::dds_::LowState_> &, int64_t)`
+- 绑定策略：`TYPE_ERASED_ADAPTER`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+result = lost_connection(subscriber=subscriber, timeout_ms=timeout_ms)
+```
 
 <a id="unitree-sdk2-cpp-robot-g1-internalfsmmode"></a>
 ### `unitree_sdk2_cpp.robot.g1.InternalFsmMode`
@@ -41705,10 +41127,10 @@ from unitree_sdk2_cpp.robot.g1 import AgvClient
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-agvclient-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`init`](#unitree-sdk2-cpp-robot-g1-agvclient-init-1) | `def init(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`move`](#unitree-sdk2-cpp-robot-g1-agvclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`height_adjust`](#unitree-sdk2-cpp-robot-g1-agvclient-height-adjust-1) | `def height_adjust(self, vz: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-agvclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`init`](#unitree-sdk2-cpp-robot-g1-agvclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`move`](#unitree-sdk2-cpp-robot-g1-agvclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`height_adjust`](#unitree-sdk2-cpp-robot-g1-agvclient-height-adjust-1) | `def height_adjust(self, vz: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-g1-agvclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AgvClient.__init__`
@@ -41723,7 +41145,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -41745,20 +41167,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> AgvClient:
-        return AgvClient()
+value = AgvClient()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-agvclient-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AgvClient.init`
@@ -41773,7 +41187,7 @@ def init(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -41795,20 +41209,12 @@ def init(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_init(obj: AgvClient) -> None:
-        obj.init()
+obj.init()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-agvclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AgvClient.move`
@@ -41823,7 +41229,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41849,21 +41255,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: AgvClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-agvclient-height-adjust-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AgvClient.height_adjust`
@@ -41878,7 +41279,7 @@ def height_adjust(self, vz: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -41902,21 +41303,16 @@ def height_adjust(self, vz: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_height_adjust(obj: AgvClient, vz: float) -> int:
-        return obj.height_adjust(vz=vz)
+result = obj.height_adjust(vz=vz)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient"></a>
 ### `unitree_sdk2_cpp.robot.g1.AudioClient`
@@ -41937,12 +41333,12 @@ from unitree_sdk2_cpp.robot.g1 import AudioClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-g1-audioclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-g1-audioclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`tts_maker`](#unitree-sdk2-cpp-robot-g1-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`tts_maker`](#unitree-sdk2-cpp-robot-g1-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_volume`](#unitree-sdk2-cpp-robot-g1-audioclient-get-volume-1) | `def get_volume(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_volume`](#unitree-sdk2-cpp-robot-g1-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stream`](#unitree-sdk2-cpp-robot-g1-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stop`](#unitree-sdk2-cpp-robot-g1-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`led_control`](#unitree-sdk2-cpp-robot-g1-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_volume`](#unitree-sdk2-cpp-robot-g1-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stream`](#unitree-sdk2-cpp-robot-g1-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stop`](#unitree-sdk2-cpp-robot-g1-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`led_control`](#unitree-sdk2-cpp-robot-g1-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AudioClient.__init__`
@@ -42041,7 +41437,7 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -42066,20 +41462,15 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_tts_maker(obj: AudioClient, text: str, speaker_id: int) -> int:
-        return obj.tts_maker(text=text, speaker_id=speaker_id)
+result = obj.tts_maker(text=text, speaker_id=speaker_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient-get-volume-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AudioClient.get_volume`
@@ -42141,7 +41532,7 @@ def set_volume(self, volume: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -42165,20 +41556,15 @@ def set_volume(self, volume: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_volume(obj: AudioClient, volume: int) -> int:
-        return obj.set_volume(volume=volume)
+result = obj.set_volume(volume=volume)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient-play-stream-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AudioClient.play_stream`
@@ -42193,7 +41579,7 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -42219,20 +41605,15 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stream(obj: AudioClient, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int:
-        return obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
+result = obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient-play-stop-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AudioClient.play_stop`
@@ -42247,7 +41628,7 @@ def play_stop(self, app_name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -42271,20 +41652,15 @@ def play_stop(self, app_name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stop(obj: AudioClient, app_name: str) -> int:
-        return obj.play_stop(app_name=app_name)
+result = obj.play_stop(app_name=app_name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-audioclient-led-control-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.AudioClient.led_control`
@@ -42299,7 +41675,7 @@ def led_control(self, r: int, g: int, b: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -42325,20 +41701,15 @@ def led_control(self, r: int, g: int, b: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_led_control(obj: AudioClient, r: int, g: int, b: int) -> int:
-        return obj.led_control(r=r, g=g, b=b)
+result = obj.led_control(r=r, g=g, b=b)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-g1armactionclient"></a>
 ### `unitree_sdk2_cpp.robot.g1.G1ArmActionClient`
@@ -42365,9 +41736,9 @@ from unitree_sdk2_cpp.robot.g1 import G1ArmActionClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`execute_action（重载 1/2）`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-execute-action-1) | `def execute_action(self, action_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`execute_action（重载 2/2）`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-execute-action-2) | `def execute_action(self, action_name: str) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_custom_action`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-stop-custom-action-1) | `def stop_custom_action(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`execute_action（重载 1/2）`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-execute-action-1) | `def execute_action(self, action_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`execute_action（重载 2/2）`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-execute-action-2) | `def execute_action(self, action_name: str) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_custom_action`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-stop-custom-action-1) | `def stop_custom_action(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_action_list`](#unitree-sdk2-cpp-robot-g1-g1armactionclient-get-action-list-1) | `def get_action_list(self) -> tuple[int, str]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-g1-g1armactionclient-dunder-init-1"></a>
@@ -42468,7 +41839,7 @@ def execute_action(self, action_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -42492,21 +41863,16 @@ def execute_action(self, action_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_execute_action(obj: G1ArmActionClient, action_id: int) -> int:
-        return obj.execute_action(action_id=action_id)
+result = obj.execute_action(action_id=action_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-g1armactionclient-execute-action-2"></a>
 #### `unitree_sdk2_cpp.robot.g1.G1ArmActionClient.execute_action`（重载 2/2）
@@ -42522,7 +41888,7 @@ def execute_action(self, action_name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -42546,21 +41912,16 @@ def execute_action(self, action_name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_execute_action(obj: G1ArmActionClient, action_name: str) -> int:
-        return obj.execute_action(action_name=action_name)
+result = obj.execute_action(action_name=action_name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-g1armactionclient-stop-custom-action-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.G1ArmActionClient.stop_custom_action`
@@ -42575,7 +41936,7 @@ def stop_custom_action(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -42597,21 +41958,16 @@ def stop_custom_action(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_custom_action(obj: G1ArmActionClient) -> int:
-        return obj.stop_custom_action()
+result = obj.stop_custom_action()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-g1armactionclient-get-action-list-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.G1ArmActionClient.get_action_list`
@@ -42683,9 +42039,9 @@ from unitree_sdk2_cpp.robot.g1 import JsonizeDataVecFloat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeDataVecFloat.__init__`
@@ -42700,7 +42056,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -42722,20 +42078,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataVecFloat:
-        return JsonizeDataVecFloat()
+value = JsonizeDataVecFloat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeDataVecFloat.from_json`
@@ -42745,18 +42093,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -42768,26 +42116,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::JsonizeDataVecFloat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/loco/g1_loco_api.hpp:48`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizedatavecfloat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeDataVecFloat.to_json`
@@ -42797,49 +42137,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::JsonizeDataVecFloat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/loco/g1_loco_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand"></a>
 ### `unitree_sdk2_cpp.robot.g1.JsonizeVelocityCommand`
@@ -42865,9 +42195,9 @@ from unitree_sdk2_cpp.robot.g1 import JsonizeVelocityCommand
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeVelocityCommand.__init__`
@@ -42882,7 +42212,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -42904,20 +42234,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeVelocityCommand:
-        return JsonizeVelocityCommand()
+value = JsonizeVelocityCommand()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeVelocityCommand.from_json`
@@ -42927,18 +42249,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -42950,26 +42272,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::JsonizeVelocityCommand`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/loco/g1_loco_api.hpp:62`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-jsonizevelocitycommand-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.JsonizeVelocityCommand.to_json`
@@ -42979,49 +42293,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::JsonizeVelocityCommand`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/loco/g1_loco_api.hpp:67`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ledcontrolparameter"></a>
 ### `unitree_sdk2_cpp.robot.g1.LedControlParameter`
@@ -43048,9 +42352,9 @@ from unitree_sdk2_cpp.robot.g1 import LedControlParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-ledcontrolparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-ledcontrolparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LedControlParameter.__init__`
@@ -43065,7 +42369,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -43087,20 +42391,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LedControlParameter:
-        return LedControlParameter()
+value = LedControlParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ledcontrolparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LedControlParameter.from_json`
@@ -43110,18 +42406,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -43133,26 +42429,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::LedControlParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:78`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ledcontrolparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LedControlParameter.to_json`
@@ -43162,49 +42450,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::LedControlParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient"></a>
 ### `unitree_sdk2_cpp.robot.g1.LocoClient`
@@ -43231,33 +42509,33 @@ from unitree_sdk2_cpp.robot.g1 import LocoClient
 | [`get_swing_height`](#unitree-sdk2-cpp-robot-g1-lococlient-get-swing-height-1) | `def get_swing_height(self) -> tuple[int, float]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_stand_height`](#unitree-sdk2-cpp-robot-g1-lococlient-get-stand-height-1) | `def get_stand_height(self) -> tuple[int, float]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_phase`](#unitree-sdk2-cpp-robot-g1-lococlient-get-phase-1) | `def get_phase(self) -> tuple[int, list[float]]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_fsm_id`](#unitree-sdk2-cpp-robot-g1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_balance_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_swing_height`](#unitree-sdk2-cpp-robot-g1-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_stand_height`](#unitree-sdk2-cpp-robot-g1-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_velocity`](#unitree-sdk2-cpp-robot-g1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_task_id`](#unitree-sdk2-cpp-robot-g1-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_to_user_ctrl`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-to-user-ctrl-1) | `def switch_to_user_ctrl(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_to_internal_ctrl`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-to-internal-ctrl-1) | `def switch_to_internal_ctrl(self, mode: InternalFsmMode) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`damp`](#unitree-sdk2-cpp-robot-g1-lococlient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`start`](#unitree-sdk2-cpp-robot-g1-lococlient-start-1) | `def start(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`squat`](#unitree-sdk2-cpp-robot-g1-lococlient-squat-1) | `def squat(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`sit`](#unitree-sdk2-cpp-robot-g1-lococlient-sit-1) | `def sit(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-g1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`zero_torque`](#unitree-sdk2-cpp-robot-g1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-g1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`high_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-high-stand-1) | `def high_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`low_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-low-stand-1) | `def low_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-g1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-g1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`continuous_gait`](#unitree-sdk2-cpp-robot-g1-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_move_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`wave_hand`](#unitree-sdk2-cpp-robot-g1-lococlient-wave-hand-1) | `def wave_hand(self, turn_flag: bool = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`shake_hand`](#unitree-sdk2-cpp-robot-g1-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_speed_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`set_fsm_id`](#unitree-sdk2-cpp-robot-g1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_balance_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_swing_height`](#unitree-sdk2-cpp-robot-g1-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_stand_height`](#unitree-sdk2-cpp-robot-g1-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_velocity`](#unitree-sdk2-cpp-robot-g1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_task_id`](#unitree-sdk2-cpp-robot-g1-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_to_user_ctrl`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-to-user-ctrl-1) | `def switch_to_user_ctrl(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_to_internal_ctrl`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-to-internal-ctrl-1) | `def switch_to_internal_ctrl(self, mode: InternalFsmMode) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-g1-lococlient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`start`](#unitree-sdk2-cpp-robot-g1-lococlient-start-1) | `def start(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`squat`](#unitree-sdk2-cpp-robot-g1-lococlient-squat-1) | `def squat(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`sit`](#unitree-sdk2-cpp-robot-g1-lococlient-sit-1) | `def sit(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-g1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`zero_torque`](#unitree-sdk2-cpp-robot-g1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-g1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`high_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-high-stand-1) | `def high_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`low_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-low-stand-1) | `def low_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-g1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-g1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-g1-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`continuous_gait`](#unitree-sdk2-cpp-robot-g1-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_move_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`wave_hand`](#unitree-sdk2-cpp-robot-g1-lococlient-wave-hand-1) | `def wave_hand(self, turn_flag: bool = False) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`shake_hand`](#unitree-sdk2-cpp-robot-g1-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = -1) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_speed_mode`](#unitree-sdk2-cpp-robot-g1-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_mimic_motion`](#unitree-sdk2-cpp-robot-g1-lococlient-get-mimic-motion-1) | `def get_mimic_motion(self) -> tuple[int, str]` | `AVAILABLE` | `READ_ONLY` |
-| [`_fsm_api`](#unitree-sdk2-cpp-robot-g1-lococlient-fsm-api-1) | `def _fsm_api(self, parameter: str) -> tuple[int, str]` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`_fsm_api`](#unitree-sdk2-cpp-robot-g1-lococlient-fsm-api-1) | `def _fsm_api(self, parameter: str) -> tuple[int, str]` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.__init__`
@@ -43638,7 +42916,7 @@ def set_fsm_id(self, fsm_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43662,21 +42940,16 @@ def set_fsm_id(self, fsm_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_fsm_id(obj: LocoClient, fsm_id: int) -> int:
-        return obj.set_fsm_id(fsm_id=fsm_id)
+result = obj.set_fsm_id(fsm_id=fsm_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-balance-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_balance_mode`
@@ -43691,7 +42964,7 @@ def set_balance_mode(self, balance_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43715,21 +42988,16 @@ def set_balance_mode(self, balance_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_balance_mode(obj: LocoClient, balance_mode: int) -> int:
-        return obj.set_balance_mode(balance_mode=balance_mode)
+result = obj.set_balance_mode(balance_mode=balance_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-swing-height-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_swing_height`
@@ -43744,7 +43012,7 @@ def set_swing_height(self, swing_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43768,21 +43036,16 @@ def set_swing_height(self, swing_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_swing_height(obj: LocoClient, swing_height: float) -> int:
-        return obj.set_swing_height(swing_height=swing_height)
+result = obj.set_swing_height(swing_height=swing_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-stand-height-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_stand_height`
@@ -43797,7 +43060,7 @@ def set_stand_height(self, stand_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43821,21 +43084,16 @@ def set_stand_height(self, stand_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_stand_height(obj: LocoClient, stand_height: float) -> int:
-        return obj.set_stand_height(stand_height=stand_height)
+result = obj.set_stand_height(stand_height=stand_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-velocity-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_velocity`
@@ -43845,12 +43103,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int
+def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43859,7 +43117,7 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 | `vx` | `float` | 必填 | X 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vx: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `vy` | `float` | 必填 | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vy: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `omega` | `float` | 必填 | 角速度参数。旋转轴、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `omega: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `duration` | `float` | `...` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `duration` | `float` | `1.0` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
@@ -43877,22 +43135,16 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_velocity(obj: LocoClient, vx: float, vy: float, omega: float, duration: float) -> int:
-        return obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
+result = obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-task-id-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_task_id`
@@ -43907,7 +43159,7 @@ def set_task_id(self, task_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43931,21 +43183,16 @@ def set_task_id(self, task_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_task_id(obj: LocoClient, task_id: int) -> int:
-        return obj.set_task_id(task_id=task_id)
+result = obj.set_task_id(task_id=task_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-switch-to-user-ctrl-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.switch_to_user_ctrl`
@@ -43960,7 +43207,7 @@ def switch_to_user_ctrl(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -43982,21 +43229,16 @@ def switch_to_user_ctrl(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_to_user_ctrl(obj: LocoClient) -> int:
-        return obj.switch_to_user_ctrl()
+result = obj.switch_to_user_ctrl()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-switch-to-internal-ctrl-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.switch_to_internal_ctrl`
@@ -44011,7 +43253,7 @@ def switch_to_internal_ctrl(self, mode: InternalFsmMode) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44035,21 +43277,16 @@ def switch_to_internal_ctrl(self, mode: InternalFsmMode) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_to_internal_ctrl(obj: LocoClient, mode: InternalFsmMode) -> int:
-        return obj.switch_to_internal_ctrl(mode=mode)
+result = obj.switch_to_internal_ctrl(mode=mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.damp`
@@ -44064,7 +43301,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44086,21 +43323,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: LocoClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-start-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.start`
@@ -44115,7 +43347,7 @@ def start(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44137,21 +43369,16 @@ def start(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_start(obj: LocoClient) -> int:
-        return obj.start()
+result = obj.start()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-squat-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.squat`
@@ -44166,7 +43393,7 @@ def squat(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44188,21 +43415,16 @@ def squat(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_squat(obj: LocoClient) -> int:
-        return obj.squat()
+result = obj.squat()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-sit-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.sit`
@@ -44217,7 +43439,7 @@ def sit(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44239,21 +43461,16 @@ def sit(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_sit(obj: LocoClient) -> int:
-        return obj.sit()
+result = obj.sit()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.stand_up`
@@ -44268,7 +43485,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44290,21 +43507,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: LocoClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-zero-torque-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.zero_torque`
@@ -44319,7 +43531,7 @@ def zero_torque(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44341,21 +43553,16 @@ def zero_torque(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_zero_torque(obj: LocoClient) -> int:
-        return obj.zero_torque()
+result = obj.zero_torque()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.stop_move`
@@ -44370,7 +43577,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44392,21 +43599,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: LocoClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-high-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.high_stand`
@@ -44421,7 +43623,7 @@ def high_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44443,21 +43645,16 @@ def high_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_high_stand(obj: LocoClient) -> int:
-        return obj.high_stand()
+result = obj.high_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-low-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.low_stand`
@@ -44472,7 +43669,7 @@ def low_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44494,21 +43691,16 @@ def low_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_low_stand(obj: LocoClient) -> int:
-        return obj.low_stand()
+result = obj.low_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.move`（重载 1/2）
@@ -44524,7 +43716,7 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44551,21 +43743,16 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float, continous_move: bool) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-move-2"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.move`（重载 2/2）
@@ -44581,7 +43768,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44607,21 +43794,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.balance_stand`
@@ -44636,7 +43818,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44658,21 +43840,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: LocoClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-continuous-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.continuous_gait`
@@ -44687,7 +43864,7 @@ def continuous_gait(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44711,21 +43888,16 @@ def continuous_gait(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_continuous_gait(obj: LocoClient, flag: bool) -> int:
-        return obj.continuous_gait(flag=flag)
+result = obj.continuous_gait(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-switch-move-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.switch_move_mode`
@@ -44740,7 +43912,7 @@ def switch_move_mode(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44764,21 +43936,16 @@ def switch_move_mode(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_move_mode(obj: LocoClient, flag: bool) -> int:
-        return obj.switch_move_mode(flag=flag)
+result = obj.switch_move_mode(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-wave-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.wave_hand`
@@ -44788,18 +43955,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def wave_hand(self, turn_flag: bool = ...) -> int
+def wave_hand(self, turn_flag: bool = False) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `turn_flag` | `bool` | `...` | 传给该接口的 `turn` `flag` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `turn_flag: bool`。 只接受布尔语义。 |
+| `turn_flag` | `bool` | `False` | 传给该接口的 `turn` `flag` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `turn_flag: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -44817,22 +43984,16 @@ def wave_hand(self, turn_flag: bool = ...) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_wave_hand(obj: LocoClient, turn_flag: bool) -> int:
-        return obj.wave_hand(turn_flag=turn_flag)
+result = obj.wave_hand(turn_flag=turn_flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-shake-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.shake_hand`
@@ -44842,18 +44003,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def shake_hand(self, stage: int = ...) -> int
+def shake_hand(self, stage: int = -1) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `stage` | `int` | `...` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
+| `stage` | `int` | `-1` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
 
 **返回值**
 
@@ -44871,22 +44032,16 @@ def shake_hand(self, stage: int = ...) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_shake_hand(obj: LocoClient, stage: int) -> int:
-        return obj.shake_hand(stage=stage)
+result = obj.shake_hand(stage=stage)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-set-speed-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.set_speed_mode`
@@ -44901,7 +44056,7 @@ def set_speed_mode(self, speed_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -44925,21 +44080,16 @@ def set_speed_mode(self, speed_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_speed_mode(obj: LocoClient, speed_mode: int) -> int:
-        return obj.set_speed_mode(speed_mode=speed_mode)
+result = obj.set_speed_mode(speed_mode=speed_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-lococlient-get-mimic-motion-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.LocoClient.get_mimic_motion`
@@ -45001,7 +44151,7 @@ def _fsm_api(self, parameter: str) -> tuple[int, str]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -45027,21 +44177,16 @@ def _fsm_api(self, parameter: str) -> tuple[int, str]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned__fsm_api(obj: LocoClient, parameter: str) -> tuple[int, str]:
-        return obj._fsm_api(parameter=parameter)
+status, data = obj._fsm_api(parameter=parameter)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-g1-moveparameter"></a>
 ### `unitree_sdk2_cpp.robot.g1.MoveParameter`
@@ -45068,9 +44213,9 @@ from unitree_sdk2_cpp.robot.g1 import MoveParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-moveparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-moveparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-moveparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-moveparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-moveparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-moveparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-moveparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.MoveParameter.__init__`
@@ -45085,7 +44230,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -45107,20 +44252,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> MoveParameter:
-        return MoveParameter()
+value = MoveParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-moveparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.MoveParameter.from_json`
@@ -45130,18 +44267,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: unitree::common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: unitree::common::JsonMap &`。 |
 
 **返回值**
 
@@ -45153,26 +44290,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::MoveParameter`
 - 签名：`fromJson(unitree::common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/agv/g1_agv_api.hpp:36`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: MoveParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-moveparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.MoveParameter.to_json`
@@ -45182,49 +44311,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: unitree::common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::MoveParameter`
 - 签名：`toJson(unitree::common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/agv/g1_agv_api.hpp:43`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: MoveParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstopparameter"></a>
 ### `unitree_sdk2_cpp.robot.g1.PlayStopParameter`
@@ -45249,9 +44368,9 @@ from unitree_sdk2_cpp.robot.g1 import PlayStopParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-playstopparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-playstopparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-playstopparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-playstopparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-playstopparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStopParameter.__init__`
@@ -45266,7 +44385,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -45288,20 +44407,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStopParameter:
-        return PlayStopParameter()
+value = PlayStopParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstopparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStopParameter.from_json`
@@ -45311,18 +44422,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -45334,26 +44445,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::PlayStopParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:64`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstopparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStopParameter.to_json`
@@ -45363,49 +44466,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::PlayStopParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:66`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstreamparameter"></a>
 ### `unitree_sdk2_cpp.robot.g1.PlayStreamParameter`
@@ -45431,9 +44524,9 @@ from unitree_sdk2_cpp.robot.g1 import PlayStreamParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-playstreamparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-playstreamparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStreamParameter.__init__`
@@ -45448,7 +44541,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -45470,20 +44563,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStreamParameter:
-        return PlayStreamParameter()
+value = PlayStreamParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstreamparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStreamParameter.from_json`
@@ -45493,18 +44578,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -45516,26 +44601,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::PlayStreamParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:48`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-playstreamparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.PlayStreamParameter.to_json`
@@ -45545,49 +44622,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::PlayStreamParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ttsmakerparameter"></a>
 ### `unitree_sdk2_cpp.robot.g1.TtsMakerParameter`
@@ -45614,9 +44681,9 @@ from unitree_sdk2_cpp.robot.g1 import TtsMakerParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-g1-ttsmakerparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-g1-ttsmakerparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.TtsMakerParameter.__init__`
@@ -45631,7 +44698,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -45653,20 +44720,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> TtsMakerParameter:
-        return TtsMakerParameter()
+value = TtsMakerParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ttsmakerparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.TtsMakerParameter.from_json`
@@ -45676,18 +44735,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -45699,26 +44758,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::g1::TtsMakerParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:30`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-g1-ttsmakerparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.g1.TtsMakerParameter.to_json`
@@ -45728,49 +44779,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::g1::TtsMakerParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/g1/audio/g1_audio_api.hpp:32`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 ---
 
@@ -45803,10 +44844,10 @@ if TYPE_CHECKING:
 | [`JsonizeQuat`](#unitree-sdk2-cpp-robot-go2-jsonizequat) | 3 | 0 |
 | [`JsonizeVec3`](#unitree-sdk2-cpp-robot-go2-jsonizevec3) | 3 | 0 |
 | [`ObstaclesAvoidClient`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient) | 8 | 0 |
-| [`ObstaclesAvoidMoveParameter`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter) | 2 | 0 |
-| [`ObstaclesAvoidRemoteCommandSource`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource) | 2 | 0 |
-| [`ObstaclesAvoidSwitchGetData`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata) | 2 | 0 |
-| [`ObstaclesAvoidSwitchSetParameter`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter) | 2 | 0 |
+| [`ObstaclesAvoidMoveParameter`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter) | 3 | 0 |
+| [`ObstaclesAvoidRemoteCommandSource`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource) | 3 | 0 |
+| [`ObstaclesAvoidSwitchGetData`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata) | 3 | 0 |
+| [`ObstaclesAvoidSwitchSetParameter`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter) | 3 | 0 |
 | [`RobotStateClient`](#unitree-sdk2-cpp-robot-go2-robotstateclient) | 5 | 0 |
 | [`ServiceState`](#unitree-sdk2-cpp-robot-go2-servicestate) | 1 | 0 |
 | [`ServiceStateData`](#unitree-sdk2-cpp-robot-go2-servicestatedata) | 3 | 0 |
@@ -45815,11 +44856,11 @@ if TYPE_CHECKING:
 | [`SetReportFreqParameter`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter) | 3 | 0 |
 | [`SportClient`](#unitree-sdk2-cpp-robot-go2-sportclient) | 41 | 0 |
 | [`UtrackClient`](#unitree-sdk2-cpp-robot-go2-utrackclient) | 5 | 0 |
-| [`UtrackSwitchGetData`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata) | 2 | 0 |
-| [`UtrackSwitchSetParameter`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter) | 2 | 0 |
+| [`UtrackSwitchGetData`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata) | 3 | 0 |
+| [`UtrackSwitchSetParameter`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter) | 3 | 0 |
 | [`VideoClient`](#unitree-sdk2-cpp-robot-go2-videoclient) | 3 | 0 |
 | [`VuiClient`](#unitree-sdk2-cpp-robot-go2-vuiclient) | 8 | 0 |
-| [`stPathPoint`](#unitree-sdk2-cpp-robot-go2-stpathpoint) | 0 | 0 |
+| [`stPathPoint`](#unitree-sdk2-cpp-robot-go2-stpathpoint) | 1 | 0 |
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigClient`
@@ -45840,12 +44881,12 @@ from unitree_sdk2_cpp.robot.go2 import ConfigClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-go2-configclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-go2-configclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`set`](#unitree-sdk2-cpp-robot-go2-configclient-set-1) | `def set(self, name: str, content: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set`](#unitree-sdk2-cpp-robot-go2-configclient-set-1) | `def set(self, name: str, content: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get`](#unitree-sdk2-cpp-robot-go2-configclient-get-1) | `def get(self, name: str) -> tuple[int, str]` | `AVAILABLE` | `READ_ONLY` |
-| [`del_`](#unitree-sdk2-cpp-robot-go2-configclient-del-1) | `def del_(self, name: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`meta_config_meta`](#unitree-sdk2-cpp-robot-go2-configclient-meta-config-meta-1) | `def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`meta_string`](#unitree-sdk2-cpp-robot-go2-configclient-meta-string-1) | `def meta_string(self, name: str) -> tuple[int, str]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`subscribe_change_status`](#unitree-sdk2-cpp-robot-go2-configclient-subscribe-change-status-1) | `def subscribe_change_status(self, name: str, callback: Callable[[str, str], None]) -> None` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`del_`](#unitree-sdk2-cpp-robot-go2-configclient-del-1) | `def del_(self, name: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`meta_config_meta`](#unitree-sdk2-cpp-robot-go2-configclient-meta-config-meta-1) | `def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`meta_string`](#unitree-sdk2-cpp-robot-go2-configclient-meta-string-1) | `def meta_string(self, name: str) -> tuple[int, str]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`subscribe_change_status`](#unitree-sdk2-cpp-robot-go2-configclient-subscribe-change-status-1) | `def subscribe_change_status(self, name: str, callback: Callable[[str, str], None]) -> None` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigClient.__init__`
@@ -45944,7 +44985,7 @@ def set(self, name: str, content: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -45969,20 +45010,15 @@ def set(self, name: str, content: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set(obj: ConfigClient, name: str, content: str) -> int:
-        return obj.set(name=name, content=content)
+result = obj.set(name=name, content=content)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient-get-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigClient.get`
@@ -46046,7 +45082,7 @@ def del_(self, name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -46070,20 +45106,15 @@ def del_(self, name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_del_(obj: ConfigClient, name: str) -> int:
-        return obj.del_(name=name)
+result = obj.del_(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient-meta-config-meta-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigClient.meta_config_meta`
@@ -46098,7 +45129,7 @@ def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -46124,20 +45155,15 @@ def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_meta_config_meta(obj: ConfigClient, name: str) -> tuple[int, ConfigMeta]:
-        return obj.meta_config_meta(name=name)
+status, meta = obj.meta_config_meta(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient-meta-string-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigClient.meta_string`
@@ -46152,7 +45178,7 @@ def meta_string(self, name: str) -> tuple[int, str]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -46178,20 +45204,15 @@ def meta_string(self, name: str) -> tuple[int, str]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_meta_string(obj: ConfigClient, name: str) -> tuple[int, str]:
-        return obj.meta_string(name=name)
+status, meta = obj.meta_string(name=name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-configclient-subscribe-change-status-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigClient.subscribe_change_status`
@@ -46206,7 +45227,7 @@ def subscribe_change_status(self, name: str, callback: Callable[[str, str], None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -46231,21 +45252,16 @@ def subscribe_change_status(self, name: str, callback: Callable[[str, str], None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 回调可能由 SDK 工作线程触发；回调应快速返回、捕获异常，并通过线程安全队列移交耗时工作。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_subscribe_change_status(obj: ConfigClient, name: str, callback: Callable[[str, str], None]) -> None:
-        obj.subscribe_change_status(name=name, callback=callback)
+obj.subscribe_change_status(name=name, callback=callback)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-configdelparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigDelParameter`
@@ -46270,9 +45286,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigDelParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configdelparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configdelparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configdelparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configdelparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configdelparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configdelparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configdelparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigDelParameter.__init__`
@@ -46287,7 +45303,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -46309,20 +45325,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigDelParameter:
-        return ConfigDelParameter()
+value = ConfigDelParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configdelparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigDelParameter.from_json`
@@ -46332,18 +45340,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -46355,26 +45363,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigDelParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:146`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigDelParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configdelparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigDelParameter.to_json`
@@ -46384,49 +45384,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigDelParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:151`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigDelParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetdata"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigGetData`
@@ -46451,9 +45441,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigGetData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configgetdata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configgetdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configgetdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configgetdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configgetdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configgetdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetdata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetData.__init__`
@@ -46468,7 +45458,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -46490,20 +45480,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigGetData:
-        return ConfigGetData()
+value = ConfigGetData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetData.from_json`
@@ -46513,18 +45495,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -46536,26 +45518,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigGetData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:123`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigGetData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetData.to_json`
@@ -46565,49 +45539,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigGetData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:128`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigGetData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigGetParameter`
@@ -46632,9 +45596,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigGetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configgetparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configgetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configgetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configgetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configgetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configgetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetParameter.__init__`
@@ -46649,7 +45613,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -46671,20 +45635,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigGetParameter:
-        return ConfigGetParameter()
+value = ConfigGetParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetParameter.from_json`
@@ -46694,18 +45650,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -46717,26 +45673,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigGetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:100`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigGetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configgetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigGetParameter.to_json`
@@ -46746,49 +45694,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigGetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:105`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigGetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmeta"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigMeta`
@@ -46816,7 +45754,7 @@ from unitree_sdk2_cpp.robot.go2 import ConfigMeta
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmeta-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmeta-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configmeta-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMeta.__init__`
@@ -46831,7 +45769,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -46853,20 +45791,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMeta:
-        return ConfigMeta()
+value = ConfigMeta()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetadata"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigMetaData`
@@ -46891,9 +45821,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigMetaData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmetadata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configmetadata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configmetadata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmetadata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configmetadata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configmetadata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetadata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaData.__init__`
@@ -46908,7 +45838,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -46930,20 +45860,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMetaData:
-        return ConfigMetaData()
+value = ConfigMetaData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetadata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaData.from_json`
@@ -46953,18 +45875,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -46976,26 +45898,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigMetaData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:192`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigMetaData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetadata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaData.to_json`
@@ -47005,49 +45919,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigMetaData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:197`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigMetaData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetaparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigMetaParameter`
@@ -47072,9 +45976,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigMetaParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configmetaparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetaparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaParameter.__init__`
@@ -47089,7 +45993,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -47111,20 +46015,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigMetaParameter:
-        return ConfigMetaParameter()
+value = ConfigMetaParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetaparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaParameter.from_json`
@@ -47134,18 +46030,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -47157,26 +46053,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigMetaParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:169`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigMetaParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configmetaparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigMetaParameter.to_json`
@@ -47186,49 +46074,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigMetaParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:174`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigMetaParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configsetparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ConfigSetParameter`
@@ -47254,9 +46132,9 @@ from unitree_sdk2_cpp.robot.go2 import ConfigSetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-configsetparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-configsetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-configsetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-configsetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-configsetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-configsetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-configsetparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigSetParameter.__init__`
@@ -47271,7 +46149,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -47293,20 +46171,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ConfigSetParameter:
-        return ConfigSetParameter()
+value = ConfigSetParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configsetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigSetParameter.from_json`
@@ -47316,18 +46186,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -47339,26 +46209,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ConfigSetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:74`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ConfigSetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-configsetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ConfigSetParameter.to_json`
@@ -47368,49 +46230,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ConfigSetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ConfigSetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizecommobjint"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeCommObjInt`
@@ -47436,9 +46288,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeCommObjInt
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizecommobjint-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizecommobjint-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeCommObjInt.__init__`
@@ -47453,7 +46305,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -47475,20 +46327,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeCommObjInt:
-        return JsonizeCommObjInt()
+value = JsonizeCommObjInt()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizecommobjint-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeCommObjInt.from_json`
@@ -47498,18 +46342,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -47521,26 +46365,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeCommObjInt`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:293`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeCommObjInt, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizecommobjint-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeCommObjInt.to_json`
@@ -47550,49 +46386,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeCommObjInt`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:298`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeCommObjInt, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeConfigMeta`
@@ -47620,9 +46446,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeConfigMeta
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeConfigMeta.__init__`
@@ -47637,7 +46463,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -47659,20 +46485,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeConfigMeta:
-        return JsonizeConfigMeta()
+value = JsonizeConfigMeta()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeConfigMeta.from_json`
@@ -47682,18 +46500,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -47705,26 +46523,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeConfigMeta`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:42`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeConfigMeta, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeconfigmeta-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeConfigMeta.to_json`
@@ -47734,49 +46544,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeConfigMeta`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/config/config_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeConfigMeta, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatabool"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeDataBool`
@@ -47801,9 +46601,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeDataBool
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatabool-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatabool-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataBool.__init__`
@@ -47818,7 +46618,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -47840,20 +46640,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataBool:
-        return JsonizeDataBool()
+value = JsonizeDataBool()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatabool-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataBool.from_json`
@@ -47863,18 +46655,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -47886,26 +46678,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeDataBool`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataBool, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatabool-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataBool.to_json`
@@ -47915,49 +46699,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeDataBool`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:55`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataBool, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatadouble"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeDataDouble`
@@ -47982,9 +46756,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeDataDouble
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatadouble-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatadouble-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataDouble.__init__`
@@ -47999,7 +46773,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48021,20 +46795,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataDouble:
-        return JsonizeDataDouble()
+value = JsonizeDataDouble()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatadouble-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataDouble.from_json`
@@ -48044,18 +46810,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48067,26 +46833,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeDataDouble`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:128`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataDouble, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatadouble-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataDouble.to_json`
@@ -48096,49 +46854,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeDataDouble`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:133`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataDouble, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatafloat"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeDataFloat`
@@ -48163,9 +46911,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeDataFloat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatafloat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatafloat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataFloat.__init__`
@@ -48180,7 +46928,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48202,20 +46950,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataFloat:
-        return JsonizeDataFloat()
+value = JsonizeDataFloat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatafloat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataFloat.from_json`
@@ -48225,18 +46965,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48248,26 +46988,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeDataFloat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:102`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataFloat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatafloat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataFloat.to_json`
@@ -48277,49 +47009,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeDataFloat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:107`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataFloat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedataint"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeDataInt`
@@ -48344,9 +47066,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeDataInt
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedataint-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedataint-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataInt.__init__`
@@ -48361,7 +47083,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48383,20 +47105,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataInt:
-        return JsonizeDataInt()
+value = JsonizeDataInt()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedataint-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataInt.from_json`
@@ -48406,18 +47120,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48429,26 +47143,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeDataInt`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:76`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataInt, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedataint-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataInt.to_json`
@@ -48458,49 +47164,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeDataInt`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:81`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataInt, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatastring"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeDataString`
@@ -48525,9 +47221,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeDataString
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizedatastring-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatastring-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataString.__init__`
@@ -48542,7 +47238,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48564,20 +47260,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataString:
-        return JsonizeDataString()
+value = JsonizeDataString()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatastring-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataString.from_json`
@@ -48587,18 +47275,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48610,26 +47298,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeDataString`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:154`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataString, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizedatastring-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeDataString.to_json`
@@ -48639,49 +47319,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeDataString`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:159`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataString, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeflagbool"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeFlagBool`
@@ -48706,9 +47376,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeFlagBool
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizeflagbool-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeflagbool-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeFlagBool.__init__`
@@ -48723,7 +47393,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48745,20 +47415,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeFlagBool:
-        return JsonizeFlagBool()
+value = JsonizeFlagBool()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeflagbool-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeFlagBool.from_json`
@@ -48768,18 +47430,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48791,26 +47453,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeFlagBool`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:24`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeFlagBool, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizeflagbool-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeFlagBool.to_json`
@@ -48820,49 +47474,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeFlagBool`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:29`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeFlagBool, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizepathpoint"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizePathPoint`
@@ -48893,9 +47537,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizePathPoint
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizepathpoint-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizepathpoint-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizePathPoint.__init__`
@@ -48910,7 +47554,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -48932,20 +47576,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizePathPoint:
-        return JsonizePathPoint()
+value = JsonizePathPoint()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizepathpoint-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizePathPoint.from_json`
@@ -48955,18 +47591,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -48978,26 +47614,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizePathPoint`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:249`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizePathPoint, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizepathpoint-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizePathPoint.to_json`
@@ -49007,49 +47635,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizePathPoint`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:260`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizePathPoint, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizequat"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeQuat`
@@ -49077,9 +47695,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeQuat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizequat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizequat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizequat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizequat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizequat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizequat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizequat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeQuat.__init__`
@@ -49094,7 +47712,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -49116,20 +47734,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeQuat:
-        return JsonizeQuat()
+value = JsonizeQuat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizequat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeQuat.from_json`
@@ -49139,18 +47749,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -49162,26 +47772,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeQuat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:212`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeQuat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizequat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeQuat.to_json`
@@ -49191,49 +47793,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeQuat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:220`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeQuat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizevec3"></a>
 ### `unitree_sdk2_cpp.robot.go2.JsonizeVec3`
@@ -49260,9 +47852,9 @@ from unitree_sdk2_cpp.robot.go2 import JsonizeVec3
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-jsonizevec3-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizevec3-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeVec3.__init__`
@@ -49277,7 +47869,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -49299,20 +47891,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeVec3:
-        return JsonizeVec3()
+value = JsonizeVec3()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizevec3-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeVec3.from_json`
@@ -49322,18 +47906,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -49345,26 +47929,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::JsonizeVec3`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:180`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeVec3, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-jsonizevec3-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.JsonizeVec3.to_json`
@@ -49374,49 +47950,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::JsonizeVec3`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/public/jsonize_type.hpp:187`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeVec3, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient`
@@ -49435,14 +48001,14 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidClient
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`init`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-init-1) | `def init(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`switch_set`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-set-1) | `def switch_set(self, enable: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_get`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-get-1) | `def switch_get(self) -> tuple[int, bool]` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-1) | `def move(self, x: float, y: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`use_remote_command_from_api`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-use-remote-command-from-api-1) | `def use_remote_command_from_api(self, is_remote_commands_from_api: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move_to_absolute_position`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-absolute-position-1) | `def move_to_absolute_position(self, x: float, y: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move_to_increment_position`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-increment-position-1) | `def move_to_increment_position(self, x: float, y: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`init`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`switch_set`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-set-1) | `def switch_set(self, enable: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_get`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-get-1) | `def switch_get(self) -> tuple[int, bool]` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-1) | `def move(self, x: float, y: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`use_remote_command_from_api`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-use-remote-command-from-api-1) | `def use_remote_command_from_api(self, is_remote_commands_from_api: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move_to_absolute_position`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-absolute-position-1) | `def move_to_absolute_position(self, x: float, y: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move_to_increment_position`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-increment-position-1) | `def move_to_increment_position(self, x: float, y: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.__init__`
@@ -49457,7 +48023,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -49479,20 +48045,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ObstaclesAvoidClient:
-        return ObstaclesAvoidClient()
+value = ObstaclesAvoidClient()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.init`
@@ -49507,7 +48065,7 @@ def init(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -49529,20 +48087,12 @@ def init(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_init(obj: ObstaclesAvoidClient) -> None:
-        obj.init()
+obj.init()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-set-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.switch_set`
@@ -49557,7 +48107,7 @@ def switch_set(self, enable: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49581,21 +48131,16 @@ def switch_set(self, enable: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_set(obj: ObstaclesAvoidClient, enable: bool) -> int:
-        return obj.switch_set(enable=enable)
+result = obj.switch_set(enable=enable)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-switch-get-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.switch_get`
@@ -49610,7 +48155,7 @@ def switch_get(self) -> tuple[int, bool]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49634,21 +48179,16 @@ def switch_get(self) -> tuple[int, bool]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_get(obj: ObstaclesAvoidClient) -> tuple[int, bool]:
-        return obj.switch_get()
+status, enable = obj.switch_get()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.move`
@@ -49663,7 +48203,7 @@ def move(self, x: float, y: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49689,21 +48229,16 @@ def move(self, x: float, y: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: ObstaclesAvoidClient, x: float, y: float, yaw: float) -> int:
-        return obj.move(x=x, y=y, yaw=yaw)
+result = obj.move(x=x, y=y, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-use-remote-command-from-api-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.use_remote_command_from_api`
@@ -49718,7 +48253,7 @@ def use_remote_command_from_api(self, is_remote_commands_from_api: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49742,21 +48277,16 @@ def use_remote_command_from_api(self, is_remote_commands_from_api: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_use_remote_command_from_api(obj: ObstaclesAvoidClient, is_remote_commands_from_api: bool) -> int:
-        return obj.use_remote_command_from_api(is_remote_commands_from_api=is_remote_commands_from_api)
+result = obj.use_remote_command_from_api(is_remote_commands_from_api=is_remote_commands_from_api)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-absolute-position-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.move_to_absolute_position`
@@ -49771,7 +48301,7 @@ def move_to_absolute_position(self, x: float, y: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49797,21 +48327,16 @@ def move_to_absolute_position(self, x: float, y: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move_to_absolute_position(obj: ObstaclesAvoidClient, x: float, y: float, yaw: float) -> int:
-        return obj.move_to_absolute_position(x=x, y=y, yaw=yaw)
+result = obj.move_to_absolute_position(x=x, y=y, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidclient-move-to-increment-position-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidClient.move_to_increment_position`
@@ -49826,7 +48351,7 @@ def move_to_increment_position(self, x: float, y: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -49852,21 +48377,16 @@ def move_to_increment_position(self, x: float, y: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move_to_increment_position(obj: ObstaclesAvoidClient, x: float, y: float, yaw: float) -> int:
-        return obj.move_to_increment_position(x=x, y=y, yaw=yaw)
+result = obj.move_to_increment_position(x=x, y=y, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidMoveParameter`
@@ -49894,8 +48414,51 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidMoveParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidMoveParameter.__init__`
+
+初始化 `ObstaclesAvoidMoveParameter` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::ObstaclesAvoidMoveParameter`
+- 签名：`ObstaclesAvoidMoveParameter()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = ObstaclesAvoidMoveParameter()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidMoveParameter.from_json`
@@ -49905,18 +48468,18 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidMoveParameter
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -49928,26 +48491,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ObstaclesAvoidMoveParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:55`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ObstaclesAvoidMoveParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidmoveparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidMoveParameter.to_json`
@@ -49957,49 +48512,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ObstaclesAvoidMoveParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:63`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ObstaclesAvoidMoveParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource"></a>
 ### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidRemoteCommandSource`
@@ -50024,8 +48569,51 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidRemoteCommandSource
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidRemoteCommandSource.__init__`
+
+初始化 `ObstaclesAvoidRemoteCommandSource` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::ObstaclesAvoidRemoteCommandSource`
+- 签名：`ObstaclesAvoidRemoteCommandSource()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = ObstaclesAvoidRemoteCommandSource()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidRemoteCommandSource.from_json`
@@ -50035,18 +48623,18 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidRemoteCommandSource
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -50058,26 +48646,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ObstaclesAvoidRemoteCommandSource`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:87`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ObstaclesAvoidRemoteCommandSource, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidremotecommandsource-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidRemoteCommandSource.to_json`
@@ -50087,49 +48667,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ObstaclesAvoidRemoteCommandSource`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:92`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ObstaclesAvoidRemoteCommandSource, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata"></a>
 ### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchGetData`
@@ -50154,8 +48724,51 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidSwitchGetData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchGetData.__init__`
+
+初始化 `ObstaclesAvoidSwitchGetData` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::ObstaclesAvoidSwitchGetData`
+- 签名：`ObstaclesAvoidSwitchGetData()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = ObstaclesAvoidSwitchGetData()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchGetData.from_json`
@@ -50165,18 +48778,18 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidSwitchGetData
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -50188,26 +48801,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ObstaclesAvoidSwitchGetData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:39`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ObstaclesAvoidSwitchGetData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchgetdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchGetData.to_json`
@@ -50217,49 +48822,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ObstaclesAvoidSwitchGetData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:44`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ObstaclesAvoidSwitchGetData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchSetParameter`
@@ -50284,8 +48879,51 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidSwitchSetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchSetParameter.__init__`
+
+初始化 `ObstaclesAvoidSwitchSetParameter` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::ObstaclesAvoidSwitchSetParameter`
+- 签名：`ObstaclesAvoidSwitchSetParameter()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = ObstaclesAvoidSwitchSetParameter()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchSetParameter.from_json`
@@ -50295,18 +48933,18 @@ from unitree_sdk2_cpp.robot.go2 import ObstaclesAvoidSwitchSetParameter
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -50318,26 +48956,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ObstaclesAvoidSwitchSetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:23`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ObstaclesAvoidSwitchSetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-obstaclesavoidswitchsetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ObstaclesAvoidSwitchSetParameter.to_json`
@@ -50347,49 +48977,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ObstaclesAvoidSwitchSetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/obstacles_avoid/obstacles_avoid_api.hpp:28`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ObstaclesAvoidSwitchSetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-robotstateclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.RobotStateClient`
@@ -50411,8 +49031,8 @@ from unitree_sdk2_cpp.robot.go2 import RobotStateClient
 | [`__init__`](#unitree-sdk2-cpp-robot-go2-robotstateclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-go2-robotstateclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
 | [`service_list`](#unitree-sdk2-cpp-robot-go2-robotstateclient-service-list-1) | `def service_list(self) -> tuple[int, list[ServiceState]]` | `AVAILABLE` | `READ_ONLY` |
-| [`service_switch`](#unitree-sdk2-cpp-robot-go2-robotstateclient-service-switch-1) | `def service_switch(self, name: str, swit: int) -> tuple[int, int]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`set_report_freq`](#unitree-sdk2-cpp-robot-go2-robotstateclient-set-report-freq-1) | `def set_report_freq(self, interval: int, duration: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`service_switch`](#unitree-sdk2-cpp-robot-go2-robotstateclient-service-switch-1) | `def service_switch(self, name: str, swit: int) -> tuple[int, int]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`set_report_freq`](#unitree-sdk2-cpp-robot-go2-robotstateclient-set-report-freq-1) | `def set_report_freq(self, interval: int, duration: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-go2-robotstateclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.RobotStateClient.__init__`
@@ -50558,7 +49178,7 @@ def service_switch(self, name: str, swit: int) -> tuple[int, int]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -50585,20 +49205,15 @@ def service_switch(self, name: str, swit: int) -> tuple[int, int]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_service_switch(obj: RobotStateClient, name: str, swit: int) -> tuple[int, int]:
-        return obj.service_switch(name=name, swit=swit)
+status, status = obj.service_switch(name=name, swit=swit)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-robotstateclient-set-report-freq-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.RobotStateClient.set_report_freq`
@@ -50613,7 +49228,7 @@ def set_report_freq(self, interval: int, duration: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -50638,20 +49253,15 @@ def set_report_freq(self, interval: int, duration: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_report_freq(obj: RobotStateClient, interval: int, duration: int) -> int:
-        return obj.set_report_freq(interval=interval, duration=duration)
+result = obj.set_report_freq(interval=interval, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-servicestate"></a>
 ### `unitree_sdk2_cpp.robot.go2.ServiceState`
@@ -50747,9 +49357,9 @@ from unitree_sdk2_cpp.robot.go2 import ServiceStateData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-servicestatedata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-servicestatedata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-servicestatedata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-servicestatedata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-servicestatedata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-servicestatedata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-servicestatedata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceStateData.__init__`
@@ -50764,7 +49374,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -50786,20 +49396,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceStateData:
-        return ServiceStateData()
+value = ServiceStateData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-servicestatedata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceStateData.from_json`
@@ -50809,18 +49411,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -50832,26 +49434,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ServiceStateData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:128`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceStateData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-servicestatedata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceStateData.to_json`
@@ -50861,49 +49455,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ServiceStateData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:135`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceStateData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchdata"></a>
 ### `unitree_sdk2_cpp.robot.go2.ServiceSwitchData`
@@ -50929,9 +49513,9 @@ from unitree_sdk2_cpp.robot.go2 import ServiceSwitchData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchdata-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchData.__init__`
@@ -50946,7 +49530,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -50968,20 +49552,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceSwitchData:
-        return ServiceSwitchData()
+value = ServiceSwitchData()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchData.from_json`
@@ -50991,18 +49567,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -51014,26 +49590,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ServiceSwitchData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:70`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceSwitchData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchData.to_json`
@@ -51043,49 +49611,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ServiceSwitchData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:76`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceSwitchData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.ServiceSwitchParameter`
@@ -51111,9 +49669,9 @@ from unitree_sdk2_cpp.robot.go2 import ServiceSwitchParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-serviceswitchparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchParameter.__init__`
@@ -51128,7 +49686,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -51150,20 +49708,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> ServiceSwitchParameter:
-        return ServiceSwitchParameter()
+value = ServiceSwitchParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchParameter.from_json`
@@ -51173,18 +49723,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -51196,26 +49746,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::ServiceSwitchParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:41`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: ServiceSwitchParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-serviceswitchparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.ServiceSwitchParameter.to_json`
@@ -51225,49 +49767,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::ServiceSwitchParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:47`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: ServiceSwitchParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-setreportfreqparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.SetReportFreqParameter`
@@ -51293,9 +49825,9 @@ from unitree_sdk2_cpp.robot.go2 import SetReportFreqParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-setreportfreqparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-go2-setreportfreqparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SetReportFreqParameter.__init__`
@@ -51310,7 +49842,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -51332,20 +49864,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> SetReportFreqParameter:
-        return SetReportFreqParameter()
+value = SetReportFreqParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-setreportfreqparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SetReportFreqParameter.from_json`
@@ -51355,18 +49879,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -51378,26 +49902,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::SetReportFreqParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:99`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: SetReportFreqParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-setreportfreqparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SetReportFreqParameter.to_json`
@@ -51407,49 +49923,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::SetReportFreqParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/robot_state/robot_state_api.hpp:105`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: SetReportFreqParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.SportClient`
@@ -51468,47 +49974,47 @@ from unitree_sdk2_cpp.robot.go2 import SportClient
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-go2-sportclient-dunder-init-1) | `def __init__(self, enable_lease: bool = ...) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`init`](#unitree-sdk2-cpp-robot-go2-sportclient-init-1) | `def init(self) -> None` | `SIGNATURE_ONLY` | `INITIALIZATION` |
-| [`damp`](#unitree-sdk2-cpp-robot-go2-sportclient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-go2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-go2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_down`](#unitree-sdk2-cpp-robot-go2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`recovery_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`euler`](#unitree-sdk2-cpp-robot-go2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move`](#unitree-sdk2-cpp-robot-go2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`sit`](#unitree-sdk2-cpp-robot-go2-sportclient-sit-1) | `def sit(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`rise_sit`](#unitree-sdk2-cpp-robot-go2-sportclient-rise-sit-1) | `def rise_sit(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`speed_level`](#unitree-sdk2-cpp-robot-go2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`hello`](#unitree-sdk2-cpp-robot-go2-sportclient-hello-1) | `def hello(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stretch`](#unitree-sdk2-cpp-robot-go2-sportclient-stretch-1) | `def stretch(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_joystick`](#unitree-sdk2-cpp-robot-go2-sportclient-switch-joystick-1) | `def switch_joystick(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`content`](#unitree-sdk2-cpp-robot-go2-sportclient-content-1) | `def content(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`heart`](#unitree-sdk2-cpp-robot-go2-sportclient-heart-1) | `def heart(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`pose`](#unitree-sdk2-cpp-robot-go2-sportclient-pose-1) | `def pose(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`scrape`](#unitree-sdk2-cpp-robot-go2-sportclient-scrape-1) | `def scrape(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_jump`](#unitree-sdk2-cpp-robot-go2-sportclient-front-jump-1) | `def front_jump(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`front_pounce`](#unitree-sdk2-cpp-robot-go2-sportclient-front-pounce-1) | `def front_pounce(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`dance1`](#unitree-sdk2-cpp-robot-go2-sportclient-dance1-1) | `def dance1(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`dance2`](#unitree-sdk2-cpp-robot-go2-sportclient-dance2-1) | `def dance2(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`left_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-left-flip-1) | `def left_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`back_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`hand_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-hand-stand-1) | `def hand_stand(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-free-walk-1) | `def free_walk(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_bound`](#unitree-sdk2-cpp-robot-go2-sportclient-free-bound-1) | `def free_bound(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_jump`](#unitree-sdk2-cpp-robot-go2-sportclient-free-jump-1) | `def free_jump(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`free_avoid`](#unitree-sdk2-cpp-robot-go2-sportclient-free-avoid-1) | `def free_avoid(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`classic_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-classic-walk-1) | `def classic_walk(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`walk_upright`](#unitree-sdk2-cpp-robot-go2-sportclient-walk-upright-1) | `def walk_upright(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`cross_step`](#unitree-sdk2-cpp-robot-go2-sportclient-cross-step-1) | `def cross_step(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`auto_recover_set`](#unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-set-1) | `def auto_recover_set(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`auto_recover_get`](#unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-get-1) | `def auto_recover_get(self) -> tuple[int, bool]` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`static_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-static-walk-1) | `def static_walk(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`trot_run`](#unitree-sdk2-cpp-robot-go2-sportclient-trot-run-1) | `def trot_run(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`economic_gait`](#unitree-sdk2-cpp-robot-go2-sportclient-economic-gait-1) | `def economic_gait(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_avoid_mode`](#unitree-sdk2-cpp-robot-go2-sportclient-switch-avoid-mode-1) | `def switch_avoid_mode(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-sportclient-dunder-init-1) | `def __init__(self, enable_lease: bool = False) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`init`](#unitree-sdk2-cpp-robot-go2-sportclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
+| [`damp`](#unitree-sdk2-cpp-robot-go2-sportclient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-go2-sportclient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-go2-sportclient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_down`](#unitree-sdk2-cpp-robot-go2-sportclient-stand-down-1) | `def stand_down(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`recovery_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-recovery-stand-1) | `def recovery_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`euler`](#unitree-sdk2-cpp-robot-go2-sportclient-euler-1) | `def euler(self, roll: float, pitch: float, yaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move`](#unitree-sdk2-cpp-robot-go2-sportclient-move-1) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`sit`](#unitree-sdk2-cpp-robot-go2-sportclient-sit-1) | `def sit(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`rise_sit`](#unitree-sdk2-cpp-robot-go2-sportclient-rise-sit-1) | `def rise_sit(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`speed_level`](#unitree-sdk2-cpp-robot-go2-sportclient-speed-level-1) | `def speed_level(self, level: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`hello`](#unitree-sdk2-cpp-robot-go2-sportclient-hello-1) | `def hello(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stretch`](#unitree-sdk2-cpp-robot-go2-sportclient-stretch-1) | `def stretch(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_joystick`](#unitree-sdk2-cpp-robot-go2-sportclient-switch-joystick-1) | `def switch_joystick(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`content`](#unitree-sdk2-cpp-robot-go2-sportclient-content-1) | `def content(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`heart`](#unitree-sdk2-cpp-robot-go2-sportclient-heart-1) | `def heart(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`pose`](#unitree-sdk2-cpp-robot-go2-sportclient-pose-1) | `def pose(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`scrape`](#unitree-sdk2-cpp-robot-go2-sportclient-scrape-1) | `def scrape(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-front-flip-1) | `def front_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_jump`](#unitree-sdk2-cpp-robot-go2-sportclient-front-jump-1) | `def front_jump(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`front_pounce`](#unitree-sdk2-cpp-robot-go2-sportclient-front-pounce-1) | `def front_pounce(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`dance1`](#unitree-sdk2-cpp-robot-go2-sportclient-dance1-1) | `def dance1(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`dance2`](#unitree-sdk2-cpp-robot-go2-sportclient-dance2-1) | `def dance2(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`left_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-left-flip-1) | `def left_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`back_flip`](#unitree-sdk2-cpp-robot-go2-sportclient-back-flip-1) | `def back_flip(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`hand_stand`](#unitree-sdk2-cpp-robot-go2-sportclient-hand-stand-1) | `def hand_stand(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-free-walk-1) | `def free_walk(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_bound`](#unitree-sdk2-cpp-robot-go2-sportclient-free-bound-1) | `def free_bound(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_jump`](#unitree-sdk2-cpp-robot-go2-sportclient-free-jump-1) | `def free_jump(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`free_avoid`](#unitree-sdk2-cpp-robot-go2-sportclient-free-avoid-1) | `def free_avoid(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`classic_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-classic-walk-1) | `def classic_walk(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`walk_upright`](#unitree-sdk2-cpp-robot-go2-sportclient-walk-upright-1) | `def walk_upright(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`cross_step`](#unitree-sdk2-cpp-robot-go2-sportclient-cross-step-1) | `def cross_step(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`auto_recover_set`](#unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-set-1) | `def auto_recover_set(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`auto_recover_get`](#unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-get-1) | `def auto_recover_get(self) -> tuple[int, bool]` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`static_walk`](#unitree-sdk2-cpp-robot-go2-sportclient-static-walk-1) | `def static_walk(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`trot_run`](#unitree-sdk2-cpp-robot-go2-sportclient-trot-run-1) | `def trot_run(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`economic_gait`](#unitree-sdk2-cpp-robot-go2-sportclient-economic-gait-1) | `def economic_gait(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_avoid_mode`](#unitree-sdk2-cpp-robot-go2-sportclient-switch-avoid-mode-1) | `def switch_avoid_mode(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.__init__`
@@ -51518,18 +50024,18 @@ from unitree_sdk2_cpp.robot.go2 import SportClient
 **签名**
 
 ```python
-def __init__(self, enable_lease: bool = ...) -> None
+def __init__(self, enable_lease: bool = False) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `enable_lease` | `bool` | `...` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
+| `enable_lease` | `bool` | `False` | 是否启用 SDK lease 机制；lease 的获得、续期和释放规则以服务协议为准。 对应 C++ 参数 `enableLease: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -51547,21 +50053,12 @@ def __init__(self, enable_lease: bool = ...) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct(enable_lease: bool) -> SportClient:
-        return SportClient(enable_lease=enable_lease)
+value = SportClient(enable_lease=enable_lease)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-init-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.init`
@@ -51576,7 +50073,7 @@ def init(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `INITIALIZATION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `INITIALIZATION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -51598,20 +50095,12 @@ def init(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_init(obj: SportClient) -> None:
-        obj.init()
+obj.init()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.damp`
@@ -51626,7 +50115,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51648,21 +50137,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: SportClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.balance_stand`
@@ -51677,7 +50161,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51699,21 +50183,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: SportClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.stop_move`
@@ -51728,7 +50207,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51750,21 +50229,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: SportClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.stand_up`
@@ -51779,7 +50253,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51801,21 +50275,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: SportClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-stand-down-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.stand_down`
@@ -51830,7 +50299,7 @@ def stand_down(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51852,21 +50321,16 @@ def stand_down(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_down(obj: SportClient) -> int:
-        return obj.stand_down()
+result = obj.stand_down()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-recovery-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.recovery_stand`
@@ -51881,7 +50345,7 @@ def recovery_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51903,21 +50367,16 @@ def recovery_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_recovery_stand(obj: SportClient) -> int:
-        return obj.recovery_stand()
+result = obj.recovery_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-euler-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.euler`
@@ -51932,7 +50391,7 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -51958,21 +50417,16 @@ def euler(self, roll: float, pitch: float, yaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_euler(obj: SportClient, roll: float, pitch: float, yaw: float) -> int:
-        return obj.euler(roll=roll, pitch=pitch, yaw=yaw)
+result = obj.euler(roll=roll, pitch=pitch, yaw=yaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.move`
@@ -51987,7 +50441,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52013,21 +50467,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: SportClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-sit-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.sit`
@@ -52042,7 +50491,7 @@ def sit(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52064,21 +50513,16 @@ def sit(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_sit(obj: SportClient) -> int:
-        return obj.sit()
+result = obj.sit()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-rise-sit-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.rise_sit`
@@ -52093,7 +50537,7 @@ def rise_sit(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52115,21 +50559,16 @@ def rise_sit(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_rise_sit(obj: SportClient) -> int:
-        return obj.rise_sit()
+result = obj.rise_sit()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-speed-level-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.speed_level`
@@ -52144,7 +50583,7 @@ def speed_level(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52168,21 +50607,16 @@ def speed_level(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_speed_level(obj: SportClient, level: int) -> int:
-        return obj.speed_level(level=level)
+result = obj.speed_level(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-hello-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.hello`
@@ -52197,7 +50631,7 @@ def hello(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52219,21 +50653,16 @@ def hello(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_hello(obj: SportClient) -> int:
-        return obj.hello()
+result = obj.hello()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-stretch-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.stretch`
@@ -52248,7 +50677,7 @@ def stretch(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52270,21 +50699,16 @@ def stretch(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stretch(obj: SportClient) -> int:
-        return obj.stretch()
+result = obj.stretch()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-switch-joystick-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.switch_joystick`
@@ -52299,7 +50723,7 @@ def switch_joystick(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52323,21 +50747,16 @@ def switch_joystick(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_joystick(obj: SportClient, flag: bool) -> int:
-        return obj.switch_joystick(flag=flag)
+result = obj.switch_joystick(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-content-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.content`
@@ -52352,7 +50771,7 @@ def content(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52374,21 +50793,16 @@ def content(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_content(obj: SportClient) -> int:
-        return obj.content()
+result = obj.content()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-heart-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.heart`
@@ -52403,7 +50817,7 @@ def heart(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52425,21 +50839,16 @@ def heart(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_heart(obj: SportClient) -> int:
-        return obj.heart()
+result = obj.heart()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-pose-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.pose`
@@ -52454,7 +50863,7 @@ def pose(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52478,21 +50887,16 @@ def pose(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_pose(obj: SportClient, flag: bool) -> int:
-        return obj.pose(flag=flag)
+result = obj.pose(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-scrape-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.scrape`
@@ -52507,7 +50911,7 @@ def scrape(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52529,21 +50933,16 @@ def scrape(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_scrape(obj: SportClient) -> int:
-        return obj.scrape()
+result = obj.scrape()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-front-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.front_flip`
@@ -52558,7 +50957,7 @@ def front_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52580,21 +50979,16 @@ def front_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_flip(obj: SportClient) -> int:
-        return obj.front_flip()
+result = obj.front_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-front-jump-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.front_jump`
@@ -52609,7 +51003,7 @@ def front_jump(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52631,21 +51025,16 @@ def front_jump(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_jump(obj: SportClient) -> int:
-        return obj.front_jump()
+result = obj.front_jump()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-front-pounce-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.front_pounce`
@@ -52660,7 +51049,7 @@ def front_pounce(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52682,21 +51071,16 @@ def front_pounce(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_front_pounce(obj: SportClient) -> int:
-        return obj.front_pounce()
+result = obj.front_pounce()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-dance1-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.dance1`
@@ -52711,7 +51095,7 @@ def dance1(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52733,21 +51117,16 @@ def dance1(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_dance1(obj: SportClient) -> int:
-        return obj.dance1()
+result = obj.dance1()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-dance2-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.dance2`
@@ -52762,7 +51141,7 @@ def dance2(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52784,21 +51163,16 @@ def dance2(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_dance2(obj: SportClient) -> int:
-        return obj.dance2()
+result = obj.dance2()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-left-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.left_flip`
@@ -52813,7 +51187,7 @@ def left_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52835,21 +51209,16 @@ def left_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_left_flip(obj: SportClient) -> int:
-        return obj.left_flip()
+result = obj.left_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-back-flip-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.back_flip`
@@ -52864,7 +51233,7 @@ def back_flip(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52886,21 +51255,16 @@ def back_flip(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_back_flip(obj: SportClient) -> int:
-        return obj.back_flip()
+result = obj.back_flip()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-hand-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.hand_stand`
@@ -52915,7 +51279,7 @@ def hand_stand(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52939,21 +51303,16 @@ def hand_stand(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_hand_stand(obj: SportClient, flag: bool) -> int:
-        return obj.hand_stand(flag=flag)
+result = obj.hand_stand(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-free-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.free_walk`
@@ -52968,7 +51327,7 @@ def free_walk(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -52990,21 +51349,16 @@ def free_walk(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_walk(obj: SportClient) -> int:
-        return obj.free_walk()
+result = obj.free_walk()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-free-bound-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.free_bound`
@@ -53019,7 +51373,7 @@ def free_bound(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53043,21 +51397,16 @@ def free_bound(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_bound(obj: SportClient, flag: bool) -> int:
-        return obj.free_bound(flag=flag)
+result = obj.free_bound(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-free-jump-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.free_jump`
@@ -53072,7 +51421,7 @@ def free_jump(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53096,21 +51445,16 @@ def free_jump(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_jump(obj: SportClient, flag: bool) -> int:
-        return obj.free_jump(flag=flag)
+result = obj.free_jump(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-free-avoid-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.free_avoid`
@@ -53125,7 +51469,7 @@ def free_avoid(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53149,21 +51493,16 @@ def free_avoid(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_free_avoid(obj: SportClient, flag: bool) -> int:
-        return obj.free_avoid(flag=flag)
+result = obj.free_avoid(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-classic-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.classic_walk`
@@ -53178,7 +51517,7 @@ def classic_walk(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53202,21 +51541,16 @@ def classic_walk(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_classic_walk(obj: SportClient, flag: bool) -> int:
-        return obj.classic_walk(flag=flag)
+result = obj.classic_walk(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-walk-upright-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.walk_upright`
@@ -53231,7 +51565,7 @@ def walk_upright(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53255,21 +51589,16 @@ def walk_upright(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_walk_upright(obj: SportClient, flag: bool) -> int:
-        return obj.walk_upright(flag=flag)
+result = obj.walk_upright(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-cross-step-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.cross_step`
@@ -53284,7 +51613,7 @@ def cross_step(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53308,21 +51637,16 @@ def cross_step(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_cross_step(obj: SportClient, flag: bool) -> int:
-        return obj.cross_step(flag=flag)
+result = obj.cross_step(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-set-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.auto_recover_set`
@@ -53337,7 +51661,7 @@ def auto_recover_set(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53361,21 +51685,16 @@ def auto_recover_set(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_auto_recover_set(obj: SportClient, flag: bool) -> int:
-        return obj.auto_recover_set(flag=flag)
+result = obj.auto_recover_set(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-auto-recover-get-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.auto_recover_get`
@@ -53390,7 +51709,7 @@ def auto_recover_get(self) -> tuple[int, bool]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53414,21 +51733,16 @@ def auto_recover_get(self) -> tuple[int, bool]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_auto_recover_get(obj: SportClient) -> tuple[int, bool]:
-        return obj.auto_recover_get()
+status, flag = obj.auto_recover_get()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-static-walk-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.static_walk`
@@ -53443,7 +51757,7 @@ def static_walk(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53465,21 +51779,16 @@ def static_walk(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_static_walk(obj: SportClient) -> int:
-        return obj.static_walk()
+result = obj.static_walk()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-trot-run-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.trot_run`
@@ -53494,7 +51803,7 @@ def trot_run(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53516,21 +51825,16 @@ def trot_run(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_trot_run(obj: SportClient) -> int:
-        return obj.trot_run()
+result = obj.trot_run()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-economic-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.economic_gait`
@@ -53545,7 +51849,7 @@ def economic_gait(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53567,21 +51871,16 @@ def economic_gait(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_economic_gait(obj: SportClient) -> int:
-        return obj.economic_gait()
+result = obj.economic_gait()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-sportclient-switch-avoid-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.SportClient.switch_avoid_mode`
@@ -53596,7 +51895,7 @@ def switch_avoid_mode(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -53618,21 +51917,16 @@ def switch_avoid_mode(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_avoid_mode(obj: SportClient) -> int:
-        return obj.switch_avoid_mode()
+result = obj.switch_avoid_mode()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.UtrackClient`
@@ -53653,8 +51947,8 @@ from unitree_sdk2_cpp.robot.go2 import UtrackClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-go2-utrackclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-go2-utrackclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`switch_set`](#unitree-sdk2-cpp-robot-go2-utrackclient-switch-set-1) | `def switch_set(self, enable: bool) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`switch_get`](#unitree-sdk2-cpp-robot-go2-utrackclient-switch-get-1) | `def switch_get(self) -> tuple[int, bool]` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`switch_set`](#unitree-sdk2-cpp-robot-go2-utrackclient-switch-set-1) | `def switch_set(self, enable: bool) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`switch_get`](#unitree-sdk2-cpp-robot-go2-utrackclient-switch-get-1) | `def switch_get(self) -> tuple[int, bool]` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`is_tracking`](#unitree-sdk2-cpp-robot-go2-utrackclient-is-tracking-1) | `def is_tracking(self) -> tuple[int, bool]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackclient-dunder-init-1"></a>
@@ -53754,7 +52048,7 @@ def switch_set(self, enable: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -53778,20 +52072,15 @@ def switch_set(self, enable: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_set(obj: UtrackClient, enable: bool) -> int:
-        return obj.switch_set(enable=enable)
+result = obj.switch_set(enable=enable)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackclient-switch-get-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackClient.switch_get`
@@ -53806,7 +52095,7 @@ def switch_get(self) -> tuple[int, bool]
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -53830,20 +52119,15 @@ def switch_get(self) -> tuple[int, bool]
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
 - C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_get(obj: UtrackClient) -> tuple[int, bool]:
-        return obj.switch_get()
+status, enable = obj.switch_get()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackclient-is-tracking-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackClient.is_tracking`
@@ -53915,8 +52199,51 @@ from unitree_sdk2_cpp.robot.go2 import UtrackSwitchGetData
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.UtrackSwitchGetData.__init__`
+
+初始化 `UtrackSwitchGetData` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::UtrackSwitchGetData`
+- 签名：`UtrackSwitchGetData()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = UtrackSwitchGetData()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackSwitchGetData.from_json`
@@ -53926,18 +52253,18 @@ from unitree_sdk2_cpp.robot.go2 import UtrackSwitchGetData
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -53949,26 +52276,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::UtrackSwitchGetData`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/utrack/utrack_api.hpp:38`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: UtrackSwitchGetData, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackswitchgetdata-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackSwitchGetData.to_json`
@@ -53978,49 +52297,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::UtrackSwitchGetData`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/utrack/utrack_api.hpp:43`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: UtrackSwitchGetData, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter"></a>
 ### `unitree_sdk2_cpp.robot.go2.UtrackSwitchSetParameter`
@@ -54045,8 +52354,51 @@ from unitree_sdk2_cpp.robot.go2 import UtrackSwitchSetParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.UtrackSwitchSetParameter.__init__`
+
+初始化 `UtrackSwitchSetParameter` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::UtrackSwitchSetParameter`
+- 签名：`UtrackSwitchSetParameter()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = UtrackSwitchSetParameter()
+```
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackSwitchSetParameter.from_json`
@@ -54056,18 +52408,18 @@ from unitree_sdk2_cpp.robot.go2 import UtrackSwitchSetParameter
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -54079,26 +52431,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::go2::UtrackSwitchSetParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/go2/utrack/utrack_api.hpp:22`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: UtrackSwitchSetParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-utrackswitchsetparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.UtrackSwitchSetParameter.to_json`
@@ -54108,49 +52452,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::go2::UtrackSwitchSetParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/go2/utrack/utrack_api.hpp:27`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: UtrackSwitchSetParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-go2-videoclient"></a>
 ### `unitree_sdk2_cpp.robot.go2.VideoClient`
@@ -54323,11 +52657,11 @@ from unitree_sdk2_cpp.robot.go2 import VuiClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-go2-vuiclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-go2-vuiclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`set_switch`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-switch-1) | `def set_switch(self, enable: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_switch`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-switch-1) | `def set_switch(self, enable: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_switch`](#unitree-sdk2-cpp-robot-go2-vuiclient-get-switch-1) | `def get_switch(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_volume`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-volume-1) | `def set_volume(self, level: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_volume`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-volume-1) | `def set_volume(self, level: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_volume`](#unitree-sdk2-cpp-robot-go2-vuiclient-get-volume-1) | `def get_volume(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_brightness`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-brightness-1) | `def set_brightness(self, level: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_brightness`](#unitree-sdk2-cpp-robot-go2-vuiclient-set-brightness-1) | `def set_brightness(self, level: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_brightness`](#unitree-sdk2-cpp-robot-go2-vuiclient-get-brightness-1) | `def get_brightness(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-go2-vuiclient-dunder-init-1"></a>
@@ -54427,7 +52761,7 @@ def set_switch(self, enable: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -54451,20 +52785,15 @@ def set_switch(self, enable: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_switch(obj: VuiClient, enable: int) -> int:
-        return obj.set_switch(enable=enable)
+result = obj.set_switch(enable=enable)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-vuiclient-get-switch-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.VuiClient.get_switch`
@@ -54526,7 +52855,7 @@ def set_volume(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -54550,20 +52879,15 @@ def set_volume(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_volume(obj: VuiClient, level: int) -> int:
-        return obj.set_volume(level=level)
+result = obj.set_volume(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-vuiclient-get-volume-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.VuiClient.get_volume`
@@ -54625,7 +52949,7 @@ def set_brightness(self, level: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -54649,20 +52973,15 @@ def set_brightness(self, level: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_brightness(obj: VuiClient, level: int) -> int:
-        return obj.set_brightness(level=level)
+result = obj.set_brightness(level=level)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-go2-vuiclient-get-brightness-1"></a>
 #### `unitree_sdk2_cpp.robot.go2.VuiClient.get_brightness`
@@ -54736,6 +53055,54 @@ from unitree_sdk2_cpp.robot.go2 import stPathPoint
 | `vy` | `float` | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 | `value = obj.vy` / `obj.vy = value` |
 | `vyaw` | `float` | 偏航角速度参数。单位、符号和安全范围必须查目标型号运动协议。 | `value = obj.vyaw` / `obj.vyaw = value` |
 
+**方法索引**
+
+| 方法 | Python 签名 | 状态 | 安全分类 |
+| --- | --- | --- | --- |
+| [`__init__`](#unitree-sdk2-cpp-robot-go2-stpathpoint-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+
+<a id="unitree-sdk2-cpp-robot-go2-stpathpoint-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.go2.stPathPoint.__init__`
+
+初始化 `stPathPoint` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::go2::stPathPoint`
+- 签名：`stPathPoint()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = stPathPoint()
+```
+
 ---
 
 <a id="unitree-sdk2-cpp-robot-h1"></a>
@@ -54775,9 +53142,9 @@ from unitree_sdk2_cpp.robot.h1 import JsonizeDataVecFloat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeDataVecFloat.__init__`
@@ -54792,7 +53159,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -54814,20 +53181,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataVecFloat:
-        return JsonizeDataVecFloat()
+value = JsonizeDataVecFloat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeDataVecFloat.from_json`
@@ -54837,18 +53196,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -54860,26 +53219,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h1::JsonizeDataVecFloat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:44`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizedatavecfloat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeDataVecFloat.to_json`
@@ -54889,49 +53240,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h1::JsonizeDataVecFloat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:46`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizetargetpos"></a>
 ### `unitree_sdk2_cpp.robot.h1.JsonizeTargetPos`
@@ -54959,9 +53300,9 @@ from unitree_sdk2_cpp.robot.h1 import JsonizeTargetPos
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizetargetpos-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizetargetpos-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeTargetPos.__init__`
@@ -54976,7 +53317,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -54998,20 +53339,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeTargetPos:
-        return JsonizeTargetPos()
+value = JsonizeTargetPos()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizetargetpos-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeTargetPos.from_json`
@@ -55021,18 +53354,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -55044,26 +53377,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h1::JsonizeTargetPos`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:75`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeTargetPos, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizetargetpos-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeTargetPos.to_json`
@@ -55073,49 +53398,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h1::JsonizeTargetPos`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:82`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeTargetPos, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand"></a>
 ### `unitree_sdk2_cpp.robot.h1.JsonizeVelocityCommand`
@@ -55141,9 +53456,9 @@ from unitree_sdk2_cpp.robot.h1 import JsonizeVelocityCommand
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeVelocityCommand.__init__`
@@ -55158,7 +53473,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -55180,20 +53495,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeVelocityCommand:
-        return JsonizeVelocityCommand()
+value = JsonizeVelocityCommand()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeVelocityCommand.from_json`
@@ -55203,18 +53510,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -55226,26 +53533,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h1::JsonizeVelocityCommand`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:56`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-jsonizevelocitycommand-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.JsonizeVelocityCommand.to_json`
@@ -55255,49 +53554,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h1::JsonizeVelocityCommand`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h1/loco/h1_loco_api.hpp:61`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient"></a>
 ### `unitree_sdk2_cpp.robot.h1.LocoClient`
@@ -55324,32 +53613,32 @@ from unitree_sdk2_cpp.robot.h1 import LocoClient
 | [`get_swing_height`](#unitree-sdk2-cpp-robot-h1-lococlient-get-swing-height-1) | `def get_swing_height(self) -> tuple[int, float]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_stand_height`](#unitree-sdk2-cpp-robot-h1-lococlient-get-stand-height-1) | `def get_stand_height(self) -> tuple[int, float]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_phase`](#unitree-sdk2-cpp-robot-h1-lococlient-get-phase-1) | `def get_phase(self) -> tuple[int, list[float]]` | `AVAILABLE` | `READ_ONLY` |
-| [`enable_odom`](#unitree-sdk2-cpp-robot-h1-lococlient-enable-odom-1) | `def enable_odom(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`disable_odom`](#unitree-sdk2-cpp-robot-h1-lococlient-disable-odom-1) | `def disable_odom(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`enable_odom`](#unitree-sdk2-cpp-robot-h1-lococlient-enable-odom-1) | `def enable_odom(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`disable_odom`](#unitree-sdk2-cpp-robot-h1-lococlient-disable-odom-1) | `def disable_odom(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_odom`](#unitree-sdk2-cpp-robot-h1-lococlient-get-odom-1) | `def get_odom(self) -> tuple[int, float, float, float]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_fsm_id`](#unitree-sdk2-cpp-robot-h1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_balance_mode`](#unitree-sdk2-cpp-robot-h1-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_swing_height`](#unitree-sdk2-cpp-robot-h1-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_stand_height`](#unitree-sdk2-cpp-robot-h1-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_velocity`](#unitree-sdk2-cpp-robot-h1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_phase`](#unitree-sdk2-cpp-robot-h1-lococlient-set-phase-1) | `def set_phase(self, phase: Sequence[float]) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_target_pos`](#unitree-sdk2-cpp-robot-h1-lococlient-set-target-pos-1) | `def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_task_id`](#unitree-sdk2-cpp-robot-h1-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`damp`](#unitree-sdk2-cpp-robot-h1-lococlient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`start`](#unitree-sdk2-cpp-robot-h1-lococlient-start-1) | `def start(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-h1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`zero_torque`](#unitree-sdk2-cpp-robot-h1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-h1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`high_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-high-stand-1) | `def high_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`low_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-low-stand-1) | `def low_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-h1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-h1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`continuous_gait`](#unitree-sdk2-cpp-robot-h1-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_move_mode`](#unitree-sdk2-cpp-robot-h1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_next_foot`](#unitree-sdk2-cpp-robot-h1-lococlient-set-next-foot-1) | `def set_next_foot(self, foot: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`wave_hand`](#unitree-sdk2-cpp-robot-h1-lococlient-wave-hand-1) | `def wave_hand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`shake_hand`](#unitree-sdk2-cpp-robot-h1-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`set_fsm_id`](#unitree-sdk2-cpp-robot-h1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_balance_mode`](#unitree-sdk2-cpp-robot-h1-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_swing_height`](#unitree-sdk2-cpp-robot-h1-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_stand_height`](#unitree-sdk2-cpp-robot-h1-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_velocity`](#unitree-sdk2-cpp-robot-h1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_phase`](#unitree-sdk2-cpp-robot-h1-lococlient-set-phase-1) | `def set_phase(self, phase: Sequence[float]) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_target_pos`](#unitree-sdk2-cpp-robot-h1-lococlient-set-target-pos-1) | `def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = True) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_task_id`](#unitree-sdk2-cpp-robot-h1-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-h1-lococlient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`start`](#unitree-sdk2-cpp-robot-h1-lococlient-start-1) | `def start(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-h1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`zero_torque`](#unitree-sdk2-cpp-robot-h1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-h1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`high_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-high-stand-1) | `def high_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`low_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-low-stand-1) | `def low_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-h1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-h1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-h1-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`continuous_gait`](#unitree-sdk2-cpp-robot-h1-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_move_mode`](#unitree-sdk2-cpp-robot-h1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_next_foot`](#unitree-sdk2-cpp-robot-h1-lococlient-set-next-foot-1) | `def set_next_foot(self, foot: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`wave_hand`](#unitree-sdk2-cpp-robot-h1-lococlient-wave-hand-1) | `def wave_hand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`shake_hand`](#unitree-sdk2-cpp-robot-h1-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = -1) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.__init__`
@@ -55730,7 +54019,7 @@ def enable_odom(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -55752,21 +54041,16 @@ def enable_odom(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_enable_odom(obj: LocoClient) -> int:
-        return obj.enable_odom()
+result = obj.enable_odom()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-disable-odom-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.disable_odom`
@@ -55781,7 +54065,7 @@ def disable_odom(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -55803,21 +54087,16 @@ def disable_odom(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_disable_odom(obj: LocoClient) -> int:
-        return obj.disable_odom()
+result = obj.disable_odom()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-get-odom-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.get_odom`
@@ -55881,7 +54160,7 @@ def set_fsm_id(self, fsm_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -55905,21 +54184,16 @@ def set_fsm_id(self, fsm_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_fsm_id(obj: LocoClient, fsm_id: int) -> int:
-        return obj.set_fsm_id(fsm_id=fsm_id)
+result = obj.set_fsm_id(fsm_id=fsm_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-balance-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_balance_mode`
@@ -55934,7 +54208,7 @@ def set_balance_mode(self, balance_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -55958,21 +54232,16 @@ def set_balance_mode(self, balance_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_balance_mode(obj: LocoClient, balance_mode: int) -> int:
-        return obj.set_balance_mode(balance_mode=balance_mode)
+result = obj.set_balance_mode(balance_mode=balance_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-swing-height-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_swing_height`
@@ -55987,7 +54256,7 @@ def set_swing_height(self, swing_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56011,21 +54280,16 @@ def set_swing_height(self, swing_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_swing_height(obj: LocoClient, swing_height: float) -> int:
-        return obj.set_swing_height(swing_height=swing_height)
+result = obj.set_swing_height(swing_height=swing_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-stand-height-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_stand_height`
@@ -56040,7 +54304,7 @@ def set_stand_height(self, stand_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56064,21 +54328,16 @@ def set_stand_height(self, stand_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_stand_height(obj: LocoClient, stand_height: float) -> int:
-        return obj.set_stand_height(stand_height=stand_height)
+result = obj.set_stand_height(stand_height=stand_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-velocity-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_velocity`
@@ -56088,12 +54347,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int
+def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56102,7 +54361,7 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 | `vx` | `float` | 必填 | X 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vx: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `vy` | `float` | 必填 | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vy: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `omega` | `float` | 必填 | 角速度参数。旋转轴、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `omega: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `duration` | `float` | `...` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `duration` | `float` | `1.0` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
@@ -56120,22 +54379,16 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_velocity(obj: LocoClient, vx: float, vy: float, omega: float, duration: float) -> int:
-        return obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
+result = obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-phase-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_phase`
@@ -56150,7 +54403,7 @@ def set_phase(self, phase: Sequence[float]) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56174,21 +54427,16 @@ def set_phase(self, phase: Sequence[float]) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_phase(obj: LocoClient, phase: Sequence[float]) -> int:
-        return obj.set_phase(phase=phase)
+result = obj.set_phase(phase=phase)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-target-pos-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_target_pos`
@@ -56198,12 +54446,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = ...) -> int
+def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = True) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56212,7 +54460,7 @@ def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = ...) -
 | `x` | `float` | 必填 | X 方向位置或分量参数。参考系、单位和范围必须查当前方法及目标型号协议。 对应 C++ 参数 `x: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `y` | `float` | 必填 | Y 方向位置或分量参数。参考系、单位和范围必须查当前方法及目标型号协议。 对应 C++ 参数 `y: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `yaw` | `float` | 必填 | 偏航角或偏航目标参数。参考系、单位和范围必须查目标型号协议。 对应 C++ 参数 `yaw: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `relative` | `bool` | `...` | 传给该接口的 `relative` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `relative: bool`。 只接受布尔语义。 |
+| `relative` | `bool` | `True` | 传给该接口的 `relative` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `relative: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -56230,22 +54478,16 @@ def set_target_pos(self, x: float, y: float, yaw: float, relative: bool = ...) -
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_target_pos(obj: LocoClient, x: float, y: float, yaw: float, relative: bool) -> int:
-        return obj.set_target_pos(x=x, y=y, yaw=yaw, relative=relative)
+result = obj.set_target_pos(x=x, y=y, yaw=yaw, relative=relative)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-task-id-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_task_id`
@@ -56260,7 +54502,7 @@ def set_task_id(self, task_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56284,21 +54526,16 @@ def set_task_id(self, task_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_task_id(obj: LocoClient, task_id: int) -> int:
-        return obj.set_task_id(task_id=task_id)
+result = obj.set_task_id(task_id=task_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.damp`
@@ -56313,7 +54550,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56335,21 +54572,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: LocoClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-start-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.start`
@@ -56364,7 +54596,7 @@ def start(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56386,21 +54618,16 @@ def start(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_start(obj: LocoClient) -> int:
-        return obj.start()
+result = obj.start()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.stand_up`
@@ -56415,7 +54642,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56437,21 +54664,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: LocoClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-zero-torque-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.zero_torque`
@@ -56466,7 +54688,7 @@ def zero_torque(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56488,21 +54710,16 @@ def zero_torque(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_zero_torque(obj: LocoClient) -> int:
-        return obj.zero_torque()
+result = obj.zero_torque()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.stop_move`
@@ -56517,7 +54734,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56539,21 +54756,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: LocoClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-high-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.high_stand`
@@ -56568,7 +54780,7 @@ def high_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56590,21 +54802,16 @@ def high_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_high_stand(obj: LocoClient) -> int:
-        return obj.high_stand()
+result = obj.high_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-low-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.low_stand`
@@ -56619,7 +54826,7 @@ def low_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56641,21 +54848,16 @@ def low_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_low_stand(obj: LocoClient) -> int:
-        return obj.low_stand()
+result = obj.low_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.move`（重载 1/2）
@@ -56671,7 +54873,7 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56698,21 +54900,16 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float, continous_move: bool) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-move-2"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.move`（重载 2/2）
@@ -56728,7 +54925,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56754,21 +54951,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.balance_stand`
@@ -56783,7 +54975,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56805,21 +54997,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: LocoClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-continuous-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.continuous_gait`
@@ -56834,7 +55021,7 @@ def continuous_gait(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56858,21 +55045,16 @@ def continuous_gait(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_continuous_gait(obj: LocoClient, flag: bool) -> int:
-        return obj.continuous_gait(flag=flag)
+result = obj.continuous_gait(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-switch-move-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.switch_move_mode`
@@ -56887,7 +55069,7 @@ def switch_move_mode(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56911,21 +55093,16 @@ def switch_move_mode(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_move_mode(obj: LocoClient, flag: bool) -> int:
-        return obj.switch_move_mode(flag=flag)
+result = obj.switch_move_mode(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-set-next-foot-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.set_next_foot`
@@ -56940,7 +55117,7 @@ def set_next_foot(self, foot: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -56964,21 +55141,16 @@ def set_next_foot(self, foot: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_next_foot(obj: LocoClient, foot: bool) -> int:
-        return obj.set_next_foot(foot=foot)
+result = obj.set_next_foot(foot=foot)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-wave-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.wave_hand`
@@ -56993,7 +55165,7 @@ def wave_hand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -57015,21 +55187,16 @@ def wave_hand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_wave_hand(obj: LocoClient) -> int:
-        return obj.wave_hand()
+result = obj.wave_hand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h1-lococlient-shake-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.h1.LocoClient.shake_hand`
@@ -57039,18 +55206,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def shake_hand(self, stage: int = ...) -> int
+def shake_hand(self, stage: int = -1) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `stage` | `int` | `...` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
+| `stage` | `int` | `-1` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
 
 **返回值**
 
@@ -57068,22 +55235,16 @@ def shake_hand(self, stage: int = ...) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_shake_hand(obj: LocoClient, stage: int) -> int:
-        return obj.shake_hand(stage=stage)
+result = obj.shake_hand(stage=stage)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 ---
 
@@ -57098,8 +55259,8 @@ if TYPE_CHECKING:
 | --- | ---: | ---: |
 | [`FsmIdInfo`](#unitree-sdk2-cpp-robot-h2-fsmidinfo) | 2 | 0 |
 | [`H2ArmActionClient`](#unitree-sdk2-cpp-robot-h2-h2armactionclient) | 6 | 0 |
-| [`JsonizeArmActionCommand`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand) | 2 | 0 |
-| [`JsonizeArmActionName`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname) | 2 | 0 |
+| [`JsonizeArmActionCommand`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand) | 3 | 0 |
+| [`JsonizeArmActionName`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname) | 3 | 0 |
 | [`JsonizeDataVecFloat`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat) | 3 | 0 |
 | [`JsonizeFsmIdList`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist) | 3 | 0 |
 | [`JsonizeVelocityCommand`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand) | 3 | 0 |
@@ -57129,8 +55290,8 @@ from unitree_sdk2_cpp.robot.h2 import FsmIdInfo
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`__init__（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-2) | `def __init__(self, i: int, n: str) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
+| [`__init__（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`__init__（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-2) | `def __init__(self, i: int, n: str) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 
 <a id="unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.FsmIdInfo.__init__`（重载 1/2）
@@ -57146,7 +55307,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -57168,20 +55329,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> FsmIdInfo:
-        return FsmIdInfo()
+value = FsmIdInfo()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-fsmidinfo-dunder-init-2"></a>
 #### `unitree_sdk2_cpp.robot.h2.FsmIdInfo.__init__`（重载 2/2）
@@ -57197,7 +55350,7 @@ def __init__(self, i: int, n: str) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -57222,20 +55375,12 @@ def __init__(self, i: int, n: str) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct(i: int, n: str) -> FsmIdInfo:
-        return FsmIdInfo(i=i, n=n)
+value = FsmIdInfo(i=i, n=n)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-h2armactionclient"></a>
 ### `unitree_sdk2_cpp.robot.h2.H2ArmActionClient`
@@ -57256,9 +55401,9 @@ from unitree_sdk2_cpp.robot.h2 import H2ArmActionClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`execute_action（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-execute-action-1) | `def execute_action(self, action_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`execute_action（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-execute-action-2) | `def execute_action(self, action_name: str) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_custom_action`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-stop-custom-action-1) | `def stop_custom_action(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`execute_action（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-execute-action-1) | `def execute_action(self, action_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`execute_action（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-execute-action-2) | `def execute_action(self, action_name: str) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_custom_action`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-stop-custom-action-1) | `def stop_custom_action(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 | [`get_action_list`](#unitree-sdk2-cpp-robot-h2-h2armactionclient-get-action-list-1) | `def get_action_list(self) -> tuple[int, str]` | `AVAILABLE` | `READ_ONLY` |
 
 <a id="unitree-sdk2-cpp-robot-h2-h2armactionclient-dunder-init-1"></a>
@@ -57359,7 +55504,7 @@ def execute_action(self, action_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -57383,21 +55528,16 @@ def execute_action(self, action_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_execute_action(obj: H2ArmActionClient, action_id: int) -> int:
-        return obj.execute_action(action_id=action_id)
+result = obj.execute_action(action_id=action_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-h2armactionclient-execute-action-2"></a>
 #### `unitree_sdk2_cpp.robot.h2.H2ArmActionClient.execute_action`（重载 2/2）
@@ -57413,7 +55553,7 @@ def execute_action(self, action_name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -57437,21 +55577,16 @@ def execute_action(self, action_name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_execute_action(obj: H2ArmActionClient, action_name: str) -> int:
-        return obj.execute_action(action_name=action_name)
+result = obj.execute_action(action_name=action_name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-h2armactionclient-stop-custom-action-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.H2ArmActionClient.stop_custom_action`
@@ -57466,7 +55601,7 @@ def stop_custom_action(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -57488,21 +55623,16 @@ def stop_custom_action(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_custom_action(obj: H2ArmActionClient) -> int:
-        return obj.stop_custom_action()
+result = obj.stop_custom_action()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-h2armactionclient-get-action-list-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.H2ArmActionClient.get_action_list`
@@ -57574,8 +55704,51 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeArmActionCommand
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionCommand.__init__`
+
+初始化 `JsonizeArmActionCommand` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::h2::JsonizeArmActionCommand`
+- 签名：`JsonizeArmActionCommand()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = JsonizeArmActionCommand()
+```
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionCommand.from_json`
@@ -57585,18 +55758,18 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeArmActionCommand
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -57608,26 +55781,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h2::JsonizeArmActionCommand`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h2/arm/h2_arm_action_api.hpp:22`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeArmActionCommand, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizearmactioncommand-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionCommand.to_json`
@@ -57637,49 +55802,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::JsonizeArmActionCommand`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h2/arm/h2_arm_action_api.hpp:26`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeArmActionCommand, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizearmactionname"></a>
 ### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionName`
@@ -57704,8 +55859,51 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeArmActionName
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizearmactionname-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
+
+<a id="unitree-sdk2-cpp-robot-h2-jsonizearmactionname-dunder-init-1"></a>
+#### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionName.__init__`
+
+初始化 `JsonizeArmActionName` 实例。是否能实际构造取决于下方可用性状态。
+
+**签名**
+
+```python
+def __init__(self) -> None
+```
+
+**可用性与安全性**
+
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
+
+**参数**
+
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
+
+**返回值**
+
+| 位置 | 类型 | 含义 |
+| --- | --- | --- |
+| 无 | `None` | `__init__` 本身不返回值；调用类对象时，在构造函数可用的前提下得到该类实例。 |
+
+**对应 C++**
+
+- 类：`unitree::robot::h2::JsonizeArmActionName`
+- 签名：`JsonizeArmActionName()`
+- 绑定策略：`未单独标注`
+- 声明位置：由 pybind11 手工绑定或生成注册表提供；manifest 未记录独立头文件行号。
+
+**说明**
+
+- 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
+
+**用法**
+
+```python
+value = JsonizeArmActionName()
+```
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizearmactionname-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionName.from_json`
@@ -57715,18 +55913,18 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeArmActionName
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -57738,26 +55936,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h2::JsonizeArmActionName`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h2/arm/h2_arm_action_api.hpp:35`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeArmActionName, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizearmactionname-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeArmActionName.to_json`
@@ -57767,49 +55957,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::JsonizeArmActionName`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h2/arm/h2_arm_action_api.hpp:39`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeArmActionName, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat"></a>
 ### `unitree_sdk2_cpp.robot.h2.JsonizeDataVecFloat`
@@ -57834,9 +56014,9 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeDataVecFloat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeDataVecFloat.__init__`
@@ -57851,7 +56031,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -57873,20 +56053,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataVecFloat:
-        return JsonizeDataVecFloat()
+value = JsonizeDataVecFloat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeDataVecFloat.from_json`
@@ -57896,18 +56068,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -57919,26 +56091,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h2::JsonizeDataVecFloat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:43`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizedatavecfloat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeDataVecFloat.to_json`
@@ -57948,49 +56112,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::JsonizeDataVecFloat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:45`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizefsmidlist"></a>
 ### `unitree_sdk2_cpp.robot.h2.JsonizeFsmIdList`
@@ -58015,9 +56169,9 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeFsmIdList
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeFsmIdList.__init__`
@@ -58032,7 +56186,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -58054,20 +56208,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeFsmIdList:
-        return JsonizeFsmIdList()
+value = JsonizeFsmIdList()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeFsmIdList.from_json`
@@ -58077,18 +56223,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -58100,26 +56246,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h2::JsonizeFsmIdList`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:82`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeFsmIdList, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizefsmidlist-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeFsmIdList.to_json`
@@ -58129,49 +56267,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::JsonizeFsmIdList`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:95`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeFsmIdList, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand"></a>
 ### `unitree_sdk2_cpp.robot.h2.JsonizeVelocityCommand`
@@ -58197,9 +56325,9 @@ from unitree_sdk2_cpp.robot.h2 import JsonizeVelocityCommand
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeVelocityCommand.__init__`
@@ -58214,7 +56342,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -58236,20 +56364,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeVelocityCommand:
-        return JsonizeVelocityCommand()
+value = JsonizeVelocityCommand()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeVelocityCommand.from_json`
@@ -58259,18 +56379,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -58282,26 +56402,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::h2::JsonizeVelocityCommand`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:55`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-jsonizevelocitycommand-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.JsonizeVelocityCommand.to_json`
@@ -58311,49 +56423,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::JsonizeVelocityCommand`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_api.hpp:60`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient"></a>
 ### `unitree_sdk2_cpp.robot.h2.LocoClient`
@@ -58382,33 +56484,33 @@ from unitree_sdk2_cpp.robot.h2 import LocoClient
 | [`get_phase`](#unitree-sdk2-cpp-robot-h2-lococlient-get-phase-1) | `def get_phase(self) -> tuple[int, list[float]]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_arm_sdk_status`](#unitree-sdk2-cpp-robot-h2-lococlient-get-arm-sdk-status-1) | `def get_arm_sdk_status(self) -> tuple[int, bool]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_available_fsm_ids`](#unitree-sdk2-cpp-robot-h2-lococlient-get-available-fsm-ids-1) | `def get_available_fsm_ids(self) -> tuple[int, list[int], list[str]]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_fsm_id`](#unitree-sdk2-cpp-robot-h2-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_balance_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_punch_api`](#unitree-sdk2-cpp-robot-h2-lococlient-set-punch-api-1) | `def set_punch_api(self) -> tuple[int, list[float]]` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_swing_height`](#unitree-sdk2-cpp-robot-h2-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_stand_height`](#unitree-sdk2-cpp-robot-h2-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_velocity`](#unitree-sdk2-cpp-robot-h2-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_task_id`](#unitree-sdk2-cpp-robot-h2-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_arm_sdk_status`](#unitree-sdk2-cpp-robot-h2-lococlient-set-arm-sdk-status-1) | `def set_arm_sdk_status(self, arm_sdk_status: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`damp`](#unitree-sdk2-cpp-robot-h2-lococlient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`start`](#unitree-sdk2-cpp-robot-h2-lococlient-start-1) | `def start(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`squat`](#unitree-sdk2-cpp-robot-h2-lococlient-squat-1) | `def squat(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`sit`](#unitree-sdk2-cpp-robot-h2-lococlient-sit-1) | `def sit(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-h2-lococlient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`zero_torque`](#unitree-sdk2-cpp-robot-h2-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-h2-lococlient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`high_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-high-stand-1) | `def high_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`low_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-low-stand-1) | `def low_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`balance_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`continuous_gait`](#unitree-sdk2-cpp-robot-h2-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_move_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`wave_hand`](#unitree-sdk2-cpp-robot-h2-lococlient-wave-hand-1) | `def wave_hand(self, turn_flag: bool = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`shake_hand`](#unitree-sdk2-cpp-robot-h2-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_speed_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`enable_arm_sdk`](#unitree-sdk2-cpp-robot-h2-lococlient-enable-arm-sdk-1) | `def enable_arm_sdk(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`disable_arm_sdk`](#unitree-sdk2-cpp-robot-h2-lococlient-disable-arm-sdk-1) | `def disable_arm_sdk(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`set_fsm_id`](#unitree-sdk2-cpp-robot-h2-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_balance_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-set-balance-mode-1) | `def set_balance_mode(self, balance_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_punch_api`](#unitree-sdk2-cpp-robot-h2-lococlient-set-punch-api-1) | `def set_punch_api(self, punch_api: Sequence[float]) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_swing_height`](#unitree-sdk2-cpp-robot-h2-lococlient-set-swing-height-1) | `def set_swing_height(self, swing_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_stand_height`](#unitree-sdk2-cpp-robot-h2-lococlient-set-stand-height-1) | `def set_stand_height(self, stand_height: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_velocity`](#unitree-sdk2-cpp-robot-h2-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_task_id`](#unitree-sdk2-cpp-robot-h2-lococlient-set-task-id-1) | `def set_task_id(self, task_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_arm_sdk_status`](#unitree-sdk2-cpp-robot-h2-lococlient-set-arm-sdk-status-1) | `def set_arm_sdk_status(self, arm_sdk_status: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-h2-lococlient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`start`](#unitree-sdk2-cpp-robot-h2-lococlient-start-1) | `def start(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`squat`](#unitree-sdk2-cpp-robot-h2-lococlient-squat-1) | `def squat(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`sit`](#unitree-sdk2-cpp-robot-h2-lococlient-sit-1) | `def sit(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-h2-lococlient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`zero_torque`](#unitree-sdk2-cpp-robot-h2-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-h2-lococlient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`high_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-high-stand-1) | `def high_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`low_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-low-stand-1) | `def low_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-h2-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-h2-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`balance_stand`](#unitree-sdk2-cpp-robot-h2-lococlient-balance-stand-1) | `def balance_stand(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`continuous_gait`](#unitree-sdk2-cpp-robot-h2-lococlient-continuous-gait-1) | `def continuous_gait(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_move_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`wave_hand`](#unitree-sdk2-cpp-robot-h2-lococlient-wave-hand-1) | `def wave_hand(self, turn_flag: bool = False) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`shake_hand`](#unitree-sdk2-cpp-robot-h2-lococlient-shake-hand-1) | `def shake_hand(self, stage: int = -1) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_speed_mode`](#unitree-sdk2-cpp-robot-h2-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`enable_arm_sdk`](#unitree-sdk2-cpp-robot-h2-lococlient-enable-arm-sdk-1) | `def enable_arm_sdk(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`disable_arm_sdk`](#unitree-sdk2-cpp-robot-h2-lococlient-disable-arm-sdk-1) | `def disable_arm_sdk(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.__init__`
@@ -58884,7 +56986,7 @@ def set_fsm_id(self, fsm_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -58908,21 +57010,16 @@ def set_fsm_id(self, fsm_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_fsm_id(obj: LocoClient, fsm_id: int) -> int:
-        return obj.set_fsm_id(fsm_id=fsm_id)
+result = obj.set_fsm_id(fsm_id=fsm_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-balance-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_balance_mode`
@@ -58937,7 +57034,7 @@ def set_balance_mode(self, balance_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -58961,21 +57058,16 @@ def set_balance_mode(self, balance_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_balance_mode(obj: LocoClient, balance_mode: int) -> int:
-        return obj.set_balance_mode(balance_mode=balance_mode)
+result = obj.set_balance_mode(balance_mode=balance_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-punch-api-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_punch_api`
@@ -58985,50 +57077,45 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_punch_api(self) -> tuple[int, list[float]]
+def set_punch_api(self, punch_api: Sequence[float]) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
-无显式参数。实例方法中的 `self` 由 Python 自动传入。
+| 名称 | Python 类型 | 默认值 | 含义 |
+| --- | --- | --- | --- |
+| `punch_api` | `Sequence[float]` | 必填 | 传给该接口的 `punch` API 参数，Python 类型为 `Sequence[float]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `punch_api: std::vector<float> &`。 底层是可变长度 vector；元素约束：底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| [0] `status` | `int` | SDK 状态码；Unitree 示例通常以 `0` 表示成功，非零值需按具体服务错误码解释。 |
-| [1] `punch_api` | `list[float]` | 传给该接口的 `punch` API 参数，Python 类型为 `list[float]`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `punch_api: std::vector<float> &`。 底层是可变长度 vector；元素约束：底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| 返回值 | `int` | SDK 状态码；Unitree 示例通常以 `0` 表示成功，非零值需按具体服务定义解释。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::h2::LocoClient`
 - 签名：`SetPunchApi(std::vector<float> &)`
-- 绑定策略：`OUTPUT_WRAPPER`
+- 绑定策略：`MUTABLE_INPUT_COPY`
 - 声明位置：`include/unitree/robot/h2/loco/h2_loco_client.hpp:178`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- C++ 的可修改输出引用不会作为 Python 入参出现，而是按 C++ 参数顺序追加到返回元组中。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_punch_api(obj: LocoClient) -> tuple[int, list[float]]:
-        return obj.set_punch_api()
+result = obj.set_punch_api(punch_api=punch_api)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-swing-height-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_swing_height`
@@ -59043,7 +57130,7 @@ def set_swing_height(self, swing_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59067,21 +57154,16 @@ def set_swing_height(self, swing_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_swing_height(obj: LocoClient, swing_height: float) -> int:
-        return obj.set_swing_height(swing_height=swing_height)
+result = obj.set_swing_height(swing_height=swing_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-stand-height-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_stand_height`
@@ -59096,7 +57178,7 @@ def set_stand_height(self, stand_height: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59120,21 +57202,16 @@ def set_stand_height(self, stand_height: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_stand_height(obj: LocoClient, stand_height: float) -> int:
-        return obj.set_stand_height(stand_height=stand_height)
+result = obj.set_stand_height(stand_height=stand_height)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-velocity-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_velocity`
@@ -59144,12 +57221,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int
+def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59158,7 +57235,7 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 | `vx` | `float` | 必填 | X 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vx: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `vy` | `float` | 必填 | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vy: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `omega` | `float` | 必填 | 角速度参数。旋转轴、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `omega: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `duration` | `float` | `...` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `duration` | `float` | `1.0` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
@@ -59176,22 +57253,16 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_velocity(obj: LocoClient, vx: float, vy: float, omega: float, duration: float) -> int:
-        return obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
+result = obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-task-id-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_task_id`
@@ -59206,7 +57277,7 @@ def set_task_id(self, task_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59230,21 +57301,16 @@ def set_task_id(self, task_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_task_id(obj: LocoClient, task_id: int) -> int:
-        return obj.set_task_id(task_id=task_id)
+result = obj.set_task_id(task_id=task_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-arm-sdk-status-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_arm_sdk_status`
@@ -59259,7 +57325,7 @@ def set_arm_sdk_status(self, arm_sdk_status: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59283,21 +57349,16 @@ def set_arm_sdk_status(self, arm_sdk_status: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_arm_sdk_status(obj: LocoClient, arm_sdk_status: bool) -> int:
-        return obj.set_arm_sdk_status(arm_sdk_status=arm_sdk_status)
+result = obj.set_arm_sdk_status(arm_sdk_status=arm_sdk_status)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.damp`
@@ -59312,7 +57373,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59334,21 +57395,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: LocoClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-start-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.start`
@@ -59363,7 +57419,7 @@ def start(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59385,21 +57441,16 @@ def start(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_start(obj: LocoClient) -> int:
-        return obj.start()
+result = obj.start()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-squat-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.squat`
@@ -59414,7 +57465,7 @@ def squat(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59436,21 +57487,16 @@ def squat(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_squat(obj: LocoClient) -> int:
-        return obj.squat()
+result = obj.squat()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-sit-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.sit`
@@ -59465,7 +57511,7 @@ def sit(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59487,21 +57533,16 @@ def sit(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_sit(obj: LocoClient) -> int:
-        return obj.sit()
+result = obj.sit()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.stand_up`
@@ -59516,7 +57557,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59538,21 +57579,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: LocoClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-zero-torque-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.zero_torque`
@@ -59567,7 +57603,7 @@ def zero_torque(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59589,21 +57625,16 @@ def zero_torque(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_zero_torque(obj: LocoClient) -> int:
-        return obj.zero_torque()
+result = obj.zero_torque()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.stop_move`
@@ -59618,7 +57649,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59640,21 +57671,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: LocoClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-high-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.high_stand`
@@ -59669,7 +57695,7 @@ def high_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59691,21 +57717,16 @@ def high_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_high_stand(obj: LocoClient) -> int:
-        return obj.high_stand()
+result = obj.high_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-low-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.low_stand`
@@ -59720,7 +57741,7 @@ def low_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59742,21 +57763,16 @@ def low_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_low_stand(obj: LocoClient) -> int:
-        return obj.low_stand()
+result = obj.low_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.move`（重载 1/2）
@@ -59772,7 +57788,7 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59799,21 +57815,16 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float, continous_move: bool) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-move-2"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.move`（重载 2/2）
@@ -59829,7 +57840,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59855,21 +57866,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-balance-stand-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.balance_stand`
@@ -59884,7 +57890,7 @@ def balance_stand(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59906,21 +57912,16 @@ def balance_stand(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_balance_stand(obj: LocoClient) -> int:
-        return obj.balance_stand()
+result = obj.balance_stand()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-continuous-gait-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.continuous_gait`
@@ -59935,7 +57936,7 @@ def continuous_gait(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -59959,21 +57960,16 @@ def continuous_gait(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_continuous_gait(obj: LocoClient, flag: bool) -> int:
-        return obj.continuous_gait(flag=flag)
+result = obj.continuous_gait(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-switch-move-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.switch_move_mode`
@@ -59988,7 +57984,7 @@ def switch_move_mode(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -60012,21 +58008,16 @@ def switch_move_mode(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_move_mode(obj: LocoClient, flag: bool) -> int:
-        return obj.switch_move_mode(flag=flag)
+result = obj.switch_move_mode(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-wave-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.wave_hand`
@@ -60036,18 +58027,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def wave_hand(self, turn_flag: bool = ...) -> int
+def wave_hand(self, turn_flag: bool = False) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `turn_flag` | `bool` | `...` | 传给该接口的 `turn` `flag` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `turn_flag: bool`。 只接受布尔语义。 |
+| `turn_flag` | `bool` | `False` | 传给该接口的 `turn` `flag` 参数，Python 类型为 `bool`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `turn_flag: bool`。 只接受布尔语义。 |
 
 **返回值**
 
@@ -60065,22 +58056,16 @@ def wave_hand(self, turn_flag: bool = ...) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_wave_hand(obj: LocoClient, turn_flag: bool) -> int:
-        return obj.wave_hand(turn_flag=turn_flag)
+result = obj.wave_hand(turn_flag=turn_flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-shake-hand-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.shake_hand`
@@ -60090,18 +58075,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def shake_hand(self, stage: int = ...) -> int
+def shake_hand(self, stage: int = -1) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `stage` | `int` | `...` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
+| `stage` | `int` | `-1` | 传给该接口的 `stage` 参数，Python 类型为 `int`。精确含义、单位、范围和枚举值需查目标型号对应头文件与协议。 对应 C++ 参数 `stage: int`。 |
 
 **返回值**
 
@@ -60119,22 +58104,16 @@ def shake_hand(self, stage: int = ...) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_shake_hand(obj: LocoClient, stage: int) -> int:
-        return obj.shake_hand(stage=stage)
+result = obj.shake_hand(stage=stage)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-set-speed-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.set_speed_mode`
@@ -60149,7 +58128,7 @@ def set_speed_mode(self, speed_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -60173,21 +58152,16 @@ def set_speed_mode(self, speed_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_speed_mode(obj: LocoClient, speed_mode: int) -> int:
-        return obj.set_speed_mode(speed_mode=speed_mode)
+result = obj.set_speed_mode(speed_mode=speed_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-enable-arm-sdk-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.enable_arm_sdk`
@@ -60202,7 +58176,7 @@ def enable_arm_sdk(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -60224,21 +58198,16 @@ def enable_arm_sdk(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_enable_arm_sdk(obj: LocoClient) -> int:
-        return obj.enable_arm_sdk()
+result = obj.enable_arm_sdk()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-h2-lococlient-disable-arm-sdk-1"></a>
 #### `unitree_sdk2_cpp.robot.h2.LocoClient.disable_arm_sdk`
@@ -60253,7 +58222,7 @@ def disable_arm_sdk(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -60275,21 +58244,16 @@ def disable_arm_sdk(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_disable_arm_sdk(obj: LocoClient) -> int:
-        return obj.disable_arm_sdk()
+result = obj.disable_arm_sdk()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 ---
 
@@ -60330,12 +58294,12 @@ from unitree_sdk2_cpp.robot.r1 import AudioClient
 | --- | --- | --- | --- |
 | [`__init__`](#unitree-sdk2-cpp-robot-r1-audioclient-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
 | [`init`](#unitree-sdk2-cpp-robot-r1-audioclient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
-| [`tts_maker`](#unitree-sdk2-cpp-robot-r1-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`tts_maker`](#unitree-sdk2-cpp-robot-r1-audioclient-tts-maker-1) | `def tts_maker(self, text: str, speaker_id: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 | [`get_volume`](#unitree-sdk2-cpp-robot-r1-audioclient-get-volume-1) | `def get_volume(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_volume`](#unitree-sdk2-cpp-robot-r1-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stream`](#unitree-sdk2-cpp-robot-r1-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`play_stop`](#unitree-sdk2-cpp-robot-r1-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
-| [`led_control`](#unitree-sdk2-cpp-robot-r1-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `SIGNATURE_ONLY` | `HARDWARE_SIDE_EFFECT` |
+| [`set_volume`](#unitree-sdk2-cpp-robot-r1-audioclient-set-volume-1) | `def set_volume(self, volume: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stream`](#unitree-sdk2-cpp-robot-r1-audioclient-play-stream-1) | `def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`play_stop`](#unitree-sdk2-cpp-robot-r1-audioclient-play-stop-1) | `def play_stop(self, app_name: str) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
+| [`led_control`](#unitree-sdk2-cpp-robot-r1-audioclient-led-control-1) | `def led_control(self, r: int, g: int, b: int) -> int` | `AVAILABLE` | `HARDWARE_SIDE_EFFECT` |
 
 <a id="unitree-sdk2-cpp-robot-r1-audioclient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.AudioClient.__init__`
@@ -60434,7 +58398,7 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -60459,20 +58423,15 @@ def tts_maker(self, text: str, speaker_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_tts_maker(obj: AudioClient, text: str, speaker_id: int) -> int:
-        return obj.tts_maker(text=text, speaker_id=speaker_id)
+result = obj.tts_maker(text=text, speaker_id=speaker_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-audioclient-get-volume-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.AudioClient.get_volume`
@@ -60534,7 +58493,7 @@ def set_volume(self, volume: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -60558,20 +58517,15 @@ def set_volume(self, volume: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_volume(obj: AudioClient, volume: int) -> int:
-        return obj.set_volume(volume=volume)
+result = obj.set_volume(volume=volume)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-audioclient-play-stream-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.AudioClient.play_stream`
@@ -60586,7 +58540,7 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -60612,20 +58566,15 @@ def play_stream(self, app_name: str, stream_id: str, pcm_data: Sequence[int]) ->
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stream(obj: AudioClient, app_name: str, stream_id: str, pcm_data: Sequence[int]) -> int:
-        return obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
+result = obj.play_stream(app_name=app_name, stream_id=stream_id, pcm_data=pcm_data)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-audioclient-play-stop-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.AudioClient.play_stop`
@@ -60640,7 +58589,7 @@ def play_stop(self, app_name: str) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -60664,20 +58613,15 @@ def play_stop(self, app_name: str) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_play_stop(obj: AudioClient, app_name: str) -> int:
-        return obj.play_stop(app_name=app_name)
+result = obj.play_stop(app_name=app_name)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-audioclient-led-control-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.AudioClient.led_control`
@@ -60692,7 +58636,7 @@ def led_control(self, r: int, g: int, b: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `HARDWARE_SIDE_EFFECT`**：仅用于补全和静态检查。当前二进制没有该 Python 方法，未来实现还需单独评审硬件副作用。
+**`AVAILABLE` / `HARDWARE_SIDE_EFFECT`**：当前绑定源码已实现，调用可能修改机器人或服务状态、启动订阅或产生网络副作用。必须显式检查目标设备和返回状态。
 
 **参数**
 
@@ -60718,20 +58662,15 @@ def led_control(self, r: int, g: int, b: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_led_control(obj: AudioClient, r: int, g: int, b: int) -> int:
-        return obj.led_control(r=r, g=g, b=b)
+result = obj.led_control(r=r, g=g, b=b)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat"></a>
 ### `unitree_sdk2_cpp.robot.r1.JsonizeDataVecFloat`
@@ -60756,9 +58695,9 @@ from unitree_sdk2_cpp.robot.r1 import JsonizeDataVecFloat
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeDataVecFloat.__init__`
@@ -60773,7 +58712,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -60795,20 +58734,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeDataVecFloat:
-        return JsonizeDataVecFloat()
+value = JsonizeDataVecFloat()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeDataVecFloat.from_json`
@@ -60818,18 +58749,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -60841,26 +58772,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::JsonizeDataVecFloat`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/loco/r1_loco_api.hpp:30`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizedatavecfloat-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeDataVecFloat.to_json`
@@ -60870,49 +58793,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::JsonizeDataVecFloat`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/loco/r1_loco_api.hpp:34`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeDataVecFloat, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand"></a>
 ### `unitree_sdk2_cpp.robot.r1.JsonizeVelocityCommand`
@@ -60938,9 +58851,9 @@ from unitree_sdk2_cpp.robot.r1 import JsonizeVelocityCommand
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeVelocityCommand.__init__`
@@ -60955,7 +58868,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -60977,20 +58890,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> JsonizeVelocityCommand:
-        return JsonizeVelocityCommand()
+value = JsonizeVelocityCommand()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeVelocityCommand.from_json`
@@ -61000,18 +58905,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -61023,26 +58928,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::JsonizeVelocityCommand`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/loco/r1_loco_api.hpp:46`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-jsonizevelocitycommand-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.JsonizeVelocityCommand.to_json`
@@ -61052,49 +58949,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::JsonizeVelocityCommand`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/loco/r1_loco_api.hpp:51`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: JsonizeVelocityCommand, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ledcontrolparameter"></a>
 ### `unitree_sdk2_cpp.robot.r1.LedControlParameter`
@@ -61121,9 +59008,9 @@ from unitree_sdk2_cpp.robot.r1 import LedControlParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-ledcontrolparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-ledcontrolparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LedControlParameter.__init__`
@@ -61138,7 +59025,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -61160,20 +59047,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> LedControlParameter:
-        return LedControlParameter()
+value = LedControlParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ledcontrolparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LedControlParameter.from_json`
@@ -61183,18 +59062,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -61206,26 +59085,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::LedControlParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:78`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ledcontrolparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LedControlParameter.to_json`
@@ -61235,49 +59106,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::LedControlParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:80`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: LedControlParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient"></a>
 ### `unitree_sdk2_cpp.robot.r1.LocoClient`
@@ -61300,17 +59161,17 @@ from unitree_sdk2_cpp.robot.r1 import LocoClient
 | [`init`](#unitree-sdk2-cpp-robot-r1-lococlient-init-1) | `def init(self) -> None` | `AVAILABLE` | `INITIALIZATION` |
 | [`get_fsm_id`](#unitree-sdk2-cpp-robot-r1-lococlient-get-fsm-id-1) | `def get_fsm_id(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
 | [`get_fsm_mode`](#unitree-sdk2-cpp-robot-r1-lococlient-get-fsm-mode-1) | `def get_fsm_mode(self) -> tuple[int, int]` | `AVAILABLE` | `READ_ONLY` |
-| [`set_fsm_id`](#unitree-sdk2-cpp-robot-r1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_velocity`](#unitree-sdk2-cpp-robot-r1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`damp`](#unitree-sdk2-cpp-robot-r1-lococlient-damp-1) | `def damp(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`start`](#unitree-sdk2-cpp-robot-r1-lococlient-start-1) | `def start(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stand_up`](#unitree-sdk2-cpp-robot-r1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`zero_torque`](#unitree-sdk2-cpp-robot-r1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`stop_move`](#unitree-sdk2-cpp-robot-r1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-r1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-r1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`switch_move_mode`](#unitree-sdk2-cpp-robot-r1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
-| [`set_speed_mode`](#unitree-sdk2-cpp-robot-r1-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `SIGNATURE_ONLY` | `MOTION_COMMAND` |
+| [`set_fsm_id`](#unitree-sdk2-cpp-robot-r1-lococlient-set-fsm-id-1) | `def set_fsm_id(self, fsm_id: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_velocity`](#unitree-sdk2-cpp-robot-r1-lococlient-set-velocity-1) | `def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`damp`](#unitree-sdk2-cpp-robot-r1-lococlient-damp-1) | `def damp(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`start`](#unitree-sdk2-cpp-robot-r1-lococlient-start-1) | `def start(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stand_up`](#unitree-sdk2-cpp-robot-r1-lococlient-stand-up-1) | `def stand_up(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`zero_torque`](#unitree-sdk2-cpp-robot-r1-lococlient-zero-torque-1) | `def zero_torque(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`stop_move`](#unitree-sdk2-cpp-robot-r1-lococlient-stop-move-1) | `def stop_move(self) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 1/2）`](#unitree-sdk2-cpp-robot-r1-lococlient-move-1) | `def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`move（重载 2/2）`](#unitree-sdk2-cpp-robot-r1-lococlient-move-2) | `def move(self, vx: float, vy: float, vyaw: float) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`switch_move_mode`](#unitree-sdk2-cpp-robot-r1-lococlient-switch-move-mode-1) | `def switch_move_mode(self, flag: bool) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
+| [`set_speed_mode`](#unitree-sdk2-cpp-robot-r1-lococlient-set-speed-mode-1) | `def set_speed_mode(self, speed_mode: int) -> int` | `AVAILABLE` | `MOTION_COMMAND` |
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.__init__`
@@ -61503,7 +59364,7 @@ def set_fsm_id(self, fsm_id: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61527,21 +59388,16 @@ def set_fsm_id(self, fsm_id: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_fsm_id(obj: LocoClient, fsm_id: int) -> int:
-        return obj.set_fsm_id(fsm_id=fsm_id)
+result = obj.set_fsm_id(fsm_id=fsm_id)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-set-velocity-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.set_velocity`
@@ -61551,12 +59407,12 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...) -> int
+def set_velocity(self, vx: float, vy: float, omega: float, duration: float = 1.0) -> int
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61565,7 +59421,7 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 | `vx` | `float` | 必填 | X 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vx: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `vy` | `float` | 必填 | Y 方向速度参数。坐标系、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `vy: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 | `omega` | `float` | 必填 | 角速度参数。旋转轴、单位、符号和安全范围必须查目标型号运动协议。 对应 C++ 参数 `omega: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
-| `duration` | `float` | `...` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
+| `duration` | `float` | `1.0` | 操作持续时间参数。精确单位、范围和默认行为以目标型号接口定义为准。 对应 C++ 参数 `duration: float`。 底层为浮点数；类型本身不说明单位、坐标系或业务安全范围。 |
 
 **返回值**
 
@@ -61583,22 +59439,16 @@ def set_velocity(self, vx: float, vy: float, omega: float, duration: float = ...
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 默认值显示为 `...`，表示 C++ 声明存在默认参数，但当前 AST 清单没有保存其字面量；省略参数可使用上游默认行为。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_velocity(obj: LocoClient, vx: float, vy: float, omega: float, duration: float) -> int:
-        return obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
+result = obj.set_velocity(vx=vx, vy=vy, omega=omega, duration=duration)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-damp-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.damp`
@@ -61613,7 +59463,7 @@ def damp(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61635,21 +59485,16 @@ def damp(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_damp(obj: LocoClient) -> int:
-        return obj.damp()
+result = obj.damp()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-start-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.start`
@@ -61664,7 +59509,7 @@ def start(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61686,21 +59531,16 @@ def start(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_start(obj: LocoClient) -> int:
-        return obj.start()
+result = obj.start()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-stand-up-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.stand_up`
@@ -61715,7 +59555,7 @@ def stand_up(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61737,21 +59577,16 @@ def stand_up(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stand_up(obj: LocoClient) -> int:
-        return obj.stand_up()
+result = obj.stand_up()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-zero-torque-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.zero_torque`
@@ -61766,7 +59601,7 @@ def zero_torque(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61788,21 +59623,16 @@ def zero_torque(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_zero_torque(obj: LocoClient) -> int:
-        return obj.zero_torque()
+result = obj.zero_torque()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-stop-move-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.stop_move`
@@ -61817,7 +59647,7 @@ def stop_move(self) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61839,21 +59669,16 @@ def stop_move(self) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_stop_move(obj: LocoClient) -> int:
-        return obj.stop_move()
+result = obj.stop_move()
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-move-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.move`（重载 1/2）
@@ -61869,7 +59694,7 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61896,21 +59721,16 @@ def move(self, vx: float, vy: float, vyaw: float, continous_move: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float, continous_move: bool) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw, continous_move=continous_move)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-move-2"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.move`（重载 2/2）
@@ -61926,7 +59746,7 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -61952,21 +59772,16 @@ def move(self, vx: float, vy: float, vyaw: float) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_move(obj: LocoClient, vx: float, vy: float, vyaw: float) -> int:
-        return obj.move(vx=vx, vy=vy, vyaw=vyaw)
+result = obj.move(vx=vx, vy=vy, vyaw=vyaw)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-switch-move-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.switch_move_mode`
@@ -61981,7 +59796,7 @@ def switch_move_mode(self, flag: bool) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -62005,21 +59820,16 @@ def switch_move_mode(self, flag: bool) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_switch_move_mode(obj: LocoClient, flag: bool) -> int:
-        return obj.switch_move_mode(flag=flag)
+result = obj.switch_move_mode(flag=flag)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-lococlient-set-speed-mode-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.LocoClient.set_speed_mode`
@@ -62034,7 +59844,7 @@ def set_speed_mode(self, speed_mode: int) -> int
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `MOTION_COMMAND`**：仅用于补全和静态检查。当前二进制没有该 Python 方法；不得按可执行运动接口使用。
+**`AVAILABLE` / `MOTION_COMMAND`**：当前绑定源码已实现，调用会向实体机器人发送运动相关请求。只能在隔离场地、完成目标型号安全检查并准备物理急停后使用；不得从默认测试或未经确认的 Agent 流程调用。
 
 **参数**
 
@@ -62058,21 +59868,16 @@ def set_speed_mode(self, speed_mode: int) -> int
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 - 该方法属于运动命令。方法名包含 `stop`、`damp` 或 `zero` 也不代表它是独立物理急停。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_set_speed_mode(obj: LocoClient, speed_mode: int) -> int:
-        return obj.set_speed_mode(speed_mode=speed_mode)
+result = obj.set_speed_mode(speed_mode=speed_mode)
 ```
 
 > [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
+> 此示例展示签名，不是可直接执行的安全脚本。调用前必须完成硬件隔离、目标机器人确认和对应型号的安全检查；运动接口还必须准备物理急停。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstopparameter"></a>
 ### `unitree_sdk2_cpp.robot.r1.PlayStopParameter`
@@ -62097,9 +59902,9 @@ from unitree_sdk2_cpp.robot.r1 import PlayStopParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-playstopparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-playstopparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-playstopparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-playstopparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-playstopparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-playstopparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStopParameter.__init__`
@@ -62114,7 +59919,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -62136,20 +59941,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStopParameter:
-        return PlayStopParameter()
+value = PlayStopParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstopparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStopParameter.from_json`
@@ -62159,18 +59956,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -62182,26 +59979,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::PlayStopParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:64`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstopparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStopParameter.to_json`
@@ -62211,49 +60000,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::PlayStopParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:66`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStopParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstreamparameter"></a>
 ### `unitree_sdk2_cpp.robot.r1.PlayStreamParameter`
@@ -62279,9 +60058,9 @@ from unitree_sdk2_cpp.robot.r1 import PlayStreamParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-playstreamparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-playstreamparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStreamParameter.__init__`
@@ -62296,7 +60075,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -62318,20 +60097,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> PlayStreamParameter:
-        return PlayStreamParameter()
+value = PlayStreamParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstreamparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStreamParameter.from_json`
@@ -62341,18 +60112,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -62364,26 +60135,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::PlayStreamParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:48`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-playstreamparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.PlayStreamParameter.to_json`
@@ -62393,49 +60156,39 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::PlayStreamParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:50`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: PlayStreamParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ttsmakerparameter"></a>
 ### `unitree_sdk2_cpp.robot.r1.TtsMakerParameter`
@@ -62462,9 +60215,9 @@ from unitree_sdk2_cpp.robot.r1 import TtsMakerParameter
 
 | 方法 | Python 签名 | 状态 | 安全分类 |
 | --- | --- | --- | --- |
-| [`__init__`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `SIGNATURE_ONLY` | `CONSTRUCTION` |
-| [`from_json`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-from-json-1) | `def from_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
-| [`to_json`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-to-json-1) | `def to_json(self, json: dict[str, Any]) -> None` | `SIGNATURE_ONLY` | `UNCLASSIFIED` |
+| [`__init__`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-dunder-init-1) | `def __init__(self) -> None` | `AVAILABLE` | `CONSTRUCTION` |
+| [`from_json`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-from-json-1) | `def from_json(self, value: Mapping[str, Any]) -> None` | `AVAILABLE` | `UNCLASSIFIED` |
+| [`to_json`](#unitree-sdk2-cpp-robot-r1-ttsmakerparameter-to-json-1) | `def to_json(self) -> dict[str, Any]` | `AVAILABLE` | `UNCLASSIFIED` |
 
 <a id="unitree-sdk2-cpp-robot-r1-ttsmakerparameter-dunder-init-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.TtsMakerParameter.__init__`
@@ -62479,7 +60232,7 @@ def __init__(self) -> None
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `CONSTRUCTION`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `CONSTRUCTION`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
@@ -62501,20 +60254,12 @@ def __init__(self) -> None
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_construct() -> TtsMakerParameter:
-        return TtsMakerParameter()
+value = TtsMakerParameter()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ttsmakerparameter-from-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.TtsMakerParameter.from_json`
@@ -62524,18 +60269,18 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def from_json(self, json: dict[str, Any]) -> None
+def from_json(self, value: Mapping[str, Any]) -> None
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
 | 名称 | Python 类型 | 默认值 | 含义 |
 | --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+| `value` | `Mapping[str, Any]` | 必填 | 要写入或传递的新值，必须符合该参数的 Python 类型以及底层 C++ 范围约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
 
 **返回值**
 
@@ -62547,26 +60292,18 @@ def from_json(self, json: dict[str, Any]) -> None
 
 - 类：`unitree::robot::r1::TtsMakerParameter`
 - 签名：`fromJson(common::JsonMap &)`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_INPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:30`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_from_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.from_json(json=json)
+obj.from_json(value=value)
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。
 
 <a id="unitree-sdk2-cpp-robot-r1-ttsmakerparameter-to-json-1"></a>
 #### `unitree_sdk2_cpp.robot.r1.TtsMakerParameter.to_json`
@@ -62576,46 +60313,36 @@ if TYPE_CHECKING:
 **签名**
 
 ```python
-def to_json(self, json: dict[str, Any]) -> None
+def to_json(self) -> dict[str, Any]
 ```
 
 **可用性与安全性**
 
-**`SIGNATURE_ONLY` / `UNCLASSIFIED`**：当前只有设计期签名，不能假设已存在于运行时扩展。
+**`AVAILABLE` / `UNCLASSIFIED`**：当前绑定源码已实现；实际执行条件仍取决于平台和对应 SDK 环境。
 
 **参数**
 
-| 名称 | Python 类型 | 默认值 | 含义 |
-| --- | --- | --- | --- |
-| `json` | `dict[str, Any]` | 必填 | JSON 风格字典，键和值必须满足对应 C++ `JsonMap` 数据结构的约束。 对应 C++ 参数 `json: common::JsonMap &`。 |
+无显式参数。实例方法中的 `self` 由 Python 自动传入。
 
 **返回值**
 
 | 位置 | 类型 | 含义 |
 | --- | --- | --- |
-| 无 | `None` | 该方法不返回 Python 值；失败可能表现为异常或底层状态变化。 |
+| 返回值 | `dict[str, Any]` | 返回 `dict[str, Any]`。更精确的业务含义见该方法用途、C++ 签名和目标型号协议。 |
 
 **对应 C++**
 
 - 类：`unitree::robot::r1::TtsMakerParameter`
 - 签名：`toJson(common::JsonMap &) const`
-- 绑定策略：`SIGNATURE_PREVIEW`
+- 绑定策略：`JSON_DICT_OUTPUT`
 - 声明位置：`include/unitree/robot/r1/audio/audio_api.hpp:32`
 
 **说明**
 
 - 示例是局部调用片段；`obj` 和参数变量表示已经按上层业务校验并准备好的对象。
-- 该条目可以被编辑器和类型检查器识别，但当前运行时可能在属性查找阶段直接失败。
 
 **用法**
 
 ```python
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    def planned_to_json(obj: TtsMakerParameter, json: dict[str, Any]) -> None:
-        obj.to_json(json=json)
+result = obj.to_json()
 ```
-
-> [!CAUTION]
-> 上面的 `TYPE_CHECKING` 示例只表达计划调用形态。该分支在普通 Python 运行时为假，不代表当前扩展能执行此接口。

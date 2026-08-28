@@ -174,8 +174,18 @@ class TypeMapper:
             }:
                 return candidate["name"]
             return None
+        if normalized.endswith("::PathPoint"):
+            alias = self.classes.get(
+                normalized.removesuffix("PathPoint") + "stPathPoint"
+            )
+            if alias and alias["namespace"] == namespace:
+                return "PathPoint"
         local = f"{namespace}::{normalized}" if namespace else normalized
         candidate = self.classes.get(local)
+        if candidate is None and normalized == "PathPoint":
+            candidate = self.classes.get(f"{namespace}::stPathPoint")
+            if candidate:
+                return "PathPoint"
         if not candidate:
             return None
         return self.python_names.get(qualified_name(candidate), candidate["name"])
@@ -188,26 +198,38 @@ def mutable_output(type_name: str) -> bool:
 def method_status(
     cpp_class: str,
     method: dict[str, Any],
-    available_policy: dict[str, set[str]],
-    available_classes: set[str],
+    available_methods: set[tuple[str, str]],
 ) -> str:
     signature = method_signature(method)
+    if (cpp_class, signature) in available_methods:
+        return "AVAILABLE"
     if cpp_class == "unitree::robot::ClientBase" and signature in {
         "SetTimeout(int64_t)",
         "SetTimeout(float)",
     }:
         return "AVAILABLE"
     if cpp_class == "unitree::robot::Client" and signature in {
-        "GetLeaseId()",
+        "WaitLeaseApplied()",
         "GetApiVersion() const",
         "GetServerApiVersion()",
     }:
         return "AVAILABLE"
-    if cpp_class in available_classes and signature == "Init()":
-        return "AVAILABLE"
-    if signature in available_policy.get(cpp_class, set()):
-        return "AVAILABLE"
     return "SIGNATURE_ONLY"
+
+
+def python_default(parameter: dict[str, Any]) -> str:
+    if not parameter.get("has_default"):
+        return ""
+    value = parameter.get("default_value")
+    if value is None:
+        return " = ..."
+    if value == "true":
+        value = "True"
+    elif value == "false":
+        value = "False"
+    elif value == "nullptr":
+        value = "None"
+    return f" = {value}"
 
 
 def method_annotations(
@@ -224,7 +246,7 @@ def method_annotations(
             continue
         name = parameter_name(parameter.get("name", ""), index)
         annotation = mapper.annotation(parameter["type"], namespace, "input")
-        default = " = ..." if parameter.get("has_default") else ""
+        default = python_default(parameter)
         parameters.append(f"{name}: {annotation}{default}")
 
     result = mapper.annotation(method.get("return_type", "void"), namespace, "return")
@@ -274,8 +296,10 @@ def render_robot_module(
     enums: list[dict[str, Any]],
     mapper: TypeMapper,
     classifications: dict[tuple[str, str], dict[str, str]],
-    available_policy: dict[str, set[str]],
+    available_methods: set[tuple[str, str]],
+    available_constructors: set[tuple[str, str]],
     available_classes: set[str],
+    available_strategies: dict[tuple[str, str], str],
     manifest: list[dict[str, Any]],
 ) -> str:
     lines = [
@@ -321,7 +345,11 @@ def render_robot_module(
             parameters, _ = method_annotations(constructor, namespace, mapper, False)
             status = (
                 "AVAILABLE"
-                if cpp_name in available_classes and not parameters
+                if (
+                    (cpp_name, method_signature(constructor)) in available_constructors
+                    or cpp_name in available_classes
+                    and not constructor.get("parameters")
+                )
                 else "SIGNATURE_ONLY"
             )
             body.extend(
@@ -348,12 +376,38 @@ def render_robot_module(
                     f"{mapper.annotation(field['type'], namespace, 'return')}"
                 )
 
+        if not constructors and cpp_name in available_classes and (
+            cpp_class.get("kind") == "struct"
+            or (cpp_name, f"{cpp_class['name']}()") in available_constructors
+        ):
+            body.extend(
+                [
+                    "    def __init__(self) -> None:",
+                    f'        """AVAILABLE; C++ aggregate: {cpp_name}."""',
+                    "        ...",
+                ]
+            )
+            manifest.append(
+                {
+                    "cpp_class": cpp_name,
+                    "cpp_signature": f"{cpp_class['name']}()",
+                    "python_path": f"unitree_sdk2_cpp.{namespace.removeprefix('unitree::').replace('::', '.')}.{cpp_class['name']}.__init__",
+                    "status": "AVAILABLE",
+                    "safety": "CONSTRUCTION",
+                }
+            )
+
         methods = [
             item
             for item in cpp_class.get("methods", [])
             if item.get("access") == "public"
         ]
-        output_wrapper = cpp_class["name"] in client_class_names
+        output_wrappers = [
+            cpp_class["name"] in client_class_names
+            and available_strategies.get((cpp_name, method_signature(method)))
+            != "MUTABLE_INPUT_COPY"
+            for method in methods
+        ]
         base_names = [python_method_name(cpp_name, item) for item in methods]
         input_shapes = [
             tuple(
@@ -361,7 +415,7 @@ def render_robot_module(
                 for parameter in method.get("parameters", [])
                 if not (output_wrapper and mutable_output(parameter["type"]))
             )
-            for method in methods
+            for method, output_wrapper in zip(methods, output_wrappers, strict=True)
         ]
         shape_counts = Counter(zip(base_names, input_shapes, strict=True))
         python_names = [
@@ -370,17 +424,28 @@ def render_robot_module(
                 if output_wrapper and shape_counts[(base_name, shape)] > 1
                 else base_name
             )
-            for method, base_name, shape in zip(
-                methods, base_names, input_shapes, strict=True
+            for method, base_name, shape, output_wrapper in zip(
+                methods, base_names, input_shapes, output_wrappers, strict=True
             )
         ]
         grouped: Counter[str] = Counter(python_names)
-        for method, python_name in zip(methods, python_names, strict=True):
+        for method, python_name, output_wrapper in zip(
+            methods, python_names, output_wrappers, strict=True
+        ):
             if grouped[python_name] > 1:
                 body.append("    @overload")
             parameters, result = method_annotations(
                 method, namespace, mapper, output_wrapper
             )
+            strategy = available_strategies.get(
+                (cpp_name, method_signature(method))
+            )
+            if strategy == "JSON_DICT_INPUT":
+                parameters = ["value: Mapping[str, Any]"]
+                result = "None"
+            elif strategy == "JSON_DICT_OUTPUT":
+                parameters = []
+                result = "dict[str, Any]"
             if cpp_name == "unitree::robot::ClientBase":
                 if method_signature(method) == "SetTimeout(int64_t)":
                     parameters = ["microseconds: int"]
@@ -389,11 +454,12 @@ def render_robot_module(
             classification = classifications.get(
                 (cpp_name, method_signature(method)), {}
             )
-            status = method_status(
-                cpp_name, method, available_policy, available_classes
-            )
+            status = method_status(cpp_name, method, available_methods)
             safety = classification.get("safety", "UNCLASSIFIED")
-            strategy = classification.get("binding_strategy", "SIGNATURE_PREVIEW")
+            strategy = available_strategies.get(
+                (cpp_name, method_signature(method)),
+                classification.get("binding_strategy", "SIGNATURE_PREVIEW"),
+            )
             body.extend(
                 [
                     f"    def {python_name}(self{', ' if parameters else ''}{', '.join(parameters)}) -> {result}:",
@@ -415,6 +481,8 @@ def render_robot_module(
 
         lines.extend(body or ["    ..."])
         lines.append("")
+        if cpp_class["name"] == "stPathPoint" and cpp_name in available_classes:
+            lines.extend(["PathPoint = stPathPoint", ""])
     return "\n".join(lines)
 
 
@@ -526,9 +594,7 @@ def generate(arguments: argparse.Namespace) -> dict[str, Any]:
     robot_inventory = json.loads(arguments.robot_inventory.read_text(encoding="utf-8"))
     classification = json.loads(arguments.classification.read_text(encoding="utf-8"))
     policy = json.loads(arguments.policy.read_text(encoding="utf-8"))
-    read_only_report = json.loads(
-        arguments.read_only_report.read_text(encoding="utf-8")
-    )
+    binding_report = json.loads(arguments.read_only_report.read_text(encoding="utf-8"))
     idl_reports = [
         json.loads(path.read_text(encoding="utf-8")) for path in arguments.idl_report
     ]
@@ -548,15 +614,26 @@ def generate(arguments: argparse.Namespace) -> dict[str, Any]:
         ],
         idl_python_names,
     )
-    available_policy = {
-        name: set(signatures) for name, signatures in policy["classes"].items()
+    binding_items = [
+        *binding_report["classes"],
+        *binding_report.get("value_classes", []),
+        *binding_report.get("utility_classes", []),
+    ]
+    available_classes = {item["qualified_name"] for item in binding_items}
+    available_methods = {
+        (item["qualified_name"], method["cpp_signature"])
+        for item in binding_items
+        for method in item.get("methods", [])
     }
-    available_classes = {
-        item["qualified_name"]
-        for item in [
-            *read_only_report["classes"],
-            *read_only_report.get("value_classes", []),
-        ]
+    available_constructors = {
+        (item["qualified_name"], signature)
+        for item in binding_items
+        for signature in item.get("constructors", [])
+    }
+    available_strategies = {
+        (item["qualified_name"], method["cpp_signature"]): method["binding_strategy"]
+        for item in binding_items
+        for method in item.get("methods", [])
     }
     classifications = {
         (client["qualified_name"], method["signature"]): method
@@ -631,6 +708,127 @@ class ChannelSubscriber(Generic[MessageT]):
         write_text(package / "idl" / f"{name}.pyi", content)
         manifest_entries.extend(entries)
 
+    hg_class_names = [item["python_name"] for item in idl_reports[1]["classes"]]
+    g1_alias_lines = [
+        '"""G1-friendly aliases for the unitree_hg DDS message types."""',
+        "from typing import overload",
+        "",
+        "from .hg import (",
+        *(f"    {name}," for name in hg_class_names),
+        ")",
+        "",
+        "@overload",
+        "def compute_crc(message: LowCmd) -> int: ...",
+        "@overload",
+        "def compute_crc(message: LowState) -> int: ...",
+        "def update_crc(message: LowCmd) -> int: ...",
+        "@overload",
+        "def validate_crc(message: LowCmd) -> bool: ...",
+        "@overload",
+        "def validate_crc(message: LowState) -> bool: ...",
+    ]
+    write_text(package / "idl" / "g1.pyi", "\n".join(g1_alias_lines))
+
+    manifest_entries.extend(
+        [
+            {
+                "cpp_class": "unitree_hg::msg::dds_::LowCmd_",
+                "cpp_signature": "crc32_core(LowCmd_)",
+                "python_path": "unitree_sdk2_cpp.idl.g1.compute_crc",
+                "status": "AVAILABLE",
+                "safety": "VALUE_TYPE",
+                "binding_strategy": "CRC_WRAPPER",
+                "python_parameters": ["LowCmd"],
+                "python_return": "int",
+            },
+            {
+                "cpp_class": "unitree_hg::msg::dds_::LowState_",
+                "cpp_signature": "crc32_core(LowState_)",
+                "python_path": "unitree_sdk2_cpp.idl.g1.compute_crc",
+                "status": "AVAILABLE",
+                "safety": "VALUE_TYPE",
+                "binding_strategy": "CRC_WRAPPER",
+                "python_parameters": ["LowState"],
+                "python_return": "int",
+            },
+            {
+                "cpp_class": "unitree_hg::msg::dds_::LowCmd_",
+                "cpp_signature": "crc32_core(LowCmd_); LowCmd_::crc(uint32_t)",
+                "python_path": "unitree_sdk2_cpp.idl.g1.update_crc",
+                "status": "AVAILABLE",
+                "safety": "VALUE_TYPE",
+                "binding_strategy": "CRC_WRAPPER",
+                "python_parameters": ["LowCmd"],
+                "python_return": "int",
+            },
+            {
+                "cpp_class": "unitree_hg::msg::dds_::LowCmd_",
+                "cpp_signature": "LowCmd_::crc() == crc32_core(LowCmd_)",
+                "python_path": "unitree_sdk2_cpp.idl.g1.validate_crc",
+                "status": "AVAILABLE",
+                "safety": "VALUE_TYPE",
+                "binding_strategy": "CRC_WRAPPER",
+                "python_parameters": ["LowCmd"],
+                "python_return": "bool",
+            },
+            {
+                "cpp_class": "unitree_hg::msg::dds_::LowState_",
+                "cpp_signature": "LowState_::crc() == crc32_core(LowState_)",
+                "python_path": "unitree_sdk2_cpp.idl.g1.validate_crc",
+                "status": "AVAILABLE",
+                "safety": "VALUE_TYPE",
+                "binding_strategy": "CRC_WRAPPER",
+                "python_parameters": ["LowState"],
+                "python_return": "bool",
+            },
+        ]
+    )
+    manifest_entries.extend(
+        {
+            "cpp_class": "unitree::robot::g1",
+            "cpp_signature": signature,
+            "python_path": f"unitree_sdk2_cpp.robot.g1.{python_name}",
+            "status": "AVAILABLE",
+            "safety": "SAFETY_CHECK",
+            "binding_strategy": (
+                "TYPE_ERASED_ADAPTER"
+                if python_name == "lost_connection"
+                else "DIRECT"
+            ),
+            "python_return": "bool",
+        }
+        for python_name, signature in [
+            (
+                "bad_orientation",
+                "bad_orientation(const unitree_hg::msg::dds_::LowState_ &, float)",
+            ),
+            (
+                "joint_vel_out_of_limit",
+                "joint_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)",
+            ),
+            (
+                "ang_vel_out_of_limit",
+                "ang_vel_out_of_limit(const unitree_hg::msg::dds_::LowState_ &, float)",
+            ),
+            (
+                "motor_winding_overheat",
+                "motor_winding_overheat(const unitree_hg::msg::dds_::LowState_ &, float)",
+            ),
+            (
+                "motor_casing_overheat",
+                "motor_casing_overheat(const unitree_hg::msg::dds_::LowState_ &, float)",
+            ),
+            (
+                "low_battery",
+                "low_battery(const unitree_hg::msg::dds_::BmsState_ &, float)",
+            ),
+            (
+                "lost_connection",
+                "lost_connection(unitree::robot::ChannelSubscriberPtr<unitree_hg::msg::dds_::LowState_> &, int64_t)",
+            ),
+        ]
+    )
+
     manual_paths = {
         "unitree_sdk2_cpp.OsHelper.instance": "OsHelper::Instance()",
         "unitree_sdk2_cpp.OsHelper.get_uid": "OsHelper::GetUID()",
@@ -695,25 +893,43 @@ class ChannelSubscriber(Generic[MessageT]):
         enums_by_namespace["unitree::robot"],
         mapper,
         classifications,
-        available_policy,
+        available_methods,
+        available_constructors,
         available_classes,
+        available_strategies,
         manifest_entries,
     )
     write_text(package / "robot" / "__init__.pyi", root_content)
     for name in submodules:
         namespace = f"unitree::robot::{name}"
+        content = render_robot_module(
+            namespace,
+            by_namespace[namespace],
+            enums_by_namespace[namespace],
+            mapper,
+            classifications,
+            available_methods,
+            available_constructors,
+            available_classes,
+            available_strategies,
+            manifest_entries,
+        )
+        if name == "g1":
+            content += '''
+from ..channel import ChannelSubscriber
+from ..idl.g1 import BmsState, LowState
+
+def bad_orientation(low_state: LowState, limit_angle: float = 1.0) -> bool: ...
+def joint_vel_out_of_limit(low_state: LowState, limit_vel: float = 10.0) -> bool: ...
+def ang_vel_out_of_limit(low_state: LowState, limit_vel: float = 6.0) -> bool: ...
+def motor_winding_overheat(low_state: LowState, limit_temp: float = 120.0) -> bool: ...
+def motor_casing_overheat(low_state: LowState, limit_temp: float = 85.0) -> bool: ...
+def low_battery(bms_state: BmsState, limit_soc: float = 20.0) -> bool: ...
+def lost_connection(subscriber: ChannelSubscriber[LowState], timeout_ms: int = 1000) -> bool: ...
+'''
         write_text(
             package / "robot" / f"{name}.pyi",
-            render_robot_module(
-                namespace,
-                by_namespace[namespace],
-                enums_by_namespace[namespace],
-                mapper,
-                classifications,
-                available_policy,
-                available_classes,
-                manifest_entries,
-            ),
+            content,
         )
 
     write_text(package / "py.typed", "")

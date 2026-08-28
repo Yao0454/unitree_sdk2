@@ -5,7 +5,7 @@
 本文对应以下本地构建产物：
 
 ```text
-unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 完成本文后，你将能：
@@ -16,16 +16,16 @@ unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
 - 创建和读取 IDL 消息对象；
 - 理解 DDS 发布者、订阅者、主题和回调；
 - 在 Linux 上构建真正的 `unitree_sdk2_cpp` 扩展；
-- 安全地调用当前已绑定的只读 Robot Client 查询；
+- 理解如何调用只读 Robot Client，以及为什么运动接口必须有额外安全门；
 - 使用 `api_manifest.json` 判断一个 API 是否真的可执行。
 
 > [!TIP]
 > 需要逐项查找全部函数、重载、属性、参数和返回值时，请打开
 > [完整 API 参考](API_REFERENCE_ZH.md)。入门指南负责解释概念和学习顺序，API Reference
-> 则像字典一样按模块和类列出全部 1190 个 manifest 条目。
+> 则像字典一样按模块和类列出全部 1213 个 manifest 条目。
 
 > [!WARNING]
-> 机器人是物理设备。错误的控制命令可能导致机器人突然运动、跌倒、碰撞、损坏设备或伤人。当前签名包包含运动 API 的“设计期签名”，是为了让你提前编写和检查上层代码，不代表这些方法已经可以执行。本文不提供任何运动控制示例，也不要把自定义发布示例改成机器人控制主题。
+> 机器人是物理设备。错误的控制命令可能导致机器人突然运动、跌倒、碰撞、损坏设备或伤人。当前 binding 已注册运动 API，但“能调用”绝不等于“已对你的机器人和现场验证为安全”。本文不提供可直接执行的运动控制示例，也不要把自定义发布示例改成机器人控制主题。默认测试不会构造 Client、初始化 DDS 或发送任何机器人指令。
 
 ---
 
@@ -140,7 +140,7 @@ cd unitree_sdk2_bindings
 确认 wheel 文件存在：
 
 ```bash
-ls dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+ls dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 你应该看到同名文件路径。
@@ -177,7 +177,7 @@ conda activate unitree-py310
 
 ```bash
 python -m pip install \
-  dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+  dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 检查安装结果：
@@ -190,7 +190,7 @@ python -m pip show unitree-sdk2-cpp-stubs
 
 ```text
 Name: unitree-sdk2-cpp-stubs
-Version: 0.1.2
+Version: 0.3.0
 ```
 
 ### 4. 安装一个类型检查器
@@ -278,7 +278,7 @@ error: Incompatible types in assignment
 文件：
 
 ```text
-dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 文件名各部分的含义：
@@ -286,7 +286,7 @@ dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
 | 部分 | 含义 |
 | --- | --- |
 | `unitree_sdk2_cpp_stubs` | Python 分发包名称 |
-| `0.1.2` | 签名包版本 |
+| `0.3.0` | 签名包版本 |
 | `py3` | 适用于 Python 3 的类型信息 |
 | `none-any` | 不依赖操作系统或 CPU 架构 |
 
@@ -436,7 +436,7 @@ cd unitree_sdk2_bindings
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install \
-  dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+  dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 python -m pip install mypy
 ```
 
@@ -550,7 +550,7 @@ python -m pip install -e . \
 
 ```bash
 python -m pip install \
-  dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+  dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 #### 7. 先做不接触机器人的导入检查
@@ -585,7 +585,7 @@ python -m pytest -q
 默认测试不会初始化 DDS、联系硬件或发送运动命令。带有 `dds`、`hardware`、`motion` 标记的测试需要显式条件，不应在普通开发环境中自动运行。
 
 > [!IMPORTANT]
-> 本文对应的 Robot 只读包装器源码已经生成，但当前修订仍应在目标 Linux 架构上完成一次新的编译、导入和符号检查后，再把它视为二进制验证完成。
+> 本文对应的完整 Robot Client 包装器源码已经生成，但当前修订仍应在目标 Linux 架构上完成一次新的编译、导入和符号检查后，再把它视为二进制验证完成。
 
 ---
 
@@ -693,6 +693,7 @@ unitree_sdk2_cpp
 │   └── ChannelSubscriber[T]
 ├── idl
 │   ├── go2
+│   ├── g1
 │   ├── hg
 │   ├── hg_doubleimu
 │   └── ros2
@@ -952,6 +953,52 @@ command.motor_cmd = []
 ```
 
 运行时通常会抛出长度不匹配异常。静态类型检查器只知道这是 `Sequence[MotorCmd]`，无法从普通 `list` 类型判断长度是否等于 20。
+
+G1 的 `LowCmd.motor_cmd` 使用相同规则，但长度是 35：
+
+```python
+from unitree_sdk2_cpp.idl.g1 import LowCmd, MotorCmd
+
+command = LowCmd()
+command.motor_cmd = [MotorCmd() for _ in range(35)]
+```
+
+`idl.g1` 中的 13 个消息类是 `idl.hg` 对应 C++ DDS 类型的易读别名。例如，`idl.g1.LowCmd` 与 `idl.hg.LowCmd` 是同一个 Python/C++ 类型，不会产生一份不兼容的重复消息定义。
+
+### G1 CRC 工具
+
+G1 低层命令和状态使用 SDK 自带的 CRC 算法。绑定直接调用 C++ `crc32_core`，没有在 Python 中重新实现算法：
+
+```python
+from unitree_sdk2_cpp.idl.g1 import (
+    LowCmd,
+    MotorCmd,
+    compute_crc,
+    update_crc,
+    validate_crc,
+)
+
+command = LowCmd()
+command.motor_cmd = [MotorCmd() for _ in range(35)]
+
+crc = compute_crc(command)
+written_crc = update_crc(command)
+
+assert written_crc == crc
+assert command.crc == crc
+assert validate_crc(command)
+```
+
+函数区别：
+
+| 函数 | 接受类型 | 是否修改对象 | 返回值 |
+| --- | --- | --- | --- |
+| `compute_crc(message)` | `LowCmd` 或 `LowState` | 否 | 计算出的 `int` CRC |
+| `update_crc(message)` | `LowCmd` | 是，写入 `message.crc` | 写入的 `int` CRC |
+| `validate_crc(message)` | `LowCmd` 或 `LowState` | 否 | 当前 CRC 是否匹配 |
+
+> [!WARNING]
+> 计算或写入 CRC 只是在内存中准备消息，不会自动发布。CRC 正确也不表示命令在机械、电气或现场条件下安全；不要把这个示例接到 G1 低层控制 topic。
 
 ### `list` 和 `Sequence` 的区别
 
@@ -1417,11 +1464,12 @@ Robot Client 更像一次请求和一次响应：
 
 ### 当前绑定原则
 
-当前运行时只暴露经过显式审核的只读查询，以及构造、初始化、超时设置等必要生命周期操作。
+当前运行时覆盖 25 个具体 SDK Client 和 `LeaseClient`，包括直接方法、输出参数包装和两个配置回调。
 
-- 不会因为方法名以 `Get` 开头就自动绑定；
-- 新的只读方法必须加入审核过的 allowlist；
-- 运动命令和其他硬件副作用方法保留在签名预览中，但不进入当前运行时表面。
+- 340 个公开 Client 方法中有 336 个运行时入口；
+- 50 个只读方法全部可用，C++ 输出引用会转换成 Python 返回值；
+- 220 个运动方法和 36 个其他硬件副作用方法已经注册，但默认测试只做反射检查，绝不执行；
+- 尚未绑定的是抽象 `ClientBase::Init` 和 3 个内部 `ClientStub` 请求方法。
 
 ### G1 只读查询完整示例
 
@@ -1475,6 +1523,45 @@ client = LocoClient()
 ```
 
 `g1.LocoClient` 和 `h1.LocoClient` 是不同类型。应从目标型号的命名空间导入。
+
+### G1 当前绑定范围
+
+`robot.g1` 暴露 4 个具体 SDK Client：
+
+| Client | 公开方法数 | 主要用途 |
+| --- | ---: | --- |
+| `AgvClient` | 3 | G1-D AGV 移动和高度调整 |
+| `AudioClient` | 7 | TTS、音量、音频流和 LED |
+| `G1ArmActionClient` | 5 | 预设/自定义手臂动作和动作列表 |
+| `LocoClient` | 34 | FSM、站立高度、速度、步态和只读状态 |
+
+这里的“公开方法数”包含 `init()`。运动或硬件副作用方法虽然已经绑定，仍分别标记为 `MOTION_COMMAND` 或 `HARDWARE_SIDE_EFFECT`，默认测试不会调用。
+
+G1 还提供 7 个官方运行安全检查：
+
+```python
+from unitree_sdk2_cpp.robot.g1 import (
+    ang_vel_out_of_limit,
+    bad_orientation,
+    joint_vel_out_of_limit,
+    lost_connection,
+    low_battery,
+    motor_casing_overheat,
+    motor_winding_overheat,
+)
+```
+
+| 函数 | 默认阈值 | `True` 的含义 |
+| --- | ---: | --- |
+| `bad_orientation(low_state, limit_angle=1.0)` | 1.0 rad | 机体姿态倾角过大 |
+| `joint_vel_out_of_limit(low_state, limit_vel=10.0)` | 10.0 | 至少一个关节速度超限 |
+| `ang_vel_out_of_limit(low_state, limit_vel=6.0)` | 6.0 | IMU 至少一个角速度分量超限 |
+| `motor_winding_overheat(low_state, limit_temp=120.0)` | 120.0 | 至少一个电机绕组过热 |
+| `motor_casing_overheat(low_state, limit_temp=85.0)` | 85.0 | 至少一个电机外壳过热 |
+| `low_battery(bms_state, limit_soc=20.0)` | 20.0% | 电池 SOC 低于阈值 |
+| `lost_connection(subscriber, timeout_ms=1000)` | 1000 ms | `LowState` 订阅数据已经超时 |
+
+这些函数返回诊断布尔值，不会自己发送阻尼、停机或力矩命令。上层程序必须根据机器人模式和经过验证的故障处理流程决定后续操作。`lost_connection` 只接受消息类型为 `idl.g1.LowState` 的 `ChannelSubscriber`；传入其他消息订阅器会抛出 `TypeError`。
 
 设置超时：
 
@@ -1795,7 +1882,7 @@ def callback(message: LowState) -> None:
 
 ## 运动 API 的安全边界
 
-### 为什么编辑器能看到 `move()`，运行时却不能调用？
+### 为什么编辑器能看到 `move()`，但仍然不能直接试跑？
 
 签名包的目标之一，是给上层模块提供完整的 SDK 设计期视图。因此它收录了运动方法签名，例如某些 Client 中的：
 
@@ -1803,18 +1890,18 @@ def callback(message: LowState) -> None:
 def move(self, vx: float, vy: float, vyaw: float) -> int: ...
 ```
 
-但对应文档标记为：
+当前对应文档标记为：
 
 ```text
-SIGNATURE_ONLY | MOTION_COMMAND
+AVAILABLE | MOTION_COMMAND
 ```
 
 两个标签分别说明：
 
-- `SIGNATURE_ONLY`：当前二进制扩展没有这个 Python 方法；
+- `AVAILABLE`：当前 binding 中已经注册这个 Python 方法；
 - `MOTION_COMMAND`：它属于可能导致物理运动的命令。
 
-### 能通过类型检查，但运行会失败
+### 能通过类型检查和属性检查，也不代表可以安全运行
 
 这段代码可能通过 Mypy：
 
@@ -1825,7 +1912,7 @@ client = LocoClient()
 result = client.move(0.1, 0.0, 0.0)
 ```
 
-但当前运行时并没有暴露该方法，实际执行可能得到 `AttributeError`。
+如果安装了匹配的 Linux 扩展，这个方法会真正进入 C++ SDK，并可能向实体机器人发送请求。这里没有初始化 DDS、确认控制权、限制速度、检查姿态，也没有故障处理，因此只能作为签名说明，不能直接执行。
 
 ### 当前分类统计
 
@@ -1833,16 +1920,16 @@ Robot API 分类中包括：
 
 | 分类 | 方法数 | 当前策略 |
 | --- | ---: | --- |
-| 只读查询 | 50 | 其中 45 个输出式查询进入显式 allowlist |
-| 初始化/生命周期 | 32 | 仅绑定必要部分 |
-| 其他硬件副作用 | 38 | 全部保持 `SIGNATURE_ONLY` |
-| 运动命令 | 220 | 全部保持 `SIGNATURE_ONLY` |
+| 只读查询 | 50 | 全部进入运行时，其中 45 个使用输出参数包装 |
+| 初始化/生命周期 | 32 | 除抽象基类和内部 ClientStub 外均按实际 Client 暴露 |
+| 其他硬件副作用 | 38 | 36 个进入运行时；ClientStub 的 2 个内部请求方法未绑定 |
+| 运动命令 | 220 | 全部进入运行时，保留 `MOTION_COMMAND` 安全标签 |
 
 此外，签名清单还包含值类型、构造函数、内部辅助类型等条目，所以不能把上表简单相加当作全部 manifest 条目数。
 
 ### 即使名字像“停止”，也属于运动安全边界
 
-`stop_move()`、`damp()`、`zero_torque()` 等名字听起来像安全操作，但它们仍会改变机器人执行状态。当前仍标为 `MOTION_COMMAND` 和 `SIGNATURE_ONLY`。
+`stop_move()`、`damp()`、`zero_torque()` 等名字听起来像安全操作，但它们仍会改变机器人执行状态，因此仍标为 `MOTION_COMMAND`。软件方法不能替代物理急停。
 
 不要把“停止”方法当作软件层面的通用急停。真正的安全系统需要：
 
@@ -1857,13 +1944,13 @@ Robot API 分类中包括：
 
 ### 上层模块现在应该怎样写？
 
-如果你正在提前开发未来的运动模块，可以：
+如果你正在开发运动模块，仍应先把真实调用隔离起来：
 
 1. 使用签名完成接口定义和静态检查；
 2. 把硬件调用封装在清晰边界后；
 3. 在无硬件环境中用你自己的 fake/mock 测试业务逻辑；
-4. 不要伪造“当前运行时已经支持”的结论；
-5. 等运动绑定经过独立安全评审和目标机验证后，再启用真实后端。
+4. 默认 CI 只使用 fake，禁止访问 DDS 和硬件；
+5. 只有完成目标机二进制验证、独立安全评审和现场审批后，才启用真实后端。
 
 一个简单的上层抽象示例：
 
@@ -1990,7 +2077,7 @@ jq -r '
   unitree_sdk2_bindings/stubs/src/unitree_sdk2_cpp-stubs/api_manifest.json
 ```
 
-当前结果中的运动方法都应该是 `SIGNATURE_ONLY`。可以用下面的命令检查是否出现违反安全边界的条目：
+当前 220 个运动方法都应同时保留 `MOTION_COMMAND` 标签并标记为 `AVAILABLE`。下面的命令只审计元数据，绝不执行这些方法：
 
 ```bash
 jq -e '
@@ -1998,10 +2085,10 @@ jq -e '
     .entries[]
     | select(
         .safety == "MOTION_COMMAND"
-        and .status != "SIGNATURE_ONLY"
+        and .status == "AVAILABLE"
       )
   ]
-  | length == 0
+  | length == 220
 ' \
   unitree_sdk2_bindings/stubs/src/unitree_sdk2_cpp-stubs/api_manifest.json
 ```
@@ -2358,13 +2445,13 @@ ls dist
 如果你在仓库根目录，wheel 的相对路径是：
 
 ```text
-unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 如果你已经进入 `unitree_sdk2_bindings`，相对路径才是：
 
 ```text
-dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 ### 14. 签名和实际运行时看起来不一致
@@ -2376,7 +2463,7 @@ python -m pip show unitree-sdk2-cpp-stubs
 python -m pip show unitree-sdk2-cpp
 ```
 
-当前 stub `0.1.2` 描述的是当前仓库生成时的接口快照。未来运行时版本更新后，应同时重新生成并发布匹配的 stub，不要长期混用不同修订。
+当前 stub `0.3.0` 描述的是当前仓库生成时的接口快照。未来运行时版本更新后，应同时重新生成并发布匹配的 stub，不要长期混用不同修订。
 
 ---
 
@@ -2413,9 +2500,9 @@ python -m pip show unitree-sdk2-cpp
 
 完整签名预览包含 SDK 中许多辅助类、服务类和值对象。当前运行时并没有绑定全部类，所以连构造函数也可能只存在于 `.pyi` 中。
 
-### 为什么只读方法不是全部自动开放？
+### 为什么还要保留 API 安全分类？
 
-方法名不能可靠证明安全性。某些 `Get*` 可能隐含网络副作用、状态切换、资源消耗或复杂生命周期。当前策略要求显式 allowlist，避免新的 SDK API 因为命名模式而自动进入 Python 运行时。
+方法进入运行时只说明 pybind11 可以调用它，不说明调用是无副作用或安全的。生成器会保留 `READ_ONLY`、`INITIALIZATION`、`HARDWARE_SIDE_EFFECT` 和 `MOTION_COMMAND` 分类；测试、Agent 和上层应用必须根据分类建立执行权限，不能只看方法名。
 
 ### `read-only` 是否表示绝对没有任何影响？
 
@@ -2454,7 +2541,7 @@ API 允许创建多个实例。每个实例应保存在变量中，并在结束�
 
 ### 为什么文档不提供运动命令示例？
 
-因为当前运动方法只有设计期签名，并未进入运行时绑定；同时它们会影响真实物理设备。提供看似可复制执行的运动示例会混淆实现状态和安全边界。
+因为这些方法已经能进入真实 C++ SDK，并可能影响物理设备。一个安全运动脚本必须同时知道目标型号、固件、控制模式、初始姿态、限值、场地、固定方式、lease 和物理急停；通用文档无法替你确认这些条件。API Reference 只展示准确签名，并明确标出危险等级。
 
 ### 如何确认 wheel 没有损坏？
 
@@ -2462,20 +2549,20 @@ API 允许创建多个实例。每个实例应保存在变量中，并在结束�
 
 ```bash
 shasum -a 256 \
-  unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+  unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 当前预期 SHA-256：
 
 ```text
-27bafecf516131e53d712368f19bd16e888362cd54396c86d61932c43d16f880
+126c3e43656de48a69f946a8d9faea87d396c983f91e4bfee48762144fac76ec
 ```
 
 Linux 上也可以用：
 
 ```bash
 sha256sum \
-  unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+  unitree_sdk2_bindings/dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 ---
@@ -2561,10 +2648,11 @@ ChannelSubscriber(
 | Python 模块 | 类数 | 属性数 | 主要用途 |
 | --- | ---: | ---: | --- |
 | `idl.go2` | 26 | 181 | Go2 消息 |
+| `idl.g1` | 13 个别名 | 对应 `idl.hg` | G1 友好命名和 CRC 工具 |
 | `idl.hg` | 13 | 81 | HG 系列消息 |
 | `idl.hg_doubleimu` | 1 | 6 | double IMU 消息 |
 | `idl.ros2` | 24 | 73 | 常用 ROS2 风格消息 |
-| **合计** | **64** | **341** | 全部进入 typed channel 注册表 |
+| **底层类型合计** | **64** | **341** | 全部进入 typed channel 注册表；G1 别名不重复计数 |
 
 ### `idl.go2` 类索引
 
@@ -2614,6 +2702,28 @@ LowState
 MainBoardState
 SportModeState
 ```
+
+### `idl.g1` 类索引
+
+`idl.g1` 提供以下 `idl.hg` 类型的同对象别名：
+
+```text
+AgvBmsState
+BmsCmd
+BmsState
+HandCmd
+HandState
+IMUState
+LowCmd
+LowState
+MainBoardState
+MotorCmd
+MotorState
+PressSensorState
+SportModeState
+```
+
+模块函数为 `compute_crc()`、`update_crc()` 和 `validate_crc()`。其中 `compute_crc()` 与 `validate_crc()` 各有 `LowCmd`、`LowState` 两个重载。
 
 ### `idl.hg_doubleimu` 类索引
 
@@ -2673,12 +2783,13 @@ Manifest 中的 Robot 类数：
 | `robot.r1` | 8 |
 | **合计** | **121 类** |
 
-### 当前可构造的 21 个具体 Client
+### 当前可构造的 26 个 Client
 
-下表只列当前绑定源代码中 `AVAILABLE` 的具体 Client 及其专属只读查询。它们还会继承通用超时和版本方法。
+下表列出当前绑定源代码中 `AVAILABLE` 的 25 个具体 SDK Client 和 `LeaseClient`。最后一列只列专属只读查询；没有只读查询不表示命令方法不可用，完整方法以 API Reference 和 manifest 为准。
 
 | 命名空间 | Client | 当前专属只读方法 |
 | --- | --- | --- |
+| `robot` | `LeaseClient` | `get_id()`、`applied()` |
 | `a2` | `AudioClient` | `get_volume()` |
 | `a2` | `SportClient` | `get_state()` |
 | `as2` | `SportClient` | `get_state()` |
@@ -2687,11 +2798,15 @@ Manifest 中的 Robot 类数：
 | `b2` | `FrontVideoClient` | `get_image_sample()` |
 | `b2` | `MotionSwitcherClient` | `check_mode()`、`get_silent()` |
 | `b2` | `RobotStateClient` | `service_list()`、`get_pkg_version()` |
+| `b2` | `SportClient` | 无专属只读方法 |
+| `g1` | `AgvClient` | 无专属只读方法 |
 | `g1` | `AudioClient` | `get_volume()` |
 | `g1` | `G1ArmActionClient` | `get_action_list()` |
 | `g1` | `LocoClient` | `get_fsm_id()`、`get_fsm_mode()`、`get_balance_mode()`、`get_swing_height()`、`get_stand_height()`、`get_phase()`、`get_mimic_motion()` |
 | `go2` | `ConfigClient` | `get(name)` |
+| `go2` | `ObstaclesAvoidClient` | 无专属只读方法 |
 | `go2` | `RobotStateClient` | `service_list()` |
+| `go2` | `SportClient` | 无专属只读方法 |
 | `go2` | `UtrackClient` | `is_tracking()` |
 | `go2` | `VideoClient` | `get_image_sample()` |
 | `go2` | `VuiClient` | `get_switch()`、`get_volume()`、`get_brightness()` |
@@ -2902,13 +3017,13 @@ TtsMakerParameter
 
 | 项目 | 值 |
 | --- | --- |
-| 文档日期 | 2026-08-27 |
+| 文档日期 | 2026-08-28 |
 | Stub 分发包 | `unitree-sdk2-cpp-stubs` |
-| Stub 版本 | `0.1.2` |
+| Stub 版本 | `0.3.0` |
 | Python 要求 | `>=3.10` |
 | Wheel 标签 | `py3-none-any` |
 | Manifest schema | `1` |
-| Wheel SHA-256 | `27bafecf516131e53d712368f19bd16e888362cd54396c86d61932c43d16f880` |
+| Wheel SHA-256 | `126c3e43656de48a69f946a8d9faea87d396c983f91e4bfee48762144fac76ec` |
 
 ### 签名覆盖统计
 
@@ -2918,21 +3033,46 @@ TtsMakerParameter
 | IDL 属性 | 341 |
 | Robot 类 | 121 |
 | Robot 公共方法/构造签名 | 634 |
-| Manifest 条目 | 1190 |
-| `AVAILABLE` 条目 | 650 |
-| `SIGNATURE_ONLY` 条目 | 540 |
+| Manifest 条目 | 1213 |
+| `AVAILABLE` 条目 | 1168 |
+| `SIGNATURE_ONLY` 条目 | 45 |
 
 ### 状态数字应该怎样理解？
 
-`650 AVAILABLE` 不等于 650 个可直接调用的机器人方法。它还包括：
+`1168 AVAILABLE` 不等于 1168 个机器人命令。它还包括：
 
 - 533 个 IDL 值类型条目；
 - DDS 生命周期 API；
 - 构造函数；
 - Robot Client 初始化和公共基础能力；
-- 只读查询包装器。
+- 336 个已绑定 Client 方法；
+- 80 个 Robot 参数/返回值类型、2 个 Lease 内存工具类和 1 个枚举。
+- G1 的 5 个 CRC 重载条目和 7 个安全检查函数。
 
-同样，`540 SIGNATURE_ONLY` 包含运动方法、硬件副作用方法、辅助值类型和当前未绑定的 SDK 表面。
+`45 SIGNATURE_ONLY` 集中在底层 Channel 命名器、抽象 Client/Server 基类、裸 `ClientStub`/`ServerStub`、`RequestFuture` 和服务端生命周期接口。这些接口依赖内部 DDS Request/Response 类型、工作线程或复杂回调所有权，不能只为提高覆盖数字而直接暴露。运动 Client 方法已经是 `AVAILABLE`，但仍由 `MOTION_COMMAND` 标签限制执行权限。
+
+### Robot JSON 值类型怎样使用？
+
+72 个继承 SDK `Jsonize` 的参数和返回值类已经进入运行时。Python 字段直接读写同一个 C++ 对象；`from_json()` 和 `to_json()` 只负责跨越 Python 字典边界，字段解析和生成仍调用 Unitree C++ SDK 自己的 `fromJson`/`toJson`。
+
+```python
+from unitree_sdk2_cpp.robot.go2 import JsonizeDataFloat
+
+value = JsonizeDataFloat()
+value.from_json({"data": 1.25})
+
+print(value.data)       # 1.25
+print(value.to_json())  # {"data": 1.25}
+```
+
+注意两个方向的签名不同：
+
+| 方法 | 参数 | 返回值 |
+| --- | --- | --- |
+| `from_json(value)` | 一个可 JSON 序列化的映射 | `None` |
+| `to_json()` | 无 | `dict[str, Any]` |
+
+`LeaseContext` 和 `LeaseCache` 也是 `AVAILABLE`，但它们只是进程内状态对象。构造和读写这两个类不会初始化 DDS；`LeaseClient` 和 `LeaseServer` 则是另一类会建立 SDK 生命周期状态的对象，不要混淆。
 
 ### 已完成的静态验证
 
@@ -2948,7 +3088,7 @@ TtsMakerParameter
 当前源码级测试结果：
 
 ```text
-19 passed, 3 skipped
+33 passed, 4 skipped
 ```
 
 跳过项需要导入 Linux 二进制扩展，macOS 源码检查环境无法执行。
@@ -2964,20 +3104,22 @@ TtsMakerParameter
 - `RUNPATH=$ORIGIN/.libs`；
 - 测试结果为 `22 passed`。
 
-加入当前 Robot 只读包装器后，仍需要在目标 Linux 主机做一次新的：
+加入当前完整 Robot Client 包装器后，仍需要在目标 Linux 主机做一次新的：
 
 1. 全量编译；
 2. 导入测试；
 3. 共享库依赖检查；
-4. 只读方法注册检查；
-5. 不接触运动 API 的安全测试。
+4. 336 个 Client 方法的注册检查；
+5. G1 消息别名、CRC 和安全检查的运行时测试；
+6. 不构造 Client、不初始化 DDS、不接触运动 API 的默认安全测试。
 
 因此当前最准确的描述是：
 
 ```text
 IDL + typed channel：已有目标机历史验证
-Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复验
-运动/其他硬件副作用：仅签名预览，不属于当前运行时能力
+Robot Client wrapper：336/340 个公开方法已有源码和签名，等待当前修订目标机复验
+G1 专项：13 个消息别名、49 个 Client 方法、5 个 CRC 重载条目和 7 个安全检查等待目标机复验
+运动/其他硬件副作用：运行时入口已生成；尚未做目标机器人功能或安全验证
 ```
 
 ### 发布或交付前检查清单
@@ -2991,7 +3133,8 @@ Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复
 - [ ] `import unitree_sdk2_cpp` 成功；
 - [ ] `registered_message_types()` 返回 64 项；
 - [ ] `ldd` 没有 `not found`；
-- [ ] 运动方法仍全部是 `SIGNATURE_ONLY`；
+- [ ] 220 个运动方法都保留 `MOTION_COMMAND` 标签；
+- [ ] 默认测试只检查方法注册，不构造 Client 或调用命令；
 - [ ] 默认测试没有初始化 DDS、联系硬件或命令运动；
 - [ ] 硬件测试具有明确的人工启用和现场安全条件。
 
@@ -3044,7 +3187,7 @@ Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复
 1. 确认目标型号和固件；
 2. 订阅只读状态 topic；
 3. 记录消息频率和最近数据时间；
-4. 调用 allowlist 中的只读 Robot Client；
+4. 调用 manifest 中标为 `READ_ONLY` 的 Robot Client 方法；
 5. 正确处理状态码和超时；
 6. 建立日志、关闭和异常策略。
 
@@ -3063,10 +3206,10 @@ Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复
 
 ### 阶段 6：任何运动能力之前
 
-运动绑定不是本文范围。进入这一阶段前，至少应具备：
+运动接口已经绑定，但真实运动验证不是本文范围。进入这一阶段前，至少应具备：
 
 - 对目标机器人 SDK 和控制模式的完整理解；
-- 经过评审的绑定实现，而不只是 `.pyi`；
+- 经过评审的上层安全适配器和执行策略，而不只是直接调用 binding；
 - 目标架构二进制测试；
 - 独立物理急停；
 - 机器人固定/吊装和隔离区域；
@@ -3101,16 +3244,16 @@ Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复
 你可以：
 
 - 导入 `unitree_sdk2_cpp`；
-- 使用 `AVAILABLE` 的 IDL、channel 和只读 Client API；
+- 使用 `AVAILABLE` 的 IDL、channel 和 Robot Client API；
 - 在正确环境下订阅和发布已注册类型；
-- 在正确设备上执行 allowlist 中的只读查询。
+- 在正确设备上执行标为 `READ_ONLY` 的查询。
 
 你仍不可以假设：
 
 - `SIGNATURE_ONLY` 方法已经存在；
 - DDS 初始化成功就一定能发现机器人；
 - `write()` 返回 `True` 就代表设备完成了动作；
-- 任何运动方法已经经过实现或安全验证。
+- 任何 `AVAILABLE` 运动方法已经针对你的型号、固件和现场完成安全验证。
 
 ### 一句话决策规则
 
@@ -3118,5 +3261,5 @@ Robot 只读 wrapper：源码和签名已验证，等待当前修订目标机复
 先看签名，再看 manifest；
 确认 AVAILABLE，再做 Linux 导入；
 确认网络和服务，最后才谈硬件；
-任何运动能力必须另行实现、评审和验证。
+任何运动能力必须另行授权、评审和验证。
 ```

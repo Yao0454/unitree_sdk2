@@ -1368,21 +1368,25 @@
               "type": "const std::vector<PathPoint> &"
             },
             {
+              "default_value": "0",
               "has_default": true,
               "name": "feedback_mode",
               "type": "int"
             },
             {
+              "default_value": "0.0",
               "has_default": true,
               "name": "external_x",
               "type": "float"
             },
             {
+              "default_value": "0.0",
               "has_default": true,
               "name": "external_y",
               "type": "float"
             },
             {
+              "default_value": "0.0",
               "has_default": true,
               "name": "external_yaw",
               "type": "float"
@@ -5097,6 +5101,7 @@
           "name": "SportClient",
           "parameters": [
             {
+              "default_value": "false",
               "has_default": true,
               "name": "enableLease",
               "type": "bool"
@@ -6104,6 +6109,7 @@
               "type": "const std::string &"
             },
             {
+              "default_value": "false",
               "has_default": true,
               "name": "enableLease",
               "type": "bool"
@@ -9499,6 +9505,7 @@
               "type": "float"
             },
             {
+              "default_value": "1.0",
               "has_default": true,
               "name": "duration",
               "type": "float"
@@ -9872,6 +9879,7 @@
           "name": "WaveHand",
           "parameters": [
             {
+              "default_value": "false",
               "has_default": true,
               "name": "turn_flag",
               "type": "bool"
@@ -9895,6 +9903,7 @@
           "name": "ShakeHand",
           "parameters": [
             {
+              "default_value": "-1",
               "has_default": true,
               "name": "stage",
               "type": "int"
@@ -13556,6 +13565,7 @@
           "name": "SportClient",
           "parameters": [
             {
+              "default_value": "false",
               "has_default": true,
               "name": "enableLease",
               "type": "bool"
@@ -15682,6 +15692,7 @@
               "type": "float"
             },
             {
+              "default_value": "1.0",
               "has_default": true,
               "name": "duration",
               "type": "float"
@@ -15743,6 +15754,7 @@
               "type": "float"
             },
             {
+              "default_value": "true",
               "has_default": true,
               "name": "relative",
               "type": "bool"
@@ -16082,6 +16094,7 @@
           "name": "ShakeHand",
           "parameters": [
             {
+              "default_value": "-1",
               "has_default": true,
               "name": "stage",
               "type": "int"
@@ -17210,6 +17223,7 @@
               "type": "float"
             },
             {
+              "default_value": "1.0",
               "has_default": true,
               "name": "duration",
               "type": "float"
@@ -17566,6 +17580,7 @@
           "name": "WaveHand",
           "parameters": [
             {
+              "default_value": "false",
               "has_default": true,
               "name": "turn_flag",
               "type": "bool"
@@ -17589,6 +17604,7 @@
           "name": "ShakeHand",
           "parameters": [
             {
+              "default_value": "-1",
               "has_default": true,
               "name": "stage",
               "type": "int"
@@ -21231,6 +21247,7 @@
               "type": "float"
             },
             {
+              "default_value": "1.0",
               "has_default": true,
               "name": "duration",
               "type": "float"
@@ -21534,6 +21551,7 @@
               "type": "const std::string &"
             },
             {
+              "default_value": "0",
               "has_default": true,
               "name": "lastModified",
               "type": "int64_t"
@@ -21557,6 +21575,7 @@
           "name": "Renewal",
           "parameters": [
             {
+              "default_value": "0",
               "has_default": true,
               "name": "lastModified",
               "type": "int64_t"

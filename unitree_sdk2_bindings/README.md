@@ -1,11 +1,16 @@
 # Unitree SDK2 Python bindings
 
-This directory contains an incremental pybind11 binding layer. It binds the
+This directory contains a generated pybind11 binding layer. It binds the
 SDK-owned `unitree::common::OsHelper` singleton and all 64 DDS message classes
 currently shipped under the SDK's Go2, HG, double-IMU, and ROS2 IDL trees.
+The `idl.g1` module adds G1-friendly aliases for all 13 HG messages plus SDK-backed
+CRC helpers. `robot.g1` exposes all four G1 clients, their 49 public methods, and
+the seven official runtime safety checks.
 Message fields use copy semantics, so reading or assigning an array, vector, or
 nested value does not expose a dangling C++ reference. The operating-system
-methods are read-only and the tests cannot command robot motion.
+methods are read-only. Robot command methods are present, but the default tests
+only inspect registrations and never construct a Client, initialize DDS, or
+send a command.
 
 The repository currently ships Linux ELF libraries for `x86_64` and
 `aarch64`. Build and import testing therefore requires one of those Linux
@@ -63,7 +68,7 @@ escaping a DDS worker thread. `channel.initialize` and `publisher.write` are
 deliberately absent from the default tests; hardware or network tests must be
 opted into explicitly by the caller.
 
-## Read-only robot clients
+## Robot clients
 
 The robot inventory currently contains 103 headers, 129 classes, one enum,
 and 775 methods or constructors. Of the 29 Client classes and 340 public Client
@@ -76,11 +81,22 @@ methods, the safety classifier reports:
 | Other hardware side effect | 38 |
 | Motion command | 220 |
 
-`generator/robot_read_only_policy.json` is an explicit reviewed allowlist. The
-generator currently exposes 45 output-style read-only methods across 21
-concrete Client classes. A newly discovered `Get*` method is not automatically
-bound: it must first be added to the policy. No motion command or mutating
-hardware method is part of this Python surface.
+The generated runtime surface exposes 336 of the 340 public Client methods
+across 25 concrete SDK Client classes plus `LeaseClient`. This includes all 220
+methods classified as motion commands, 50 read-only methods, and 36 methods
+with other hardware side effects. The four remaining methods are the abstract
+`ClientBase::Init` entry and the three internal `ClientStub` request methods.
+
+The Robot module also exposes 80 parameter/result value classes. The 72
+SDK `Jsonize` classes keep their public C++ fields and provide `from_json(dict)`
+and `to_json()` wrappers that delegate serialization to the SDK. `LeaseCache`
+and `LeaseContext` are available as pure in-memory utility classes; using them
+does not initialize DDS.
+
+Direct methods release the GIL while executing C++. Mutable C++ output
+references are returned as Python values. The two configuration callbacks keep
+their Python callable alive, acquire the GIL on the SDK worker thread, and
+report Python exceptions as unraisable instead of unwinding through DDS.
 
 C++ output references are returned with the SDK status code instead of being
 represented as mutable Python arguments:
@@ -96,10 +112,10 @@ status, fsm_id = client.get_fsm_id()
 channel.release()
 ```
 
-Robot queries release the GIL while waiting in the C++ SDK. Default tests only
-inspect the registered Python surface; they do not construct a Client,
-initialize DDS, contact hardware, or invoke a query. All command methods remain
-classified in `generated/robot_binding_report.json` for parity tracking.
+Default tests only inspect the registered Python surface; they do not construct
+a Client, initialize DDS, contact hardware, invoke a query, or send a command.
+Real tests must opt into `hardware`; motion tests must additionally opt into
+`motion` and provide their own physical safety procedure.
 
 For Linux developer builds, the same step can be enabled with
 `-DUNITREE_REGENERATE_BINDINGS=ON`. Normal wheel builds use the checked-in
@@ -112,7 +128,7 @@ and audit the resulting extension with `readelf`, `ldd`, and an import test.
 
 ## Verification
 
-On 2026-08-27 the IDL and typed-channel revision was built on the supplied
+On 2026-08-28 the IDL and typed-channel revision was built on the supplied
 Ubuntu 20.04 aarch64 host
 (`g++ 9.4.0`, Conda Python 3.10.20). `pip install -e . --no-build-isolation`
 completed successfully, the resulting
@@ -125,21 +141,20 @@ resolved both CycloneDDS SONAMEs from the wheel's `.libs` directory with no
 missing libraries. Verification used only temporary directories and did not
 modify the remote SDK checkout.
 
-Those 22 tests include the Robot inventory and classification checks, but
-predate the generated read-only C++ wrappers. After adding those wrappers, the
-macOS source-level suite reports `19 passed, 3 skipped`. The skipped tests
-import the Linux extension. The current Robot Client source still requires a
+That result predates the complete generated Robot Client surface. The current
+macOS source-level suite reports `33 passed, 4 skipped`; the skipped tests
+import the Linux extension. The expanded Robot Client source still requires a
 fresh Linux compile, import, and symbol audit before it is considered
 binary-verified.
 
 ## Signature-preview package
 
-`dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl` is a platform-independent
+`dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl` is a platform-independent
 PEP 561 stub wheel for writing application code before the Linux extension is
 available:
 
 ```bash
-python -m pip install dist/unitree_sdk2_cpp_stubs-0.1.2-py3-none-any.whl
+python -m pip install dist/unitree_sdk2_cpp_stubs-0.3.0-py3-none-any.whl
 ```
 
 It covers 64 IDL classes with 341 properties and 121 Robot classes with 634
@@ -148,10 +163,15 @@ Pyright can therefore check code against `unitree_sdk2_cpp` on macOS, Windows,
 or Linux. The wheel is type information only; executing imports still requires
 the compiled Linux extension.
 
+The packaged manifest contains 1213 entries: 1167 `AVAILABLE` and 46
+`SIGNATURE_ONLY`. G1 contributes five CRC overload entries and seven safety
+checks without duplicating the underlying HG message registrations.
+
 Every preview method is marked `AVAILABLE` or `SIGNATURE_ONLY` in its hover
-documentation and in the packaged `api_manifest.json`. All motion commands are
-currently `SIGNATURE_ONLY`: application code can be authored against their
-planned signatures, but the current extension cannot execute them.
+documentation and in the packaged `api_manifest.json`. Motion methods are now
+`AVAILABLE`, which means the runtime entry exists, not that calling it is safe.
+The manifest retains `MOTION_COMMAND` and `HARDWARE_SIDE_EFFECT` metadata so an
+Agent or test harness can enforce an explicit execution policy.
 
 ## Documentation
 

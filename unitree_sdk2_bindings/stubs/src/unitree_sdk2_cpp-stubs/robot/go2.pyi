@@ -15,63 +15,63 @@ class ConfigClient(Client):
         """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def set(self, name: str, content: str) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: Set(const std::string &, const std::string &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: Set(const std::string &, const std::string &)."""
         ...
     def get(self, name: str) -> tuple[int, str]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: Get(const std::string &, std::string &)."""
         ...
     def del_(self, name: str) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: Del(const std::string &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: Del(const std::string &)."""
         ...
     def meta_config_meta(self, name: str) -> tuple[int, ConfigMeta]:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: Meta(const std::string &, unitree::robot::go2::ConfigMeta &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: Meta(const std::string &, unitree::robot::go2::ConfigMeta &)."""
         ...
     def meta_string(self, name: str) -> tuple[int, str]:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: Meta(const std::string &, std::string &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: Meta(const std::string &, std::string &)."""
         ...
     def subscribe_change_status(self, name: str, callback: Callable[[str, str], None]) -> None:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | CALLBACK_MANUAL. C++: SubscribeChangeStatus(const std::string &, const unitree::robot::go2::ConfigChangeStatusCallback &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | CALLBACK_MANUAL. C++: SubscribeChangeStatus(const std::string &, const unitree::robot::go2::ConfigChangeStatusCallback &)."""
         ...
 
 class ConfigDelParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigDelParameter::ConfigDelParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigDelParameter::ConfigDelParameter()."""
         ...
     name: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ConfigGetData(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigGetData::ConfigGetData()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigGetData::ConfigGetData()."""
         ...
     content: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ConfigGetParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigGetParameter::ConfigGetParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigGetParameter::ConfigGetParameter()."""
         ...
     name: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ConfigMeta(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigMeta::ConfigMeta()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigMeta::ConfigMeta()."""
         ...
     name: str
     last_modified: str
@@ -80,144 +80,144 @@ class ConfigMeta(object):
 
 class ConfigMetaData(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigMetaData::ConfigMetaData()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigMetaData::ConfigMetaData()."""
         ...
     meta: JsonizeConfigMeta
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ConfigMetaParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigMetaParameter::ConfigMetaParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigMetaParameter::ConfigMetaParameter()."""
         ...
     name: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ConfigSetParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ConfigSetParameter::ConfigSetParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::ConfigSetParameter::ConfigSetParameter()."""
         ...
     name: str
     content: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeCommObjInt(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeCommObjInt::JsonizeCommObjInt()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeCommObjInt::JsonizeCommObjInt()."""
         ...
     value: int
     name: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeConfigMeta(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeConfigMeta::JsonizeConfigMeta()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeConfigMeta::JsonizeConfigMeta()."""
         ...
     name: str
     last_modified: str
     size: int
     epoch: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeDataBool(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeDataBool::JsonizeDataBool()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeDataBool::JsonizeDataBool()."""
         ...
     data: bool
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeDataDouble(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeDataDouble::JsonizeDataDouble()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeDataDouble::JsonizeDataDouble()."""
         ...
     data: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeDataFloat(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeDataFloat::JsonizeDataFloat()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeDataFloat::JsonizeDataFloat()."""
         ...
     data: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeDataInt(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeDataInt::JsonizeDataInt()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeDataInt::JsonizeDataInt()."""
         ...
     data: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeDataString(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeDataString::JsonizeDataString()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeDataString::JsonizeDataString()."""
         ...
     data: str
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeFlagBool(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeFlagBool::JsonizeFlagBool()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeFlagBool::JsonizeFlagBool()."""
         ...
     flag: bool
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizePathPoint(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizePathPoint::JsonizePathPoint()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizePathPoint::JsonizePathPoint()."""
         ...
     time_from_start: float
     x: float
@@ -226,66 +226,66 @@ class JsonizePathPoint(object):
     vx: float
     vy: float
     vyaw: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeQuat(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeQuat::JsonizeQuat()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeQuat::JsonizeQuat()."""
         ...
     x: float
     y: float
     z: float
     w: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class JsonizeVec3(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::JsonizeVec3::JsonizeVec3()."""
+        """AVAILABLE; C++: unitree::robot::go2::JsonizeVec3::JsonizeVec3()."""
         ...
     x: float
     y: float
     z: float
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ObstaclesAvoidClient(Client):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ObstaclesAvoidClient::ObstaclesAvoidClient()."""
+        """AVAILABLE; C++: unitree::robot::go2::ObstaclesAvoidClient::ObstaclesAvoidClient()."""
         ...
     def init(self) -> None:
-        """SIGNATURE_ONLY | INITIALIZATION | DIRECT. C++: Init()."""
+        """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def switch_set(self, enable: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SwitchSet(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SwitchSet(bool)."""
         ...
     def switch_get(self) -> tuple[int, bool]:
-        """SIGNATURE_ONLY | MOTION_COMMAND | OUTPUT_WRAPPER. C++: SwitchGet(bool &)."""
+        """AVAILABLE | MOTION_COMMAND | OUTPUT_WRAPPER. C++: SwitchGet(bool &)."""
         ...
     def move(self, x: float, y: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
         ...
     def use_remote_command_from_api(self, is_remote_commands_from_api: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: UseRemoteCommandFromApi(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: UseRemoteCommandFromApi(bool)."""
         ...
     def move_to_absolute_position(self, x: float, y: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: MoveToAbsolutePosition(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: MoveToAbsolutePosition(float, float, float)."""
         ...
     def move_to_increment_position(self, x: float, y: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: MoveToIncrementPosition(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: MoveToIncrementPosition(float, float, float)."""
         ...
 
 class ObstaclesAvoidMoveParameter(object):
@@ -293,38 +293,50 @@ class ObstaclesAvoidMoveParameter(object):
     m_y: float
     m_yaw: float
     m_mode: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::ObstaclesAvoidMoveParameter."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ObstaclesAvoidRemoteCommandSource(object):
     m_is_remote_commands_from_api: bool
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::ObstaclesAvoidRemoteCommandSource."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ObstaclesAvoidSwitchGetData(object):
     m_enable: bool
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::ObstaclesAvoidSwitchGetData."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ObstaclesAvoidSwitchSetParameter(object):
     m_enable: bool
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::ObstaclesAvoidSwitchSetParameter."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class RobotStateClient(Client):
@@ -338,10 +350,10 @@ class RobotStateClient(Client):
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: ServiceList(std::vector<ServiceState> &)."""
         ...
     def service_switch(self, name: str, swit: int) -> tuple[int, int]:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: ServiceSwitch(const std::string &, int32_t, int32_t &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: ServiceSwitch(const std::string &, int32_t, int32_t &)."""
         ...
     def set_report_freq(self, interval: int, duration: int) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetReportFreq(int32_t, int32_t)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetReportFreq(int32_t, int32_t)."""
         ...
 
 class ServiceState(object):
@@ -354,180 +366,180 @@ class ServiceState(object):
 
 class ServiceStateData(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ServiceStateData::ServiceStateData()."""
+        """AVAILABLE; C++: unitree::robot::go2::ServiceStateData::ServiceStateData()."""
         ...
     name: str
     status: int
     protect: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ServiceSwitchData(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ServiceSwitchData::ServiceSwitchData()."""
+        """AVAILABLE; C++: unitree::robot::go2::ServiceSwitchData::ServiceSwitchData()."""
         ...
     name: str
     status: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class ServiceSwitchParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::ServiceSwitchParameter::ServiceSwitchParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::ServiceSwitchParameter::ServiceSwitchParameter()."""
         ...
     name: str
     swit: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class SetReportFreqParameter(object):
     def __init__(self) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::SetReportFreqParameter::SetReportFreqParameter()."""
+        """AVAILABLE; C++: unitree::robot::go2::SetReportFreqParameter::SetReportFreqParameter()."""
         ...
     interval: int
     duration: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class SportClient(Client):
-    def __init__(self, enable_lease: bool = ...) -> None:
-        """SIGNATURE_ONLY; C++: unitree::robot::go2::SportClient::SportClient(bool)."""
+    def __init__(self, enable_lease: bool = False) -> None:
+        """AVAILABLE; C++: unitree::robot::go2::SportClient::SportClient(bool)."""
         ...
     def init(self) -> None:
-        """SIGNATURE_ONLY | INITIALIZATION | DIRECT. C++: Init()."""
+        """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def damp(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Damp()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Damp()."""
         ...
     def balance_stand(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BalanceStand()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BalanceStand()."""
         ...
     def stop_move(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StopMove()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StopMove()."""
         ...
     def stand_up(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StandUp()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StandUp()."""
         ...
     def stand_down(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StandDown()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StandDown()."""
         ...
     def recovery_stand(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: RecoveryStand()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: RecoveryStand()."""
         ...
     def euler(self, roll: float, pitch: float, yaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Euler(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Euler(float, float, float)."""
         ...
     def move(self, vx: float, vy: float, vyaw: float) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Move(float, float, float)."""
         ...
     def sit(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Sit()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Sit()."""
         ...
     def rise_sit(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: RiseSit()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: RiseSit()."""
         ...
     def speed_level(self, level: int) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SpeedLevel(int)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SpeedLevel(int)."""
         ...
     def hello(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Hello()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Hello()."""
         ...
     def stretch(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Stretch()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Stretch()."""
         ...
     def switch_joystick(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SwitchJoystick(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SwitchJoystick(bool)."""
         ...
     def content(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Content()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Content()."""
         ...
     def heart(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Heart()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Heart()."""
         ...
     def pose(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Pose(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Pose(bool)."""
         ...
     def scrape(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Scrape()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Scrape()."""
         ...
     def front_flip(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FrontFlip()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FrontFlip()."""
         ...
     def front_jump(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FrontJump()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FrontJump()."""
         ...
     def front_pounce(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FrontPounce()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FrontPounce()."""
         ...
     def dance1(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Dance1()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Dance1()."""
         ...
     def dance2(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: Dance2()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: Dance2()."""
         ...
     def left_flip(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: LeftFlip()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: LeftFlip()."""
         ...
     def back_flip(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: BackFlip()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: BackFlip()."""
         ...
     def hand_stand(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: HandStand(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: HandStand(bool)."""
         ...
     def free_walk(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FreeWalk()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FreeWalk()."""
         ...
     def free_bound(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FreeBound(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FreeBound(bool)."""
         ...
     def free_jump(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FreeJump(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FreeJump(bool)."""
         ...
     def free_avoid(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: FreeAvoid(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: FreeAvoid(bool)."""
         ...
     def classic_walk(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: ClassicWalk(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: ClassicWalk(bool)."""
         ...
     def walk_upright(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: WalkUpright(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: WalkUpright(bool)."""
         ...
     def cross_step(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: CrossStep(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: CrossStep(bool)."""
         ...
     def auto_recover_set(self, flag: bool) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: AutoRecoverSet(bool)."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: AutoRecoverSet(bool)."""
         ...
     def auto_recover_get(self) -> tuple[int, bool]:
-        """SIGNATURE_ONLY | MOTION_COMMAND | OUTPUT_WRAPPER. C++: AutoRecoverGet(bool &)."""
+        """AVAILABLE | MOTION_COMMAND | OUTPUT_WRAPPER. C++: AutoRecoverGet(bool &)."""
         ...
     def static_walk(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: StaticWalk()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: StaticWalk()."""
         ...
     def trot_run(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: TrotRun()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: TrotRun()."""
         ...
     def economic_gait(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: EconomicGait()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: EconomicGait()."""
         ...
     def switch_avoid_mode(self) -> int:
-        """SIGNATURE_ONLY | MOTION_COMMAND | DIRECT. C++: SwitchAvoidMode()."""
+        """AVAILABLE | MOTION_COMMAND | DIRECT. C++: SwitchAvoidMode()."""
         ...
 
 class UtrackClient(Client):
@@ -538,10 +550,10 @@ class UtrackClient(Client):
         """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def switch_set(self, enable: bool) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: SwitchSet(bool)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: SwitchSet(bool)."""
         ...
     def switch_get(self) -> tuple[int, bool]:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: SwitchGet(bool &)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | OUTPUT_WRAPPER. C++: SwitchGet(bool &)."""
         ...
     def is_tracking(self) -> tuple[int, bool]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: IsTracking(bool &)."""
@@ -549,20 +561,26 @@ class UtrackClient(Client):
 
 class UtrackSwitchGetData(object):
     m_enable: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::UtrackSwitchGetData."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class UtrackSwitchSetParameter(object):
     m_enable: int
-    def from_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: fromJson(common::JsonMap &)."""
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::UtrackSwitchSetParameter."""
         ...
-    def to_json(self, json: dict[str, Any]) -> None:
-        """SIGNATURE_ONLY | UNCLASSIFIED | SIGNATURE_PREVIEW. C++: toJson(common::JsonMap &) const."""
+    def from_json(self, value: Mapping[str, Any]) -> None:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_INPUT. C++: fromJson(common::JsonMap &)."""
+        ...
+    def to_json(self) -> dict[str, Any]:
+        """AVAILABLE | UNCLASSIFIED | JSON_DICT_OUTPUT. C++: toJson(common::JsonMap &) const."""
         ...
 
 class VideoClient(Client):
@@ -584,19 +602,19 @@ class VuiClient(Client):
         """AVAILABLE | INITIALIZATION | DIRECT. C++: Init()."""
         ...
     def set_switch(self, enable: int) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetSwitch(int)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetSwitch(int)."""
         ...
     def get_switch(self) -> tuple[int, int]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: GetSwitch(int &)."""
         ...
     def set_volume(self, level: int) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetVolume(int)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetVolume(int)."""
         ...
     def get_volume(self) -> tuple[int, int]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: GetVolume(int &)."""
         ...
     def set_brightness(self, level: int) -> int:
-        """SIGNATURE_ONLY | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetBrightness(int)."""
+        """AVAILABLE | HARDWARE_SIDE_EFFECT | DIRECT. C++: SetBrightness(int)."""
         ...
     def get_brightness(self) -> tuple[int, int]:
         """AVAILABLE | READ_ONLY | OUTPUT_WRAPPER. C++: GetBrightness(int &)."""
@@ -610,3 +628,8 @@ class stPathPoint(object):
     vx: float
     vy: float
     vyaw: float
+    def __init__(self) -> None:
+        """AVAILABLE; C++ aggregate: unitree::robot::go2::stPathPoint."""
+        ...
+
+PathPoint = stPathPoint

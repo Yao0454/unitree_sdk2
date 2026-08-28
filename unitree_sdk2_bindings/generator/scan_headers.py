@@ -41,8 +41,7 @@ except ImportError:  # Support direct execution: python generator/scan_headers.p
 # delimiter after the name avoids treating those return types as declarations
 # while still allowing one-line and multi-line class/enum definitions.
 DECLARATION_RE = re.compile(
-    r"^\s*(class|struct|enum(?:\s+class)?)\s+([A-Za-z_]\w*)\b"
-    r"(?=\s*(?::|\{|;|$))"
+    r"^\s*(class|struct|enum(?:\s+class)?)\s+([A-Za-z_]\w*)\b" r"(?=\s*(?::|\{|;|$))"
 )
 NAMESPACE_RE = re.compile(r"^\s*namespace\s+([A-Za-z_]\w*(?:::[A-Za-z_]\w*)*)\s*(\{)?")
 INTERNAL_NAMESPACE_PREFIXES = ("dds::", "org::eclipse::cyclonedds::")
@@ -189,6 +188,97 @@ def _return_type(function_type: str) -> str:
     return function_type[:marker].rstrip() if marker >= 0 else function_type
 
 
+DEFAULT_WRAPPER_KINDS = {
+    "ConstantExpr",
+    "CXXBindTemporaryExpr",
+    "ExprWithCleanups",
+    "FullExpr",
+    "ImplicitCastExpr",
+    "MaterializeTemporaryExpr",
+    "ParenExpr",
+}
+
+
+def _default_expression(node: dict[str, Any]) -> str | None:
+    """Return a safe C++ spelling for a Clang default-argument expression.
+
+    Only context-free literals and named enum constants are accepted. Keeping
+    this deliberately small prevents generated bindings from evaluating an
+    arbitrary constructor or function call while the Python module imports.
+    """
+    kind = node.get("kind")
+    inner = [item for item in node.get("inner", []) if isinstance(item, dict)]
+    if kind in DEFAULT_WRAPPER_KINDS:
+        return _default_expression(inner[0]) if len(inner) == 1 else None
+    if kind == "CXXConstructExpr":
+        constructed_type = _qual_type(node)
+        if len(inner) == 1 and (
+            constructed_type.startswith(("std::string", "const std::string"))
+            or "basic_string<char" in constructed_type
+        ):
+            return _default_expression(inner[0])
+        return None
+    if kind == "CXXBoolLiteralExpr":
+        value = node.get("value")
+        return str(value).lower() if isinstance(value, bool) else None
+    if kind == "IntegerLiteral":
+        value = str(node.get("value", ""))
+        return value if re.fullmatch(r"[0-9]+", value) else None
+    if kind == "FloatingLiteral":
+        value = str(node.get("value", ""))
+        if not re.fullmatch(
+            r"(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?", value
+        ):
+            return None
+        return value if any(char in value for char in ".eE") else value + ".0"
+    if kind == "StringLiteral":
+        value = node.get("value")
+        if not isinstance(value, str):
+            return None
+        # Clang normally includes the C++ quotes. Quote defensively for AST
+        # variants that expose only the decoded contents.
+        return (
+            value
+            if value.startswith(('"', 'u8"', 'u"', 'U"', 'L"'))
+            else json.dumps(value)
+        )
+    if kind == "CharacterLiteral":
+        value = str(node.get("value", ""))
+        return f"static_cast<char>({value})" if value.isdigit() else None
+    if kind in {"CXXNullPtrLiteralExpr", "GNUNullExpr"}:
+        return "nullptr"
+    if kind == "DeclRefExpr":
+        referenced = node.get("referencedDecl", {})
+        if referenced.get("kind") != "EnumConstantDecl":
+            return None
+        name = str(referenced.get("name", ""))
+        enum_type = _qual_type(node).strip().lstrip(":")
+        if not re.fullmatch(r"[A-Za-z_]\w*(?:::[A-Za-z_]\w*)*", name):
+            return None
+        if not re.fullmatch(r"[A-Za-z_]\w*(?:::[A-Za-z_]\w*)*", enum_type):
+            return None
+        return f"{enum_type}::{name}"
+    if kind == "UnaryOperator" and node.get("opcode") in {"+", "-"} and len(inner) == 1:
+        operand = _default_expression(inner[0])
+        if operand is None or not re.fullmatch(
+            r"[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?", operand
+        ):
+            return None
+        return str(node["opcode"]) + operand
+    return None
+
+
+def _parameter_default(node: dict[str, Any]) -> str | None:
+    if "init" not in node:
+        return None
+    expressions = [
+        child
+        for child in node.get("inner", [])
+        if isinstance(child, dict) and child.get("kind") != "FullComment"
+    ]
+    return _default_expression(expressions[0]) if len(expressions) == 1 else None
+
+
 def _parameters(node: dict[str, Any]) -> tuple[CppParameter, ...]:
     parameters: list[CppParameter] = []
     for child in node.get("inner", []):
@@ -199,6 +289,7 @@ def _parameters(node: dict[str, Any]) -> tuple[CppParameter, ...]:
                 name=str(child.get("name", "")),
                 type=_qual_type(child),
                 has_default="init" in child,
+                default_value=_parameter_default(child),
             )
         )
     return tuple(parameters)
@@ -433,7 +524,9 @@ def _headers_from_arguments(sdk_root: Path, values: list[str]) -> list[Path]:
             path = Path(value)
             path = path if path.is_absolute() else sdk_root / path
             if path.is_dir():
-                headers.extend(sorted(item for item in path.rglob("*.hpp") if is_header(item)))
+                headers.extend(
+                    sorted(item for item in path.rglob("*.hpp") if is_header(item))
+                )
             elif is_header(path):
                 headers.append(path)
         return headers

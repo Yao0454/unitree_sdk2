@@ -25,6 +25,7 @@ class CppParameter:
     name: str
     type: str
     has_default: bool = False
+    default_value: str | None = None
 
 
 @dataclass(frozen=True)
