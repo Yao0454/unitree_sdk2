@@ -1,0 +1,243 @@
+{
+  "classes": [
+    {
+      "methods": [
+        "get_volume"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.a2",
+      "python_name": "AudioClient",
+      "qualified_name": "unitree::robot::a2::AudioClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_state"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.a2",
+      "python_name": "SportClient",
+      "qualified_name": "unitree::robot::a2::SportClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_state"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.as2",
+      "python_name": "SportClient",
+      "qualified_name": "unitree::robot::as2::SportClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_image_sample"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "BackVideoClient",
+      "qualified_name": "unitree::robot::b2::BackVideoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "ConfigClient",
+      "qualified_name": "unitree::robot::b2::ConfigClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_image_sample"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "FrontVideoClient",
+      "qualified_name": "unitree::robot::b2::FrontVideoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "check_mode",
+        "get_silent"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "MotionSwitcherClient",
+      "qualified_name": "unitree::robot::b2::MotionSwitcherClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "service_list",
+        "get_pkg_version"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "RobotStateClient",
+      "qualified_name": "unitree::robot::b2::RobotStateClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_volume"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.g1",
+      "python_name": "AudioClient",
+      "qualified_name": "unitree::robot::g1::AudioClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_action_list"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.g1",
+      "python_name": "G1ArmActionClient",
+      "qualified_name": "unitree::robot::g1::G1ArmActionClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_fsm_id",
+        "get_fsm_mode",
+        "get_balance_mode",
+        "get_swing_height",
+        "get_stand_height",
+        "get_phase",
+        "get_mimic_motion"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.g1",
+      "python_name": "LocoClient",
+      "qualified_name": "unitree::robot::g1::LocoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "ConfigClient",
+      "qualified_name": "unitree::robot::go2::ConfigClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "service_list"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "RobotStateClient",
+      "qualified_name": "unitree::robot::go2::RobotStateClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "is_tracking"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "UtrackClient",
+      "qualified_name": "unitree::robot::go2::UtrackClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_image_sample"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "VideoClient",
+      "qualified_name": "unitree::robot::go2::VideoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_switch",
+        "get_volume",
+        "get_brightness"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "VuiClient",
+      "qualified_name": "unitree::robot::go2::VuiClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_fsm_id",
+        "get_fsm_mode",
+        "get_balance_mode",
+        "get_swing_height",
+        "get_stand_height",
+        "get_phase",
+        "get_odom"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.h1",
+      "python_name": "LocoClient",
+      "qualified_name": "unitree::robot::h1::LocoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_action_list"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.h2",
+      "python_name": "H2ArmActionClient",
+      "qualified_name": "unitree::robot::h2::H2ArmActionClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_fsm_id",
+        "get_fsm_mode",
+        "get_balance_mode",
+        "get_swing_height",
+        "get_stand_height",
+        "get_phase",
+        "get_arm_sdk_status",
+        "get_available_fsm_ids"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.h2",
+      "python_name": "LocoClient",
+      "qualified_name": "unitree::robot::h2::LocoClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_volume"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.r1",
+      "python_name": "AudioClient",
+      "qualified_name": "unitree::robot::r1::AudioClient",
+      "status": "PARTIAL_READ_ONLY"
+    },
+    {
+      "methods": [
+        "get_fsm_id",
+        "get_fsm_mode"
+      ],
+      "python_module": "unitree_sdk2_cpp.robot.r1",
+      "python_name": "LocoClient",
+      "qualified_name": "unitree::robot::r1::LocoClient",
+      "status": "PARTIAL_READ_ONLY"
+    }
+  ],
+  "schema_version": 1,
+  "sources": [
+    "generated/robot_binding_report.json",
+    "generator/robot_read_only_policy.json"
+  ],
+  "summary": {
+    "client_classes": 21,
+    "hardware_side_effect_methods_exposed": 0,
+    "motion_methods_exposed": 0,
+    "read_only_methods": 45,
+    "value_classes": 2
+  },
+  "value_classes": [
+    {
+      "python_module": "unitree_sdk2_cpp.robot.b2",
+      "python_name": "ServiceState",
+      "qualified_name": "unitree::robot::b2::ServiceState",
+      "status": "AVAILABLE_VALUE"
+    },
+    {
+      "python_module": "unitree_sdk2_cpp.robot.go2",
+      "python_name": "ServiceState",
+      "qualified_name": "unitree::robot::go2::ServiceState",
+      "status": "AVAILABLE_VALUE"
+    }
+  ]
+}
