@@ -2343,15 +2343,15 @@ void BindRobotClients(py::module_& root) {
   robot_b2_RobotStateClient.def(
       "service_switch",
       [](unitree::robot::b2::RobotStateClient& self, const std::string & name, int32_t swit) {
-        int32_t status{};
+        int32_t output_2{};
         int32_t status{};
         {
           py::gil_scoped_release release;
-          status = self.ServiceSwitch(name, swit, status);
+          status = self.ServiceSwitch(name, swit, output_2);
         }
         return py::make_tuple(
-            status, std::move(status));
-      }, py::arg("name"), py::arg("swit"), "Returns (status, status).");
+            status, std::move(output_2));
+      }, py::arg("name"), py::arg("swit"), "Returns (status, output_2).");
   robot_b2_RobotStateClient.def(
       "set_report_freq",
       [](unitree::robot::b2::RobotStateClient& self, int32_t interval, int32_t duration) {
@@ -2367,15 +2367,15 @@ void BindRobotClients(py::module_& root) {
   robot_b2_RobotStateClient.def(
       "low_power_status",
       [](unitree::robot::b2::RobotStateClient& self) {
-        int32_t status{};
+        int32_t output_0{};
         int32_t status{};
         {
           py::gil_scoped_release release;
-          status = self.LowPowerStatus(status);
+          status = self.LowPowerStatus(output_0);
         }
         return py::make_tuple(
-            status, std::move(status));
-      }, "Returns (status, status).");
+            status, std::move(output_0));
+      }, "Returns (status, output_0).");
   robot_b2_RobotStateClient.def(
       "get_pkg_version",
       [](unitree::robot::b2::RobotStateClient& self) {
@@ -3059,15 +3059,15 @@ void BindRobotClients(py::module_& root) {
   robot_go2_RobotStateClient.def(
       "service_switch",
       [](unitree::robot::go2::RobotStateClient& self, const std::string & name, int32_t swit) {
-        int32_t status{};
+        int32_t output_2{};
         int32_t status{};
         {
           py::gil_scoped_release release;
-          status = self.ServiceSwitch(name, swit, status);
+          status = self.ServiceSwitch(name, swit, output_2);
         }
         return py::make_tuple(
-            status, std::move(status));
-      }, py::arg("name"), py::arg("swit"), "Returns (status, status).");
+            status, std::move(output_2));
+      }, py::arg("name"), py::arg("swit"), "Returns (status, output_2).");
   robot_go2_RobotStateClient.def(
       "set_report_freq",
       [](unitree::robot::go2::RobotStateClient& self, int32_t interval, int32_t duration) {

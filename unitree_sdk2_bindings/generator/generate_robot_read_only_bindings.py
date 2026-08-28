@@ -206,16 +206,19 @@ def render_output_method(
     inputs: list[tuple[str, str]] = []
     outputs: list[tuple[str, str]] = []
     call_arguments: list[str] = []
+    reserved_names = {"status"}
     for index, parameter in enumerate(method["parameters"]):
         name = parameter_name(parameter, index)
         parameter_type = qualify_local_types(
             parameter["type"], cpp_class["namespace"], classes_by_name
         )
         if is_mutable_output(parameter["type"]):
-            name = name if parameter.get("name") else f"output_{index}"
+            if not parameter.get("name") or name in reserved_names:
+                name = f"output_{index}"
             outputs.append((value_type(parameter_type), name))
         else:
             inputs.append((parameter_type, name))
+        reserved_names.add(name)
         call_arguments.append(name)
 
     if not outputs:

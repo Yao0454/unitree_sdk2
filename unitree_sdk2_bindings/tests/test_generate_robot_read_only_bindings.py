@@ -53,6 +53,7 @@ def test_checked_in_robot_client_binding_is_current() -> None:
     assert 'py::arg("duration") = 1.0' in source
     assert 'robot_go2_JsonizeDataFloat.def("from_json"' in source
     assert 'robot_go2_JsonizeDataFloat.def("to_json"' in source
+    assert "int32_t status{};\n        int32_t status{};" not in source
     assert {
         item["qualified_name"]
         for item in report["value_classes"]
